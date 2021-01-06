@@ -6,10 +6,10 @@ API endpoints
 Core
 ~~~~
 
-.. autoclass:: quickbuild.Client
+.. autoclass:: quickbuild.QBClient
     :members:
 
-.. autoclass:: quickbuild.AsyncClient
+.. autoclass:: quickbuild.AsyncQBClient
     :members:
 
 .. automodule:: quickbuild.core
