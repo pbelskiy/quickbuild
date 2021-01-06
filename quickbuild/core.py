@@ -3,6 +3,7 @@ from collections import namedtuple
 from http import HTTPStatus
 from typing import Any, Callable
 
+from quickbuild.endpoints.builds import Builds
 from quickbuild.exceptions import QuickBuildError
 
 Response = namedtuple('Response', ['status', 'body'])
@@ -11,7 +12,7 @@ Response = namedtuple('Response', ['status', 'body'])
 class QuickBuild(ABC):
 
     def __init__(self):
-        ...
+        self.builds = Builds(self)
 
     @staticmethod
     def _callback(response: Response) -> str:

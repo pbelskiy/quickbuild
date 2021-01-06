@@ -15,6 +15,12 @@ Core
 .. automodule:: quickbuild.core
     :members:
 
+Builds
+~~~~~~
+
+.. automodule:: quickbuild.endpoints.builds.Builds
+    :members:
+
 Exceptions
 ~~~~~~~~~~
 
