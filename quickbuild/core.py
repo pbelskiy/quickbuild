@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from collections import namedtuple
 from http import HTTPStatus
-from typing import Any, Callable
+from typing import Any, Callable, Optional
 
 from quickbuild.endpoints.builds import Builds
 from quickbuild.exceptions import QuickBuildError
@@ -15,9 +15,12 @@ class QuickBuild(ABC):
         self.builds = Builds(self)
 
     @staticmethod
-    def _callback(response: Response) -> str:
+    def _callback(response: Response, fcb: Optional[Callable] = None) -> str:
         if response.status != HTTPStatus.OK:
             raise QuickBuildError(response.body)
+
+        if fcb:
+            return fcb(response.body)
 
         return response.body
 
@@ -27,15 +30,21 @@ class QuickBuild(ABC):
 
     @abstractmethod
     def request(self,
-                callback: Callable[[Response], str],
+                callback: Callable,
                 method: str,
                 path: str,
+                fcb: Optional[Callable] = None,
                 **kwargs: Any
                 ) -> str:
         raise NotImplementedError
 
-    def _request(self, method: str, path: str, **kwargs: Any) -> str:
-        return self.request(self._callback, method, path, **kwargs)
+    def _request(self,
+                 method: str,
+                 path: str,
+                 fcb: Optional[Callable] = None,
+                 **kwargs: Any
+                 ) -> str:
+        return self.request(self._callback, method, path, fcb, **kwargs)
 
     def get_version(self) -> str:
         """

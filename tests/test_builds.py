@@ -1,8 +1,17 @@
 import re
 
+import pytest
 import responses
 
-from quickbuild import QBClient
+from aioresponses import aioresponses
+
+from quickbuild import AsyncQBClient, QBClient
+
+
+@pytest.fixture
+def aiohttp_mock():
+    with aioresponses() as mock:
+        yield mock
 
 
 @responses.activate
@@ -67,3 +76,42 @@ def test_get_status():
     response = client.builds.get_status(1)
 
     assert response == RESPONSE_DATA
+
+
+@responses.activate
+def test_get_begin_date():
+    RESPONSE_DATA = '1609963192617'  # 2021-01-06 22:59:52.617000
+
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/builds/\d+/begin_date'),
+        body=RESPONSE_DATA,
+    )
+
+    client = QBClient('http://server', 'login', 'password')
+
+    response = client.builds.get_begin_date(1)
+
+    assert response.year == 2021
+
+
+@pytest.mark.asyncio
+async def test_get_begin_date_async(aiohttp_mock):
+    RESPONSE_DATA = '1609963192617'  # 2021-01-06 22:59:52.617000
+
+    try:
+        client = AsyncQBClient(
+            'http://server',
+            'login',
+            'password',
+        )
+
+        aiohttp_mock.get(
+            re.compile(r'.*/rest/builds/\d+/begin_date'),
+            body=RESPONSE_DATA,
+        )
+
+        response = await client.builds.get_begin_date(1)
+        assert response.year == 2021
+    finally:
+        await client.close()

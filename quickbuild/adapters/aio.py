@@ -120,9 +120,10 @@ class AsyncQBClient(QuickBuild):
         await self.session.close()
 
     async def request(self,  # type: ignore
-                      callback: Callable[[Response], str],
+                      callback: Callable,
                       method: str,
                       path: str,
+                      fcb: Optional[Callable] = None,
                       **kwargs: Any
                       ) -> str:
 
@@ -141,4 +142,4 @@ class AsyncQBClient(QuickBuild):
         )
 
         body = await response.text()
-        return callback(Response(response.status, body))
+        return callback(Response(response.status, body), fcb)

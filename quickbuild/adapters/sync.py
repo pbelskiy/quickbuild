@@ -110,9 +110,10 @@ class QBClient(QuickBuild):
         self.session.close()
 
     def request(self,
-                callback: Callable[[Response], str],
+                callback: Callable,
                 method: str,
                 path: str,
+                fcb: Optional[Callable] = None,
                 **kwargs: Any
                 ) -> str:
 
@@ -129,4 +130,4 @@ class QBClient(QuickBuild):
             **kwargs
         )
 
-        return callback(Response(response.status_code, response.text))
+        return callback(Response(response.status_code, response.text), fcb)
