@@ -18,7 +18,7 @@ Core
 Builds
 ~~~~~~
 
-.. automodule:: quickbuild.endpoints.builds.Builds
+.. autoclass:: quickbuild.endpoints.builds.Builds
     :members:
 
 Exceptions
