@@ -35,7 +35,9 @@ def test_sync_client():
         )
 
         version = client.get_version()
-        assert version == GET_VERSION_DATA
+        assert version.major == 6
+        assert version.minor == 0
+        assert version.patch == 9
     finally:
         client.close()
 
@@ -76,7 +78,9 @@ async def test_async_client(aiohttp_mock):
         )
 
         version = await client.get_version()
-        assert version == GET_VERSION_DATA
+        assert version.major == 6
+        assert version.minor == 0
+        assert version.patch == 9
     finally:
         await client.close()
 
@@ -106,7 +110,9 @@ async def test_async_client_retry(aiohttp_mock):
     )
 
     version = await client.get_version()
-    assert version == GET_VERSION_DATA
+    assert version.major == 6
+    assert version.minor == 0
+    assert version.patch == 9
     await client.close()
 
 

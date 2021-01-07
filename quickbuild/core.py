@@ -1,12 +1,16 @@
 from abc import ABC, abstractmethod
 from collections import namedtuple
 from http import HTTPStatus
-from typing import Any, Callable, Optional
+from typing import Any, Callable, NamedTuple, Optional
 
 from quickbuild.endpoints.builds import Builds
 from quickbuild.exceptions import QuickBuildError
 
 Response = namedtuple('Response', ['status', 'body'])
+
+ServerVersion = NamedTuple(
+    'ServerVersion', [('major', int), ('minor', int), ('patch', int)]
+)
 
 
 class QuickBuild(ABC):
@@ -35,7 +39,7 @@ class QuickBuild(ABC):
                 path: str,
                 fcb: Optional[Callable] = None,
                 **kwargs: Any
-                ) -> str:
+                ) -> Any:
         raise NotImplementedError
 
     def _request(self,
@@ -43,14 +47,17 @@ class QuickBuild(ABC):
                  path: str,
                  fcb: Optional[Callable] = None,
                  **kwargs: Any
-                 ) -> str:
+                 ) -> Any:
         return self.request(self._callback, method, path, fcb, **kwargs)
 
-    def get_version(self) -> str:
+    def get_version(self) -> ServerVersion:
         """
         Show server version information.
 
-        :returns: ``dict``
-        :raises: ``QuickBuildError``
+        Returns:
+            ServerVersion: NamedTuple with major, minor and patch version.
         """
-        return self._request('GET', 'version')
+        def callback(response: str) -> ServerVersion:
+            return ServerVersion(*map(int, response.split('.')))
+
+        return self._request('GET', 'version', callback)
