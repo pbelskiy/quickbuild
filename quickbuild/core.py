@@ -4,7 +4,7 @@ from http import HTTPStatus
 from typing import Any, Callable, NamedTuple, Optional
 
 from quickbuild.endpoints.builds import Builds
-from quickbuild.exceptions import QuickBuildError
+from quickbuild.exceptions import QBError, QBNotFoundError
 
 Response = namedtuple('Response', ['status', 'body'])
 
@@ -20,8 +20,11 @@ class QuickBuild(ABC):
 
     @staticmethod
     def _callback(response: Response, fcb: Optional[Callable] = None) -> str:
+        if response.status == HTTPStatus.NOT_FOUND:
+            raise QBNotFoundError(response.body)
+
         if response.status != HTTPStatus.OK:
-            raise QuickBuildError(response.body)
+            raise QBError(response.body)
 
         if fcb:
             return fcb(response.body)

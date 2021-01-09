@@ -6,7 +6,7 @@ import responses
 
 from aioresponses import aioresponses
 
-from quickbuild import AsyncQBClient, QBClient, QuickBuildError
+from quickbuild import AsyncQBClient, QBClient, QBError
 
 GET_VERSION_DATA = '6.0.9'
 
@@ -138,7 +138,7 @@ async def test_async_client_retry_exception(aiohttp_mock):
         exception=aiohttp.ClientError()
     )
 
-    with pytest.raises(QuickBuildError):
+    with pytest.raises(QBError):
         await client.get_version()
 
     await client.close()

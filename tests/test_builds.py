@@ -1,11 +1,13 @@
 import re
 
+from http import HTTPStatus
+
 import pytest
 import responses
 
 from aioresponses import aioresponses
 
-from quickbuild import AsyncQBClient, QBClient
+from quickbuild import AsyncQBClient, QBClient, QBNotFoundError
 
 
 @pytest.fixture
@@ -76,6 +78,20 @@ def test_get_status():
     response = client.builds.get_status(1)
 
     assert response == RESPONSE_DATA
+
+
+@responses.activate
+def test_get_status_not_found():
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/builds/\d+/status'),
+        status=HTTPStatus.NOT_FOUND
+    )
+
+    client = QBClient('http://server', 'login', 'password')
+
+    with pytest.raises(QBNotFoundError):
+        client.builds.get_status(2)
 
 
 @responses.activate

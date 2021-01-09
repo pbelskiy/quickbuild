@@ -1,6 +1,6 @@
 from quickbuild.adapters.aio import AsyncQBClient
 from quickbuild.adapters.sync import QBClient
-from quickbuild.exceptions import QuickBuildError
+from quickbuild.exceptions import QBError, QBNotFoundError
 
 __version__ = '0.1.0'
 
@@ -9,5 +9,6 @@ __all__ = (
     'AsyncQBClient',
     'QBClient',
     # exceptions
-    'QuickBuildError',
+    'QBError',
+    'QBNotFoundError',
 )

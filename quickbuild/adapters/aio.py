@@ -10,7 +10,7 @@ from aiohttp import (
     ClientTimeout,
 )
 
-from quickbuild.core import QuickBuild, QuickBuildError, Response
+from quickbuild.core import QBError, QuickBuild, Response
 
 
 class RetryClientSession:
@@ -28,7 +28,7 @@ class RetryClientSession:
                 response = await self.session.request(*args, **kwargs)
             except (ClientError, asyncio.TimeoutError) as e:
                 if total + 1 == self.total:
-                    raise QuickBuildError from e
+                    raise QBError from e
             else:
                 if response.status not in self.statuses:
                     break
@@ -97,7 +97,7 @@ class AsyncQBClient(QuickBuild):
             )
 
         :returns: ``AsyncClient instance``
-        :raises: ``QuickBuildError``
+        :raises: ``QBError``
         """
         super().__init__()
 

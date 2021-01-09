@@ -83,7 +83,7 @@ class QBClient(QuickBuild):
           ============  =============
 
         :returns: ``Client instance``
-        :raises: ``QuickBuildError``
+        :raises: ``QBError``
         """
         super().__init__()
 
