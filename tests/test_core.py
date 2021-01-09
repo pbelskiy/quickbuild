@@ -4,17 +4,9 @@ import aiohttp
 import pytest
 import responses
 
-from aioresponses import aioresponses
-
 from quickbuild import AsyncQBClient, QBClient, QBError
 
 GET_VERSION_DATA = '6.0.9'
-
-
-@pytest.fixture
-def aiohttp_mock():
-    with aioresponses() as mock:
-        yield mock
 
 
 @responses.activate

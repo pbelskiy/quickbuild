@@ -5,15 +5,7 @@ from http import HTTPStatus
 import pytest
 import responses
 
-from aioresponses import aioresponses
-
 from quickbuild import AsyncQBClient, QBClient, QBNotFoundError
-
-
-@pytest.fixture
-def aiohttp_mock():
-    with aioresponses() as mock:
-        yield mock
 
 
 @responses.activate
