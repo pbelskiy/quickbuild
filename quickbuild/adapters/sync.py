@@ -11,8 +11,8 @@ class QBClient(QuickBuild):
 
     def __init__(self,
                  url: str,
-                 user: str,
-                 password: str,
+                 user: Optional[str] = None,
+                 password: Optional[str] = None,
                  *,
                  verify: bool = True,
                  timeout: Optional[float] = None,
@@ -24,10 +24,10 @@ class QBClient(QuickBuild):
         * url: ``str``
           Url of QuickBuild server.
 
-        * user: ``str``
+        * user: ``str`` (optional)
           User name, login.
 
-        * password: ``str``
+        * password: ``str`` (optional)
           Password for user.
 
         * verify: ``bool`` (optional)
@@ -89,7 +89,10 @@ class QBClient(QuickBuild):
 
         self.host = url
         self.session = Session()
-        self.session.auth = (user, password)
+
+        if user and password:
+            self.session.auth = (user, password)
+
         self.timeout = timeout
         self.verify = verify
 

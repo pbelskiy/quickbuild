@@ -48,7 +48,7 @@ def test_get_info():
         body=RESPONSE_DATA,
     )
 
-    client = QBClient('http://server', 'login', 'password')
+    client = QBClient('http://server')
 
     response = client.builds.get_info(1)
 
@@ -65,7 +65,7 @@ def test_get_status():
         body=RESPONSE_DATA,
     )
 
-    client = QBClient('http://server', 'login', 'password')
+    client = QBClient('http://server')
 
     response = client.builds.get_status(1)
 
@@ -80,7 +80,7 @@ def test_get_status_not_found():
         status=HTTPStatus.NOT_FOUND
     )
 
-    client = QBClient('http://server', 'login', 'password')
+    client = QBClient('http://server')
 
     with pytest.raises(QBNotFoundError):
         client.builds.get_status(2)
@@ -96,7 +96,7 @@ def test_get_begin_date():
         body=RESPONSE_DATA,
     )
 
-    client = QBClient('http://server', 'login', 'password')
+    client = QBClient('http://server')
 
     response = client.builds.get_begin_date(1)
 
@@ -108,11 +108,7 @@ async def test_get_begin_date_async(aiohttp_mock):
     RESPONSE_DATA = '1609963192617'  # 2021-01-06 22:59:52.617000
 
     try:
-        client = AsyncQBClient(
-            'http://server',
-            'login',
-            'password',
-        )
+        client = AsyncQBClient('http://server')
 
         aiohttp_mock.get(
             re.compile(r'.*/rest/builds/\d+/begin_date'),

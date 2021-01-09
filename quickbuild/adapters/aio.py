@@ -48,8 +48,8 @@ class AsyncQBClient(QuickBuild):
 
     def __init__(self,
                  url: str,
-                 user: str,
-                 password: str,
+                 user: Optional[str] = None,
+                 password: Optional[str] = None,
                  *,
                  loop: Optional[asyncio.AbstractEventLoop] = None,
                  verify: bool = True,
@@ -62,10 +62,10 @@ class AsyncQBClient(QuickBuild):
         * url: ``str``
           Url of QuickBuild server, must include API version.
 
-        * user: ``str``
+        * user: ``str`` (optional)
           User name, login.
 
-        * password: ``str``
+        * password: ``str`` (optional)
           Password for user.
 
         * loop: ``AbstractEventLoop`` (optional)
@@ -104,7 +104,9 @@ class AsyncQBClient(QuickBuild):
         self.loop = loop or asyncio.get_event_loop()
         self.host = url
 
-        self.auth = BasicAuth(user, password)
+        self.auth = None
+        if user and password:
+            self.auth = BasicAuth(user, password)
 
         if retry:
             self.session = RetryClientSession(loop, retry)
