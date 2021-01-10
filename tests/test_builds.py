@@ -119,3 +119,19 @@ async def test_get_begin_date_async(aiohttp_mock):
         assert response.year == 2021
     finally:
         await client.close()
+
+
+@responses.activate
+def test_get_version():
+    RESPONSE_DATA = '1.0.0'
+
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/builds/\d+/version'),
+        body=RESPONSE_DATA,
+    )
+
+    client = QBClient('http://server')
+
+    response = client.builds.get_version(1)
+    assert response == RESPONSE_DATA

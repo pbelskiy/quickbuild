@@ -50,3 +50,15 @@ class Builds:
         )
 
         return response
+
+    def get_version(self, build_id: int) -> str:
+        """
+        Get build version.
+
+        Args:
+            build_id (int): build id.
+
+        Returns:
+            str: build version
+        """
+        return self.quickbuild._request('GET', 'builds/{}/version'.format(build_id))
