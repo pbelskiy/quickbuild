@@ -65,7 +65,7 @@ class Builds:
 
     def get_duration(self, build_id: int) -> int:
         """
-        Get build duration in ms.
+        Get build duration in ms. QBProcessingError will be raised if build is not finished.
 
         Args:
             build_id (int): build id.
@@ -80,6 +80,24 @@ class Builds:
             'GET',
             'builds/{}/duration'.format(build_id),
             callback
+        )
+
+        return response
+
+    def get_request_id(self, build_id: int) -> str:
+        """
+        Get request id. QBProcessingError will be raised if build is finished.
+
+        Args:
+            build_id (int): build id.
+
+        Returns:
+            str: request id. Example: fd2339a1-bc71-429d-b4ee-0ac650c342fe
+        """
+
+        response = self.quickbuild._request(
+            'GET',
+            'builds/{}/request_id'.format(build_id)
         )
 
         return response

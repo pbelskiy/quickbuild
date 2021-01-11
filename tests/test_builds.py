@@ -5,7 +5,7 @@ from http import HTTPStatus
 import pytest
 import responses
 
-from quickbuild import AsyncQBClient, QBClient, QBNotFoundError
+from quickbuild import AsyncQBClient, QBClient, QBNotFoundError, QBProcessingError
 
 
 @responses.activate
@@ -151,3 +151,31 @@ def test_get_duration():
 
     response = client.builds.get_duration(1)
     assert response == 137
+
+
+@responses.activate
+def test_get_request_id():
+    RESPONSE_DATA = 'fd2339a1-bc71-429d-b4ee-0ac650c342fe'
+
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/builds/\d+/request_id'),
+        body=RESPONSE_DATA,
+    )
+
+    client = QBClient('http://server')
+
+    response = client.builds.get_request_id(1)
+    assert response == RESPONSE_DATA
+
+
+@responses.activate
+def test_get_request_id_finished():
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/builds/\d+/request_id'),
+        status=HTTPStatus.NO_CONTENT,
+    )
+
+    with pytest.raises(QBProcessingError):
+        QBClient('http://server').builds.get_request_id(1)
