@@ -135,3 +135,19 @@ def test_get_version():
 
     response = client.builds.get_version(1)
     assert response == RESPONSE_DATA
+
+
+@responses.activate
+def test_get_duration():
+    RESPONSE_DATA = '137'
+
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/builds/\d+/duration'),
+        body=RESPONSE_DATA,
+    )
+
+    client = QBClient('http://server')
+
+    response = client.builds.get_duration(1)
+    assert response == 137

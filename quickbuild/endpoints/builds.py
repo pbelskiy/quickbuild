@@ -62,3 +62,24 @@ class Builds:
             str: build version
         """
         return self.quickbuild._request('GET', 'builds/{}/version'.format(build_id))
+
+    def get_duration(self, build_id: int) -> int:
+        """
+        Get build duration in ms.
+
+        Args:
+            build_id (int): build id.
+
+        Returns:
+            int: build duration in ms
+        """
+        def callback(response: str) -> int:
+            return int(response)
+
+        response = self.quickbuild._request(
+            'GET',
+            'builds/{}/duration'.format(build_id),
+            callback
+        )
+
+        return response
