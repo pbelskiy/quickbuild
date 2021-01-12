@@ -101,3 +101,21 @@ class Builds:
         )
 
         return response
+
+    def get_steps(self, build_id: int) -> str:
+        """
+        Get build steps
+
+        Args:
+            build_id (int): build id.
+
+        Returns:
+            str: builds steps as XML document
+        """
+
+        response = self.quickbuild._request(
+            'GET',
+            'builds/{}/steps'.format(build_id)
+        )
+
+        return response
