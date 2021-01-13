@@ -234,3 +234,22 @@ def test_get_steps():
 
     response = QBClient('http://server').builds.get_steps(1)
     assert '<name>master</name>' in response
+
+
+@responses.activate
+def test_get_repositories():
+    BUILD_REPOSITORIES_XML = r"""
+    <?xml version="1.0" encoding="UTF-8"?>
+
+    <list/>
+    """
+
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/builds/\d+/repositories'),
+        content_type='application/xml',
+        body=BUILD_REPOSITORIES_XML,
+    )
+
+    response = QBClient('http://server').builds.get_repositories(1)
+    assert 'list' in response

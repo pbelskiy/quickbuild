@@ -104,7 +104,7 @@ class Builds:
 
     def get_steps(self, build_id: int) -> str:
         """
-        Get build steps
+        Get build steps.
 
         Args:
             build_id (int): build id.
@@ -116,6 +116,24 @@ class Builds:
         response = self.quickbuild._request(
             'GET',
             'builds/{}/steps'.format(build_id)
+        )
+
+        return response
+
+    def get_repositories(self, build_id: int) -> str:
+        """
+        Get build repositories.
+
+        Args:
+            build_id (int): build id.
+
+        Returns:
+            str: builds repositories as XML document
+        """
+
+        response = self.quickbuild._request(
+            'GET',
+            'builds/{}/repositories'.format(build_id)
         )
 
         return response
