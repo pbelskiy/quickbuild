@@ -137,3 +137,21 @@ class Builds:
         )
 
         return response
+
+    def get_dependencies(self, build_id: int) -> str:
+        """
+        Get build dependencies.
+
+        Args:
+            build_id (int): build id.
+
+        Returns:
+            str: builds dependencies as XML document
+        """
+
+        response = self.quickbuild._request(
+            'GET',
+            'builds/{}/dependencies'.format(build_id)
+        )
+
+        return response

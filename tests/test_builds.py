@@ -253,3 +253,22 @@ def test_get_repositories():
 
     response = QBClient('http://server').builds.get_repositories(1)
     assert 'list' in response
+
+
+@responses.activate
+def test_get_dependencies():
+    BUILD_REPOSITORIES_XML = r"""
+    <?xml version="1.0" encoding="UTF-8"?>
+
+    <list/>
+    """
+
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/builds/\d+/dependencies'),
+        content_type='application/xml',
+        body=BUILD_REPOSITORIES_XML,
+    )
+
+    response = QBClient('http://server').builds.get_dependencies(1)
+    assert 'list' in response
