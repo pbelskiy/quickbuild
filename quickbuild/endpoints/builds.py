@@ -155,3 +155,21 @@ class Builds:
         )
 
         return response
+
+    def get_dependents(self, build_id: int) -> str:
+        """
+        Get build dependents.
+
+        Args:
+            build_id (int): build id.
+
+        Returns:
+            str: builds dependents as XML document
+        """
+
+        response = self.quickbuild._request(
+            'GET',
+            'builds/{}/dependents'.format(build_id)
+        )
+
+        return response

@@ -257,7 +257,7 @@ def test_get_repositories():
 
 @responses.activate
 def test_get_dependencies():
-    BUILD_REPOSITORIES_XML = r"""
+    RESPONSE_DATA = r"""
     <?xml version="1.0" encoding="UTF-8"?>
 
     <list/>
@@ -267,8 +267,27 @@ def test_get_dependencies():
         responses.GET,
         re.compile(r'.*/rest/builds/\d+/dependencies'),
         content_type='application/xml',
-        body=BUILD_REPOSITORIES_XML,
+        body=RESPONSE_DATA,
     )
 
     response = QBClient('http://server').builds.get_dependencies(1)
+    assert 'list' in response
+
+
+@responses.activate
+def test_get_dependents():
+    RESPONSE_DATA = r"""
+    <?xml version="1.0" encoding="UTF-8"?>
+
+    <list/>
+    """
+
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/builds/\d+/dependents'),
+        content_type='application/xml',
+        body=RESPONSE_DATA,
+    )
+
+    response = QBClient('http://server').builds.get_dependents(1)
     assert 'list' in response
