@@ -98,6 +98,85 @@ BUILD_STEPS_XML = r"""
 """
 
 
+BUILD_SEARCH_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
+
+<list>
+  <com.pmease.quickbuild.model.Build>
+    <id>4</id>
+    <configuration>1</configuration>
+    <version>1.0.3</version>
+    <requester>1</requester>
+    <scheduled>false</scheduled>
+    <status>SUCCESSFUL</status>
+    <statusDate>2021-01-18T13:29:15.341Z</statusDate>
+    <beginDate>2021-01-18T13:28:15.033Z</beginDate>
+    <duration>60309</duration>
+    <waitDuration>26</waitDuration>
+    <stepRuntimes>
+      <entry>
+        <string>master</string>
+        <com.pmease.quickbuild.stepsupport.StepRuntime>
+          <status>SUCCESSFUL</status>
+          <nodeAddress>5d94ceab5742:8810</nodeAddress>
+          <resources/>
+          <waitDuration>26</waitDuration>
+          <duration>60192</duration>
+        </com.pmease.quickbuild.stepsupport.StepRuntime>
+      </entry>
+      <entry>
+        <string>master&gt;sleep</string>
+        <com.pmease.quickbuild.stepsupport.StepRuntime>
+          <status>SUCCESSFUL</status>
+          <nodeAddress>5d94ceab5742:8810</nodeAddress>
+          <resources/>
+          <waitDuration>14</waitDuration>
+          <duration>60007</duration>
+        </com.pmease.quickbuild.stepsupport.StepRuntime>
+      </entry>
+    </stepRuntimes>
+    <repositoryRuntimes/>
+    <secretAwareVariableValues/>
+  </com.pmease.quickbuild.model.Build>
+  <com.pmease.quickbuild.model.Build>
+    <id>3</id>
+    <configuration>1</configuration>
+    <version>1.0.2</version>
+    <requester>1</requester>
+    <scheduled>false</scheduled>
+    <status>SUCCESSFUL</status>
+    <statusDate>2021-01-17T15:49:11.770Z</statusDate>
+    <beginDate>2021-01-17T15:48:11.362Z</beginDate>
+    <duration>60409</duration>
+    <waitDuration>32</waitDuration>
+    <stepRuntimes>
+      <entry>
+        <string>master</string>
+        <com.pmease.quickbuild.stepsupport.StepRuntime>
+          <status>SUCCESSFUL</status>
+          <nodeAddress>5d94ceab5742:8810</nodeAddress>
+          <resources/>
+          <waitDuration>32</waitDuration>
+          <duration>60252</duration>
+        </com.pmease.quickbuild.stepsupport.StepRuntime>
+      </entry>
+      <entry>
+        <string>master&gt;sleep</string>
+        <com.pmease.quickbuild.stepsupport.StepRuntime>
+          <status>SUCCESSFUL</status>
+          <nodeAddress>5d94ceab5742:8810</nodeAddress>
+          <resources/>
+          <waitDuration>16</waitDuration>
+          <duration>60043</duration>
+        </com.pmease.quickbuild.stepsupport.StepRuntime>
+      </entry>
+    </stepRuntimes>
+    <repositoryRuntimes/>
+    <secretAwareVariableValues/>
+  </com.pmease.quickbuild.model.Build>
+</list>
+"""
+
+
 @responses.activate
 def test_get_info():
     responses.add(
@@ -291,3 +370,22 @@ def test_get_dependents():
 
     response = QBClient('http://server').builds.get_dependents(1)
     assert 'list' in response
+
+
+@responses.activate
+def test_search():
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/builds.*'),
+        content_type='application/xml',
+        body=BUILD_SEARCH_XML,
+    )
+
+    response = QBClient('http://server').builds.search(
+        count=2,
+        configuration_id=1,
+        from_date='2021-01-14',
+        first=3,
+    )
+
+    len(response) == 2

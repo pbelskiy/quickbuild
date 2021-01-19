@@ -46,6 +46,7 @@ setup_args = dict(
 install_requires = [
     'aiohttp<=3.6.2',
     'requests<=2.24.0',
+    'xmltodict==0.12',
 ]
 
 setup(

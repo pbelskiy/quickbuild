@@ -1,4 +1,7 @@
 from datetime import datetime
+from typing import Dict, List, Optional, Union
+
+import xmltodict
 
 
 class Builds:
@@ -170,6 +173,124 @@ class Builds:
         response = self.quickbuild._request(
             'GET',
             'builds/{}/dependents'.format(build_id)
+        )
+
+        return response
+
+    def search(self,
+               count: int,
+               *,
+               configuration_id: Optional[int] = None,
+               recursive: Optional[bool] = False,
+               from_date: Optional[str] = None,
+               to_date: Optional[str] = None,
+               version: Optional[str] = None,
+               status: Optional[str] = None,
+               user_id: Optional[int] = None,
+               master_node: Optional[str] = None,
+               promoted_from_id: Optional[int] = None,
+               request_id: Optional[int] = None,
+               first: Optional[int] = None
+               ) -> List[dict]:
+        """
+        Search builds by criteria.
+
+        Args:
+            count (int):
+                Specify number of builds to return. This parameter is required.
+
+            configuration_id (Optional[int]):
+                This tells QuickBuild under which configuration id to search builds.
+                If not specified, all configurations will be searched.
+
+            recursive (Optional[bool]):
+                If set to true, QuickBuild will also search builds in all descendent
+                configurations of specified configuration. The value is assumed as
+                false if not specified.
+
+            from_date (Optional[str]):
+                In the format of yyyy-MM-dd, for example: 2009-11-12. If specified,
+                search builds generated after this date.
+
+            to_date (Optional[str]):
+                In the format of yyyy-MM-dd, for example: 2009-11-12. If specified,
+                search builds generated before this date.
+
+            version (Optional[str]):
+                Specify the build version to match. The character * can be used in
+                the version string to do wildcard match. If not specified, all
+                versions will be matched.
+
+            status (Optional[str]):
+                Status of the build to match. Valid build statuses are:
+                SUCCESSFUL, FAILED, RECOMMENDED, CANCELLED, RUNNING, TIMEOUT.
+                If left empty, any build status will be matched.
+
+            user_id (Optional[int]):
+                Match builds which is triggered by specified user.
+                If not specified, builds triggered by any user will be matched.
+
+            master_node (Optional[str]):
+                Match builds with master step running on specified node if specified.
+
+            promoted_from_id (Optional[int]):
+                Match builds promoted from specified build id if specified.
+
+            request_id (Optional[int]):
+                If specified, match builds with specified build request id.
+
+            first (Optional[int]):
+                Specify start position of search results. Position 0 is assumed
+                if this param is not specified.
+
+        Returns:
+            List[dict]: builds search result list.
+        """
+        def callback(response: str) -> List[dict]:
+            root = xmltodict.parse(response)
+            return root['list']['com.pmease.quickbuild.model.Build']
+
+        params = dict(
+            count=count,
+        )  # type: Dict[str, Union[str, int, bool]]
+
+        if configuration_id:
+            params['configuration_id'] = configuration_id
+
+        if recursive:
+            params['recursive'] = recursive
+
+        if from_date:
+            params['from_date'] = from_date
+
+        if to_date:
+            params['to_date'] = to_date
+
+        if version:
+            params['version'] = version
+
+        if status:
+            params['status'] = status
+
+        if user_id:
+            params['user_id'] = user_id
+
+        if master_node:
+            params['master_node'] = master_node
+
+        if promoted_from_id:
+            params['promoted_from_id'] = promoted_from_id
+
+        if request_id:
+            params['request_id'] = request_id
+
+        if first:
+            params['first'] = first
+
+        response = self.quickbuild._request(
+            'GET',
+            'builds',
+            params=params
         )
 
         return response
