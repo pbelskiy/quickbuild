@@ -3,7 +3,6 @@ import re
 
 from setuptools import setup, find_packages
 
-
 init_file_path = os.path.join(
     os.path.dirname(__file__),
     'quickbuild/__init__.py'
