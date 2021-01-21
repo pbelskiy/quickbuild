@@ -9,7 +9,7 @@ class Builds:
     def __init__(self, quickbuild):
         self.quickbuild = quickbuild
 
-    def get_info(self, build_id: int) -> str:
+    def get_info(self, build_id: int) -> dict:
         """
         Get build info as raw XML string.
 
@@ -17,9 +17,17 @@ class Builds:
             build_id (int): build id.
 
         Returns:
-            str: XML string.
+            dict: build properties.
         """
-        return self.quickbuild._request('GET', 'builds/{}'.format(build_id))
+        def callback(response: str) -> dict:
+            root = xmltodict.parse(response)
+            return root['com.pmease.quickbuild.model.Build']
+
+        return self.quickbuild._request(
+            'GET',
+            'builds/{}'.format(build_id),
+            callback
+        )
 
     def get_status(self, build_id: int) -> str:
         """

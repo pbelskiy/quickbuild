@@ -7,8 +7,7 @@ import responses
 
 from quickbuild import AsyncQBClient, QBClient, QBNotFoundError, QBProcessingError
 
-BUILD_INFO_XML = r"""
-<?xml version="1.0" encoding="UTF-8"?>
+BUILD_INFO_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 <com.pmease.quickbuild.model.Build>
   <id>1</id>
@@ -187,7 +186,7 @@ def test_get_info():
     )
 
     response = QBClient('http://server').builds.get_info(1)
-    assert '<id>1</id>' in response
+    assert response['id'] == '1'
 
 
 @responses.activate
