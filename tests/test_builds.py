@@ -388,3 +388,26 @@ def test_search():
     )
 
     len(response) == 2
+
+
+@responses.activate
+def test_count():
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/builds/count'),
+        content_type='text/plain',
+        body='5',
+    )
+
+    response = QBClient('http://server').builds.count(
+        configuration_id=1,
+        recursive=False,
+        from_date='2021-01-20',
+        to_date='2021-01-22',
+        version='*',
+        status='SUCCESSFUL',
+        user_id=2,
+        promoted_from_id=1,
+    )
+
+    assert response == 5

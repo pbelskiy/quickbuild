@@ -302,3 +302,100 @@ class Builds:
         )
 
         return response
+
+    def count(self,
+              *,
+              configuration_id: Optional[int] = None,
+              recursive: Optional[bool] = False,
+              from_date: Optional[str] = None,
+              to_date: Optional[str] = None,
+              version: Optional[str] = None,
+              status: Optional[str] = None,
+              user_id: Optional[int] = None,
+              promoted_from_id: Optional[int] = None,
+              request_id: Optional[int] = None
+              ) -> int:
+        """
+        Get builds count by criteria.
+
+        Args:
+            configuration_id (Optional[int]):
+                This tells QuickBuild under which configuration id to search builds.
+                If not specified, all configurations will be searched.
+
+            recursive (Optional[bool]):
+                If set to true, QuickBuild will also search builds in all descendent
+                configurations of specified configuration. The value is assumed as
+                false if not specified.
+
+            from_date (Optional[str]):
+                In the format of yyyy-MM-dd, for example: 2009-11-12. If specified,
+                search builds generated after this date.
+
+            to_date (Optional[str]):
+                In the format of yyyy-MM-dd, for example: 2009-11-12. If specified,
+                search builds generated before this date.
+
+            version (Optional[str]):
+                Specify the build version to match. The character * can be used in
+                the version string to do wildcard match. If not specified, all
+                versions will be matched.
+
+            status (Optional[str]):
+                Status of the build to match. Valid build statuses are:
+                SUCCESSFUL, FAILED, RECOMMENDED, CANCELLED, RUNNING, TIMEOUT.
+                If left empty, any build status will be matched.
+
+            user_id (Optional[int]):
+                Match builds which is triggered by specified user.
+                If not specified, builds triggered by any user will be matched.
+
+            promoted_from_id (Optional[int]):
+                Match builds promoted from specified build id if specified.
+
+            request_id (Optional[int]):
+                If specified, match builds with specified build request id.
+
+        Returns:
+            int: builds count.
+        """
+        def callback(response: str) -> int:
+            return int(response)
+
+        params = dict()  # type: Dict[str, Union[str, int, bool]]
+
+        if configuration_id:
+            params['configuration_id'] = configuration_id
+
+        if recursive:
+            params['recursive'] = recursive
+
+        if from_date:
+            params['from_date'] = from_date
+
+        if to_date:
+            params['to_date'] = to_date
+
+        if version:
+            params['version'] = version
+
+        if status:
+            params['status'] = status
+
+        if user_id:
+            params['user_id'] = user_id
+
+        if promoted_from_id:
+            params['promoted_from_id'] = promoted_from_id
+
+        if request_id:
+            params['request_id'] = request_id
+
+        response = self.quickbuild._request(
+            'GET',
+            'builds/count',
+            callback,
+            params=params,
+        )
+
+        return response
