@@ -9,17 +9,24 @@ class Builds:
     def __init__(self, quickbuild):
         self.quickbuild = quickbuild
 
-    def get_info(self, build_id: int) -> dict:
+    def get_info(self, build_id: int, as_xml: bool = False) -> Union[str, dict]:
         """
         Get build info as raw XML string.
 
         Args:
             build_id (int): build id.
 
+            as_xml (Optional[bool]):
+                By default returns dict representation of a build, original XML
+                representation might be usefull to update or create new build.
+
         Returns:
-            dict: build properties.
+            dict: build information.
         """
-        def callback(response: str) -> dict:
+        def callback(response: str) -> Union[str, dict]:
+            if as_xml:
+                return response
+
             root = xmltodict.parse(response)
             return root['com.pmease.quickbuild.model.Build']
 
@@ -105,7 +112,6 @@ class Builds:
         Returns:
             str: request id. Example: fd2339a1-bc71-429d-b4ee-0ac650c342fe
         """
-
         response = self.quickbuild._request(
             'GET',
             'builds/{}/request_id'.format(build_id)
@@ -123,7 +129,6 @@ class Builds:
         Returns:
             str: builds steps as XML document
         """
-
         response = self.quickbuild._request(
             'GET',
             'builds/{}/steps'.format(build_id)
@@ -141,7 +146,6 @@ class Builds:
         Returns:
             str: builds repositories as XML document
         """
-
         response = self.quickbuild._request(
             'GET',
             'builds/{}/repositories'.format(build_id)
@@ -159,7 +163,6 @@ class Builds:
         Returns:
             str: builds dependencies as XML document
         """
-
         response = self.quickbuild._request(
             'GET',
             'builds/{}/dependencies'.format(build_id)
@@ -177,7 +180,6 @@ class Builds:
         Returns:
             str: builds dependents as XML document
         """
-
         response = self.quickbuild._request(
             'GET',
             'builds/{}/dependents'.format(build_id)
@@ -396,6 +398,32 @@ class Builds:
             'builds/count',
             callback,
             params=params,
+        )
+
+        return response
+
+    def update(self, configuration: str) -> int:
+        """
+        Update build using XML configuration.
+
+        Please note that the configuration element denotes id of the belonging
+        configuration. Normally you do not need to create the XML from scratch,
+        you may retrieve XML representation of the build, modify certain parts
+        of the XML and post back to above url.
+
+        Args:
+            config (str): XML document.
+
+        Returns:
+            int: build id being updated.
+        """
+        def callback(response: str) -> int:
+            return int(response)
+
+        response = self.quickbuild._request(
+            'POST',
+            'builds',
+            callback
         )
 
         return response

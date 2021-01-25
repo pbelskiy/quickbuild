@@ -188,6 +188,9 @@ def test_get_info():
     response = QBClient('http://server').builds.get_info(1)
     assert response['id'] == '1'
 
+    response = QBClient('http://server').builds.get_info(1, as_xml=True)
+    assert isinstance(response, str)
+
 
 @responses.activate
 def test_get_status():
@@ -410,4 +413,17 @@ def test_count():
         promoted_from_id=1,
     )
 
+    assert response == 5
+
+
+@responses.activate
+def test_update():
+    responses.add(
+        responses.POST,
+        re.compile(r'.*/rest/builds'),
+        content_type='text/plain',
+        body='5',
+    )
+
+    response = QBClient('http://server').builds.update(BUILD_INFO_XML)
     assert response == 5
