@@ -5,7 +5,12 @@ from typing import Any, Callable, NamedTuple, Optional
 
 from quickbuild.endpoints.builds import Builds
 from quickbuild.endpoints.users import Users
-from quickbuild.exceptions import QBError, QBNotFoundError, QBProcessingError
+from quickbuild.exceptions import (
+    QBError,
+    QBForbidden,
+    QBNotFoundError,
+    QBProcessingError,
+)
 
 Response = namedtuple('Response', ['status', 'body'])
 
@@ -27,6 +32,9 @@ class QuickBuild(ABC):
 
         if response.status == HTTPStatus.NOT_FOUND:
             raise QBNotFoundError(response.body)
+
+        if response.status == HTTPStatus.FORBIDDEN:
+            raise QBForbidden(response.body)
 
         if response.status != HTTPStatus.OK:
             raise QBError(response.body)
