@@ -447,3 +447,18 @@ class Builds:
             int: build id of the the newly created build.
         """
         return self.update(configuration)
+
+    def delete(self, build_id: int) -> None:
+        """
+        Delete build.
+
+        Args:
+            build_id (int): build id.
+
+        Returns:
+            None
+        """
+        self.quickbuild._request(
+            'DELETE',
+            'builds/{}'.format(build_id)
+        )
