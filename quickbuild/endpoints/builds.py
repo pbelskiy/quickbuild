@@ -427,3 +427,23 @@ class Builds:
         )
 
         return response
+
+    def create(self, configuration: str) -> int:
+        """
+        Create a build using XML configuration.
+
+        Please note that:
+        - The posted xml should NOT contain the id element; otherwise, QuickBuild
+          will treat the post as an updating to the build with that id.
+        - The configuration element denotes id of the belonging configuration.
+          Normally you do not need to create the XML from scratch: you may retrieve
+          XML representation of a templating build, remove the id element, modify
+          certain parts and post back to above url.
+
+        Args:
+            config (str): XML document.
+
+        Returns:
+            int: build id of the the newly created build.
+        """
+        return self.update(configuration)

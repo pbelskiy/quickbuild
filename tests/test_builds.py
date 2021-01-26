@@ -427,3 +427,16 @@ def test_update():
 
     response = QBClient('http://server').builds.update(BUILD_INFO_XML)
     assert response == 5
+
+
+@responses.activate
+def test_create():
+    responses.add(
+        responses.POST,
+        re.compile(r'.*/rest/builds'),
+        content_type='text/plain',
+        body='5',
+    )
+
+    response = QBClient('http://server').builds.create(BUILD_INFO_XML)
+    assert response == 5
