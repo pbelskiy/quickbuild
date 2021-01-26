@@ -4,6 +4,7 @@ from http import HTTPStatus
 from typing import Any, Callable, NamedTuple, Optional
 
 from quickbuild.endpoints.builds import Builds
+from quickbuild.endpoints.users import Users
 from quickbuild.exceptions import QBError, QBNotFoundError, QBProcessingError
 
 Response = namedtuple('Response', ['status', 'body'])
@@ -17,6 +18,7 @@ class QuickBuild(ABC):
 
     def __init__(self):
         self.builds = Builds(self)
+        self.users = Users(self)
 
     @staticmethod
     def _callback(response: Response, fcb: Optional[Callable] = None) -> str:

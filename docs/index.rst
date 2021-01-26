@@ -21,6 +21,12 @@ Builds
 .. autoclass:: quickbuild.endpoints.builds.Builds
     :members:
 
+Users
+~~~~~
+
+.. autoclass:: quickbuild.endpoints.users.Users
+    :members:
+
 Exceptions
 ~~~~~~~~~~
 
