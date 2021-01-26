@@ -440,3 +440,14 @@ def test_create():
 
     response = QBClient('http://server').builds.create(BUILD_INFO_XML)
     assert response == 5
+
+
+@responses.activate
+def test_delete():
+    responses.add(
+        responses.DELETE,
+        re.compile(r'.*/rest/builds'),
+        content_type='text/plain',
+    )
+
+    QBClient('http://server').builds.delete(5)
