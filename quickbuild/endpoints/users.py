@@ -27,3 +27,23 @@ class Users:
             'users',
             callback
         )
+
+    def get_info(self, user_id: int) -> dict:
+        """
+        Get information about specified user.
+
+        Args:
+            user_id (int): user identifier.
+
+        Returns:
+            dict: information about user.
+        """
+        def callback(response: str) -> dict:
+            root = xmltodict.parse(response)
+            return root['com.pmease.quickbuild.model.User']
+
+        return self.quickbuild._request(
+            'GET',
+            'users/{}'.format(user_id),
+            callback
+        )
