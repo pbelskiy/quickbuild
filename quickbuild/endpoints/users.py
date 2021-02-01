@@ -47,3 +47,15 @@ class Users:
             'users/{}'.format(user_id),
             callback
         )
+
+    def get_display_name(self, user_id: int) -> str:
+        """
+        Get display name for specified user.
+
+        Returns:
+            str: user name.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'users/{}/display_name'.format(user_id)
+        )

@@ -59,3 +59,16 @@ def test_get_info():
     response = QBClient('http://server').users.get_info(1)
     assert response['id'] == '1'
     assert response['name'] == 'admin'
+
+
+@responses.activate
+def test_get_display_name():
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/users/1/display_name'),
+        content_type='application/xml',
+        body='admin',
+    )
+
+    response = QBClient('http://server').users.get_display_name(1)
+    assert response == 'admin'
