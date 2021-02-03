@@ -423,7 +423,8 @@ class Builds:
         response = self.quickbuild._request(
             'POST',
             'builds',
-            callback
+            callback,
+            data=configuration,
         )
 
         return response
