@@ -412,7 +412,7 @@ class Builds:
         of the XML and post back to above url.
 
         Args:
-            config (str): XML document.
+            configuration (str): XML document.
 
         Returns:
             int: build id being updated.
@@ -442,7 +442,7 @@ class Builds:
           certain parts and post back to above url.
 
         Args:
-            config (str): XML document.
+            configuration (str): XML document.
 
         Returns:
             int: build id of the the newly created build.
