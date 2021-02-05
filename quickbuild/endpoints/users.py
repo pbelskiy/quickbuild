@@ -101,3 +101,18 @@ class Users:
             int: id of the newly created user.
         """
         return self.update(configuration)
+
+    def delete(self, user_id: int) -> None:
+        """
+        Delete user by user id.
+
+        Args:
+            user_id (int): user identifier.
+
+        Returns:
+            None
+        """
+        self.quickbuild._request(
+            'DELETE',
+            'users/{}'.format(user_id),
+        )

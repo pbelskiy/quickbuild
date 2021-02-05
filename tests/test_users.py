@@ -96,3 +96,13 @@ def test_create():
 
     response = QBClient('http://server').users.create(USER_INFO_XML)
     assert response == 1
+
+
+@responses.activate
+def test_delete():
+    responses.add(
+        responses.DELETE,
+        re.compile(r'.*/rest/users')
+    )
+
+    QBClient('http://server').users.delete(1)
