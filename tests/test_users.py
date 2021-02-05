@@ -84,3 +84,15 @@ def test_update():
 
     response = QBClient('http://server').users.update(USER_INFO_XML)
     assert response == 1
+
+
+@responses.activate
+def test_create():
+    responses.add(
+        responses.POST,
+        re.compile(r'.*/rest/users'),
+        body='1',
+    )
+
+    response = QBClient('http://server').users.create(USER_INFO_XML)
+    assert response == 1

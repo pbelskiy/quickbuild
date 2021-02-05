@@ -83,3 +83,21 @@ class Users:
             callback,
             data=configuration,
         )
+
+    def create(self, configuration: str) -> int:
+        """
+        Create a new user using XML configuration.
+
+        Please note that the posted XML should NOT contain the id element;
+        otherwise, QuickBuild will treat the post as an update to the user with
+        that id. Normally you do not need to create the XML from scratch: you may
+        retrieve XML representation of a templating user using ``get_info()``,
+        remove the id element, modify certain parts and post back to above url.
+
+        Args:
+            configuration (str): XML document.
+
+        Returns:
+            int: id of the newly created user.
+        """
+        return self.update(configuration)
