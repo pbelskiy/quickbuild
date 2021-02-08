@@ -4,6 +4,7 @@ from http import HTTPStatus
 from typing import Any, Callable, NamedTuple, Optional
 
 from quickbuild.endpoints.builds import Builds
+from quickbuild.endpoints.tokens import Tokens
 from quickbuild.endpoints.users import Users
 from quickbuild.exceptions import (
     QBError,
@@ -24,6 +25,7 @@ class QuickBuild(ABC):
     def __init__(self):
         self.builds = Builds(self)
         self.users = Users(self)
+        self.tokens = Tokens(self)
 
     @staticmethod
     def _callback(response: Response, fcb: Optional[Callable] = None) -> str:
