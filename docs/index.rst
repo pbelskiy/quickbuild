@@ -15,6 +15,12 @@ Core
 .. automodule:: quickbuild.core
     :members:
 
+Audits
+~~~~~~
+
+.. autoclass:: quickbuild.endpoints.audits.Audits
+    :members:
+
 Builds
 ~~~~~~
 

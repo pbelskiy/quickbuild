@@ -3,6 +3,7 @@ from collections import namedtuple
 from http import HTTPStatus
 from typing import Any, Callable, NamedTuple, Optional
 
+from quickbuild.endpoints.audits import Audits
 from quickbuild.endpoints.builds import Builds
 from quickbuild.endpoints.users import Users
 from quickbuild.exceptions import (
@@ -22,6 +23,7 @@ ServerVersion = NamedTuple(
 class QuickBuild(ABC):
 
     def __init__(self):
+        self.audits = Audits(self)
         self.builds = Builds(self)
         self.users = Users(self)
 
