@@ -49,13 +49,14 @@ class Tokens:
 
         return response
 
-    def get_token_and_agent_details(self, agent_address: str) -> List[dict]:
+    def get(self, agent_address: str = None) -> List[dict]:
         """
         Get token value and latest used information of agents.
 
         Args:
-            agent_address (str): Build agent address, eg. my-agent:8811.
-            If param address is set to None, details of all agents will be returned.
+            agent_address (Optional[str]):
+                Build agent address, eg. my-agent:8811.
+                If param address is set to None, details of all agents will be returned.
 
         Returns:
             List[dict]: List of token and agent details

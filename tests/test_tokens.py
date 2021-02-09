@@ -119,7 +119,7 @@ def test_token_and_agent_details():
         body=TOKEN_XML
     )
 
-    response = QBClient('http://server').tokens.get_token_and_agent_details('quickbuild-agent-192-168-1-100:8811')
+    response = QBClient('http://server').tokens.get('quickbuild-agent-192-168-1-100:8811')
     assert len(response) == 1
     assert response[0]['id'] == '120204'
 
@@ -133,7 +133,7 @@ def test_tokens_and_agent_details():
         body=TOKENS_XML,
     )
 
-    response = QBClient('http://server').tokens.get_token_and_agent_details(None)
+    response = QBClient('http://server').tokens.get()
     assert len(response) == 3
     assert response[0]['id'] == '117554'
     assert response[1]['id'] == '115672'
@@ -150,7 +150,7 @@ def test_tokens_and_agent_details_with_unknown_address():
         match_querystring=True,
     )
 
-    response = QBClient('http://server').tokens.get_token_and_agent_details('unknown')
+    response = QBClient('http://server').tokens.get('unknown')
     assert len(response) == 0
 
 
