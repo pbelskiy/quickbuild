@@ -114,10 +114,9 @@ def test_unauthorize():
 def test_token_and_agent_details():
     responses.add(
         responses.GET,
-        re.compile(r'.*/rest/tokens\?address=quickbuild-agent-192-168-1-100:8811'),
+        re.compile(r'.*/rest/tokens\?address=quickbuild-agent-192-168-1-100%3A8811'),
         content_type='application/xml',
-        body=TOKEN_XML,
-        match_querystring=True,
+        body=TOKEN_XML
     )
 
     response = QBClient('http://server').tokens.get_token_and_agent_details('quickbuild-agent-192-168-1-100:8811')

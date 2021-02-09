@@ -24,7 +24,8 @@ class Tokens:
         """
         response = self.quickbuild._request(
             'GET',
-            'tokens/authorize?ip={}&port={}'.format(agent_ip, agent_port)
+            'tokens/authorize',
+            params=dict(ip=agent_ip, port=agent_port),
         )
 
         return response
@@ -42,7 +43,8 @@ class Tokens:
         """
         response = self.quickbuild._request(
             'GET',
-            'tokens/unauthorize?ip={}&port={}'.format(agent_ip, agent_port)
+            'tokens/unauthorize',
+            params=dict(ip=agent_ip, port=agent_port),
         )
 
         return response
@@ -68,10 +70,11 @@ class Tokens:
                     tokens = [tokens]
             return tokens
 
-        agent_address_query_string = '?address={}'.format(agent_address) if agent_address else ''
+        params_agent_address = dict(address=agent_address) if agent_address else []
 
         return self.quickbuild._request(
             'GET',
-            'tokens{}'.format(agent_address_query_string),
-            callback
+            'tokens',
+            callback,
+            params=params_agent_address,
         )
