@@ -152,6 +152,7 @@ def test_tokens_and_agent_details_with_unknown_address():
 
     response = QBClient('http://server').tokens.get('unknown')
     assert len(response) == 0
+    assert response == []
 
 
 @pytest.mark.asyncio
