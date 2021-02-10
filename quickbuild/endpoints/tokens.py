@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 import xmltodict
 
@@ -11,45 +11,7 @@ class Tokens:
     def __init__(self, quickbuild):
         self.quickbuild = quickbuild
 
-    def authorize(self, agent_ip: str, agent_port: int = 8811) -> str:
-        """
-        Authorize a build agent to join the build grid.
-
-        Args:
-            agent_ip (str): The build agent IP address.
-            agent_port (int): The build agent port.
-
-        Returns:
-            str: identifier of the newly created token for the build agent
-        """
-        response = self.quickbuild._request(
-            'GET',
-            'tokens/authorize',
-            params=dict(ip=agent_ip, port=agent_port),
-        )
-
-        return response
-
-    def unauthorize(self, agent_ip: str, agent_port: int = 8811) -> str:
-        """
-        Unauthorize an already authorized build agent.
-
-        Args:
-            agent_ip (str): The build agent IP address.
-            agent_port (int): The build agent port.
-
-        Returns:
-            str: identifier of the removed token representing the build agent.
-        """
-        response = self.quickbuild._request(
-            'GET',
-            'tokens/unauthorize',
-            params=dict(ip=agent_ip, port=agent_port),
-        )
-
-        return response
-
-    def get(self, agent_address: str = None) -> List[dict]:
+    def get(self, agent_address: Optional[str]) -> List[dict]:
         """
         Get token value and latest used information of agents.
 
@@ -79,3 +41,41 @@ class Tokens:
             callback,
             params=params_agent_address,
         )
+
+    def authorize(self, agent_ip: str, agent_port: int = 8811) -> str:
+        """
+        Authorize a build agent to join the build grid.
+
+        Args:
+            agent_ip (str): The build agent IP address.
+            agent_port (int): The build agent port (default: 8811).
+
+        Returns:
+            str: identifier of the newly created token for the build agent
+        """
+        response = self.quickbuild._request(
+            'GET',
+            'tokens/authorize',
+            params=dict(ip=agent_ip, port=agent_port),
+        )
+
+        return response
+
+    def unauthorize(self, agent_ip: str, agent_port: int = 8811) -> str:
+        """
+        Unauthorize an already authorized build agent.
+
+        Args:
+            agent_ip (str): The build agent IP address.
+            agent_port (int): The build agent port (default: 8811).
+
+        Returns:
+            str: identifier of the removed token representing the build agent.
+        """
+        response = self.quickbuild._request(
+            'GET',
+            'tokens/unauthorize',
+            params=dict(ip=agent_ip, port=agent_port),
+        )
+
+        return response
