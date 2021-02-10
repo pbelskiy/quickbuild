@@ -33,7 +33,7 @@ class Tokens:
                     tokens = [tokens]
             return tokens
 
-        params_agent_address = dict(address=agent_address) if agent_address else []
+        params_agent_address = dict(address=agent_address) if agent_address else {}
 
         return self.quickbuild._request(
             'GET',
