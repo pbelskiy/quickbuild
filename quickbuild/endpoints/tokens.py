@@ -11,7 +11,7 @@ class Tokens:
     def __init__(self, quickbuild):
         self.quickbuild = quickbuild
 
-    def get(self, agent_address: Optional[str]) -> List[dict]:
+    def get(self, agent_address: Optional[str] = None) -> List[dict]:
         """
         Get token value and latest used information of agents.
 
