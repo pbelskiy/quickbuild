@@ -21,16 +21,16 @@ Builds
 .. autoclass:: quickbuild.endpoints.builds.Builds
     :members:
 
+Tokens
+~~~~~~
+
+.. autoclass:: quickbuild.endpoints.tokens.Tokens
+    :members:
+
 Users
 ~~~~~
 
 .. autoclass:: quickbuild.endpoints.users.Users
-    :members:
-
-Tokens
-~~~~~
-
-.. autoclass:: quickbuild.endpoints.tokens.Tokens
     :members:
 
 Exceptions

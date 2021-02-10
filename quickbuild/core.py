@@ -24,8 +24,8 @@ class QuickBuild(ABC):
 
     def __init__(self):
         self.builds = Builds(self)
-        self.users = Users(self)
         self.tokens = Tokens(self)
+        self.users = Users(self)
 
     @staticmethod
     def _callback(response: Response, fcb: Optional[Callable] = None) -> str:
