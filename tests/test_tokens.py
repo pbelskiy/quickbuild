@@ -6,10 +6,6 @@ import responses
 
 from quickbuild import AsyncQBClient, QBClient
 
-
-REGEX_IP = '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}'
-REGEX_PORT = '\d+'
-
 TOKEN_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 <list>
@@ -78,17 +74,17 @@ def test_authorize():
 
     responses.add(
         responses.GET,
-        re.compile(r'.*/rest/tokens/authorize\?ip={}&port={}'.format(REGEX_IP, REGEX_PORT)),
+        re.compile(r'.*/rest/tokens/authorize'),
         content_type='text/plain',
         body=RESPONSE_DATA,
         match_querystring=True,
     )
 
     response = QBClient('http://server').tokens.authorize('192.168.1.100', 8811)
-    assert response == '120123'
+    assert response == RESPONSE_DATA
 
     response = QBClient('http://server').tokens.authorize('192.168.1.100')
-    assert response == '120123'
+    assert response == RESPONSE_DATA
 
 
 @responses.activate
@@ -97,17 +93,17 @@ def test_unauthorize():
 
     responses.add(
         responses.GET,
-        re.compile(r'.*/rest/tokens/unauthorize\?ip={}&port={}'.format(REGEX_IP, REGEX_PORT)),
+        re.compile(r'.*/rest/tokens/unauthorize'),
         content_type='text/plain',
         body=RESPONSE_DATA,
         match_querystring=True,
     )
 
     response = QBClient('http://server').tokens.unauthorize('192.168.1.100', 8811)
-    assert response == '120123'
+    assert response == RESPONSE_DATA
 
     response = QBClient('http://server').tokens.unauthorize('192.168.1.100')
-    assert response == '120123'
+    assert response == RESPONSE_DATA
 
 
 @responses.activate
@@ -162,12 +158,12 @@ async def test_authorize_async(aiohttp_mock):
     client = AsyncQBClient('http://server')
     try:
         aiohttp_mock.get(
-            re.compile(r'.*/rest/tokens/authorize\?ip={}&port={}'.format(REGEX_IP, REGEX_PORT)),
+            re.compile(r'.*/rest/tokens/authorize'),
             body=RESPONSE_DATA,
         )
 
         response = await client.tokens.authorize('192.168.1.100')
-        assert response == '120123'
+        assert response == RESPONSE_DATA
     finally:
         await client.close()
 
@@ -179,11 +175,11 @@ async def test_unauthorize_async(aiohttp_mock):
     client = AsyncQBClient('http://server')
     try:
         aiohttp_mock.get(
-            re.compile(r'.*/rest/tokens/unauthorize\?ip={}&port={}'.format(REGEX_IP, REGEX_PORT)),
+            re.compile(r'.*/rest/tokens/unauthorize'),
             body=RESPONSE_DATA,
         )
 
         response = await client.tokens.unauthorize('192.168.1.100')
-        assert response == '120123'
+        assert response == RESPONSE_DATA
     finally:
         await client.close()

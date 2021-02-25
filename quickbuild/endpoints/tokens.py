@@ -4,9 +4,6 @@ import xmltodict
 
 
 class Tokens:
-    """With tokens, one can authorize/unauthorize agents, or access agent
-    details including token value and latest usage information.
-    """
 
     def __init__(self, quickbuild):
         self.quickbuild = quickbuild
