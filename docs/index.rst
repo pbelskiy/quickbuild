@@ -27,6 +27,12 @@ Builds
 .. autoclass:: quickbuild.endpoints.builds.Builds
     :members:
 
+Tokens
+~~~~~~
+
+.. autoclass:: quickbuild.endpoints.tokens.Tokens
+    :members:
+
 Users
 ~~~~~
 

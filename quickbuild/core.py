@@ -5,6 +5,7 @@ from typing import Any, Callable, NamedTuple, Optional
 
 from quickbuild.endpoints.audits import Audits
 from quickbuild.endpoints.builds import Builds
+from quickbuild.endpoints.tokens import Tokens
 from quickbuild.endpoints.users import Users
 from quickbuild.exceptions import (
     QBError,
@@ -25,6 +26,7 @@ class QuickBuild(ABC):
     def __init__(self):
         self.audits = Audits(self)
         self.builds = Builds(self)
+        self.tokens = Tokens(self)
         self.users = Users(self)
 
     @staticmethod
