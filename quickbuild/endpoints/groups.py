@@ -27,3 +27,23 @@ class Groups:
             'groups',
             callback
         )
+
+    def get_info(self, group_id: int) -> dict:
+        """
+        Get information about specified group.
+
+        Args:
+            group_id (int): group identifier.
+
+        Returns:
+            dict: group information.
+        """
+        def callback(response: str) -> dict:
+            root = xmltodict.parse(response)
+            return root['com.pmease.quickbuild.model.Group']
+
+        return self.quickbuild._request(
+            'GET',
+            'groups/{}'.format(group_id),
+            callback
+        )
