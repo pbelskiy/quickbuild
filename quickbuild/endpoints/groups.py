@@ -47,3 +47,26 @@ class Groups:
             'groups/{}'.format(group_id),
             callback
         )
+
+    def update(self, configuration: str) -> int:
+        """
+        Update a group using XML configuration.
+
+        Normally you do not need to create the XML from scratch: you may retrieve
+        XML representation of the group using `get_info()` method, modify certain
+        parts of the XML and post back to above url.
+
+        Args:
+            configuration (str): XML document.
+
+        Returns:
+            int: group id being updated.
+        """
+        def callback(response: str) -> int:
+            return int(response)
+
+        return self.quickbuild._request(
+            'POST',
+            'groups',
+            callback
+        )

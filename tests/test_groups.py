@@ -70,3 +70,16 @@ def test_get_info():
 
     response = QBClient('http://server').groups.get_info(1)
     assert response['id'] == '1'
+
+
+@responses.activate
+def test_update():
+    responses.add(
+        responses.POST,
+        re.compile(r'.*/rest/groups'),
+        content_type='text/plain',
+        body='1',
+    )
+
+    response = QBClient('http://server').groups.update(GROUP_INFO_XML)
+    assert response == 1
