@@ -70,3 +70,22 @@ class Groups:
             'groups',
             callback
         )
+
+    def create(self, configuration: str) -> int:
+        """
+        Create a group using XML configuration.
+
+        Please note that the posted XML should NOT contain the id element;
+        otherwise, QuickBuild will treat the post as an updating to the group
+        with that id. Normally you do not need to create the XML from scratch:
+        you may retrieve XML representation of a templating group using `get_info()`
+        method, remove the id element, modify certain parts and post back to
+        above url.
+
+        Args:
+            configuration (str): XML document.
+
+        Returns:
+            int: group id being created.
+        """
+        return self.update(configuration)

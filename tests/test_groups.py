@@ -83,3 +83,16 @@ def test_update():
 
     response = QBClient('http://server').groups.update(GROUP_INFO_XML)
     assert response == 1
+
+
+@responses.activate
+def test_create():
+    responses.add(
+        responses.POST,
+        re.compile(r'.*/rest/groups'),
+        content_type='text/plain',
+        body='1',
+    )
+
+    response = QBClient('http://server').groups.create(GROUP_INFO_XML)
+    assert response == 1
