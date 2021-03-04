@@ -96,3 +96,13 @@ def test_create():
 
     response = QBClient('http://server').groups.create(GROUP_INFO_XML)
     assert response == 1
+
+
+@responses.activate
+def test_delete():
+    responses.add(
+        responses.DELETE,
+        re.compile(r'.*/rest/groups/(\d+)'),
+    )
+
+    QBClient('http://server').groups.delete(1)

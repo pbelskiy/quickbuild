@@ -89,3 +89,18 @@ class Groups:
             int: group id being created.
         """
         return self.update(configuration)
+
+    def delete(self, group_id: int) -> None:
+        """
+        Delete specified group.
+
+        Args:
+            group_id (int): group identifier.
+
+        Returns:
+            int: group id being created.
+        """
+        return self.quickbuild._request(
+            'DELETE',
+            'groups/{}'.format(group_id),
+        )
