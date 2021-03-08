@@ -134,3 +134,49 @@ async def test_async_client_retry_exception(aiohttp_mock):
         await client.get_version()
 
     await client.close()
+
+
+@responses.activate
+def test_pause_success():
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/pause'),
+        body='paused'
+    )
+
+    QBClient('http://server').pause()
+
+
+@responses.activate
+def test_pause_error():
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/pause'),
+        body='error'
+    )
+
+    with pytest.raises(QBError):
+        QBClient('http://server').pause()
+
+
+@responses.activate
+def test_resume_success():
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/resume'),
+        body='resumed'
+    )
+
+    QBClient('http://server').resume()
+
+
+@responses.activate
+def test_resume_error():
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/resume'),
+        body='paused'
+    )
+
+    with pytest.raises(QBError):
+        QBClient('http://server').resume()

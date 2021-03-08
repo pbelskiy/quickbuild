@@ -83,3 +83,29 @@ class QuickBuild(ABC):
             return ServerVersion(*map(int, response.split('.')))
 
         return self._request('GET', 'version', callback)
+
+    def pause(self) -> None:
+        """
+        Pause system.
+
+        Raises:
+            QBError: if system haven`t paused.
+        """
+        def callback(response: str) -> None:
+            if response != 'paused':
+                raise QBError(response)
+
+        return self._request('GET', 'pause', callback)
+
+    def resume(self) -> None:
+        """
+        Resumed system.
+
+        Raises:
+            QBError: if system haven`t resumed.
+        """
+        def callback(response: str) -> None:
+            if response != 'resumed':
+                raise QBError(response)
+
+        return self._request('GET', 'resume', callback)
