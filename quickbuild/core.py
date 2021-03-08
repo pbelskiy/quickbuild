@@ -3,6 +3,8 @@ from collections import namedtuple
 from http import HTTPStatus
 from typing import Any, Callable, NamedTuple, Optional
 
+import xmltodict
+
 from quickbuild.endpoints.audits import Audits
 from quickbuild.endpoints.builds import Builds
 from quickbuild.endpoints.groups import Groups
@@ -109,3 +111,19 @@ class QuickBuild(ABC):
                 raise QBError(response)
 
         return self._request('GET', 'resume', callback)
+
+    def get_pause_information(self) -> None:
+        """
+        Get system pause information including pause reason.
+
+        Returns:
+            ServerVersion: NamedTuple with major, minor and patch version.
+
+        Raises:
+            QBProcessingError: will be raised if system is not paused.
+        """
+        def callback(response: str) -> None:
+            root = xmltodict.parse(response)
+            return root['com.pmease.quickbuild.setting.system.PauseSystem']
+
+        return self._request('GET', 'paused', callback)

@@ -1,10 +1,12 @@
 import re
 
+from http import HTTPStatus
+
 import aiohttp
 import pytest
 import responses
 
-from quickbuild import AsyncQBClient, QBClient, QBError
+from quickbuild import AsyncQBClient, QBClient, QBError, QBProcessingError
 
 GET_VERSION_DATA = '6.0.9'
 
@@ -180,3 +182,34 @@ def test_resume_error():
 
     with pytest.raises(QBError):
         QBClient('http://server').resume()
+
+
+@responses.activate
+def test_get_pause_information_success():
+    BODY = r"""<?xml version="1.0" encoding="UTF-8"?>
+
+    <com.pmease.quickbuild.setting.system.PauseSystem>
+      <user>admin</user>
+    </com.pmease.quickbuild.setting.system.PauseSystem>
+    """
+
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/paused'),
+        body=BODY
+    )
+
+    info = QBClient('http://server').get_pause_information()
+    assert info['user'] == 'admin'
+
+
+@responses.activate
+def test_get_pause_information_error():
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/paused'),
+        status=HTTPStatus.NO_CONTENT,
+    )
+
+    with pytest.raises(QBProcessingError):
+        QBClient('http://server').get_pause_information()
