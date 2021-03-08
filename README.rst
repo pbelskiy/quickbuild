@@ -65,6 +65,26 @@ With async client:
         loop.run_until_complete(client.close())
         loop.close()
 
+Development
+-----------
+
+It's possible to run QuickBuild community edition locally using docker:
+
+Build locally:
+
+.. code:: shell
+
+    docker build . -t quickbuild:10
+    docker run -d -p 8810:8810 quickbuild:10
+
+Or using existed images:
+
+.. code:: shell
+
+    docker run --restart always --name qb10 -d -p 8810:8810 pbelskiy/quickbuild:10
+
+Then open http://localhost:8810/
+
 Testing
 -------
 
