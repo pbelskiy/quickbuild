@@ -213,3 +213,33 @@ def test_get_pause_information_error():
 
     with pytest.raises(QBProcessingError):
         QBClient('http://server').get_pause_information()
+
+
+@responses.activate
+def test_backup():
+    CONFIGURATION = r"""
+    <com.pmease.quickbuild.web.page.administration.BackupNowOption>
+      <!-- Destination file for the backup -->
+      <backupTo>/path/to/backup.zip</backupTo>
+
+      <!-- Whether or not to exclude builds in the backup -->
+      <excludeBuilds>false</excludeBuilds>
+
+      <!-- Whether or not to exclude measurement data in the backup -->
+      <excludeMeasurements>false</excludeMeasurements>
+
+      <!-- Whether or not to exclude audits in the backup -->
+      <excludeAudits>false</excludeAudits>
+
+      <!-- Whether or not to clear passwords in the backup -->
+      <clearPasswords>false</clearPasswords>
+    </com.pmease.quickbuild.web.page.administration.BackupNowOption>
+    """
+
+    responses.add(
+        responses.POST,
+        re.compile(r'.*/rest/backup'),
+        body='/tmp/backup.zip'
+    )
+
+    assert QBClient('http://server').backup(CONFIGURATION) == '/tmp/backup.zip'

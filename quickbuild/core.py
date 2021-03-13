@@ -127,3 +127,15 @@ class QuickBuild(ABC):
             return root['com.pmease.quickbuild.setting.system.PauseSystem']
 
         return self._request('GET', 'paused', callback)
+
+    def backup(self, configuration: str) -> str:
+        """
+        Backup database using XML configuration.
+
+        Args:
+            configuration (str): XML document.
+
+        Returns:
+            str: Absolute path to the backup file.
+        """
+        return self._request('POST', 'backup', data=configuration)
