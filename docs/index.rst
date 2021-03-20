@@ -33,6 +33,12 @@ Groups
 .. autoclass:: quickbuild.endpoints.groups.Groups
     :members:
 
+Requests
+~~~~~~~~
+
+.. autoclass:: quickbuild.endpoints.requests.Requests
+    :members:
+
 Tokens
 ~~~~~~
 
