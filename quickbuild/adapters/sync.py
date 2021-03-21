@@ -110,9 +110,6 @@ class QBClient(QuickBuild):
         self.session.mount('http://', adapter)
         self.session.mount('https://', adapter)
 
-    def close(self) -> None:
-        self.session.close()
-
     def _rest(self,
               callback: Callable,
               method: str,
@@ -135,3 +132,9 @@ class QBClient(QuickBuild):
         )
 
         return callback(Response(response.status_code, response.text), fcb)
+
+    def close(self) -> None:
+        """
+        Close client session
+        """
+        self.session.close()

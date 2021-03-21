@@ -119,9 +119,6 @@ class AsyncQBClient(QuickBuild):
         if timeout:
             self.timeout = ClientTimeout(total=timeout)
 
-    async def close(self) -> None:  # type: ignore
-        await self.session.close()
-
     async def _rest(self,  # type: ignore
                     callback: Callable,
                     method: str,
@@ -146,3 +143,9 @@ class AsyncQBClient(QuickBuild):
 
         body = await response.text()
         return callback(Response(response.status, body), fcb)
+
+    async def close(self) -> None:  # type: ignore
+        """
+        Close client session
+        """
+        await self.session.close()
