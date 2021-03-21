@@ -54,27 +54,27 @@ class QuickBuild(ABC):
 
         return response.body
 
-    @abstractmethod
-    def close(self) -> None:
-        raise NotImplementedError
-
-    @abstractmethod
-    def request(self,
-                callback: Callable,
-                method: str,
-                path: str,
-                fcb: Optional[Callable] = None,
-                **kwargs: Any
-                ) -> Any:
-        raise NotImplementedError
-
     def _request(self,
                  method: str,
                  path: str,
                  fcb: Optional[Callable] = None,
                  **kwargs: Any
                  ) -> Any:
-        return self.request(self._callback, method, path, fcb, **kwargs)
+        return self._rest(self._callback, method, path, fcb, **kwargs)
+
+    @abstractmethod
+    def _rest(self,
+              callback: Callable,
+              method: str,
+              path: str,
+              fcb: Optional[Callable] = None,
+              **kwargs: Any
+              ) -> Any:
+        raise NotImplementedError
+
+    @abstractmethod
+    def close(self) -> None:
+        raise NotImplementedError
 
     def get_version(self) -> ServerVersion:
         """

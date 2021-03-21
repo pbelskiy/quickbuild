@@ -121,13 +121,13 @@ class AsyncQBClient(QuickBuild):
     async def close(self) -> None:  # type: ignore
         await self.session.close()
 
-    async def request(self,  # type: ignore
-                      callback: Callable,
-                      method: str,
-                      path: str,
-                      fcb: Optional[Callable] = None,
-                      **kwargs: Any
-                      ) -> str:
+    async def _rest(self,  # type: ignore
+                    callback: Callable,
+                    method: str,
+                    path: str,
+                    fcb: Optional[Callable] = None,
+                    **kwargs: Any
+                    ) -> str:
 
         if self.timeout and 'timeout' not in kwargs:
             kwargs['timeout'] = self.timeout

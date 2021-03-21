@@ -112,13 +112,13 @@ class QBClient(QuickBuild):
     def close(self) -> None:
         self.session.close()
 
-    def request(self,
-                callback: Callable,
-                method: str,
-                path: str,
-                fcb: Optional[Callable] = None,
-                **kwargs: Any
-                ) -> str:
+    def _rest(self,
+              callback: Callable,
+              method: str,
+              path: str,
+              fcb: Optional[Callable] = None,
+              **kwargs: Any
+              ) -> str:
 
         if self.timeout and 'timeout' not in kwargs:
             kwargs['timeout'] = self.timeout
