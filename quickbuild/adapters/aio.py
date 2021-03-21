@@ -59,45 +59,46 @@ class AsyncQBClient(QuickBuild):
         """
         QuickBuild async client class.
 
-        * url: ``str``
-          Url of QuickBuild server, must include API version.
+        Args:
+            url (str):
+                Url of QuickBuild server, must include API version.
 
-        * user: ``str`` (optional)
-          User name, login.
+            user (Optional[str]):
+                User name, login.
 
-        * password: ``str`` (optional)
-          Password for user.
+            password (Optional[str]):
+                Password for user.
 
-        * loop: ``AbstractEventLoop`` (optional)
-          Asyncio current event loop.
+            loop (Optional[AbstractEventLoop]):
+                Asyncio current event loop.
 
-        * verify: ``bool`` (optional)
-          Verify SSL (default: true).
+            verify (Optional[bool]):
+                Verify SSL (default: true).
 
-        * timeout: ``int``, (optional)
-          HTTP request timeout.
+            timeout (Optional[int]):
+                HTTP request timeout.
 
-        * retry: ``dict`` (optional)
-          Retry options to prevent failures if server restarting or temporary
-          network problem.
+            retry (Optional[dict]):
+                Retry options to prevent failures if server restarting or
+                temporary network problem.
 
-          - total: ``int`` Total retries count. (default 0)
-          - factor: ``int`` Sleep between retries (default 0)
-            {factor} * (2 ** ({number of total retries} - 1))
-          - statuses: ``List[int]`` HTTP statues retries on. (default [])
+                - total: ``int`` Total retries count. (default 0)
+                - factor: ``int`` Sleep between retries (default 0)
+                    {factor} * (2 ** ({number of total retries} - 1))
+                - statuses: ``List[int]`` HTTP statues retries on. (default [])
 
-          Example:
+                Example:
 
-          .. code-block:: python
+                .. code-block:: python
 
-            retry = dict(
-                attempts=10,
-                factor=1,
-                statuses=[500]
-            )
+                    retry = dict(
+                        attempts=10,
+                        factor=1,
+                        statuses=[500]
+                    )
 
-        :returns: ``AsyncClient instance``
-        :raises: ``QBError``
+        Returns:
+            AsyncClient instance
         """
         super().__init__()
 

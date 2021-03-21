@@ -21,69 +21,70 @@ class QBClient(QuickBuild):
         """
         QuickBuild client class.
 
-        * url: ``str``
-          Url of QuickBuild server.
+        Args:
+            url (str):
+                Url of QuickBuild server.
 
-        * user: ``str`` (optional)
-          User name, login.
+            user (Optional[str]):
+                User name, login.
 
-        * password: ``str`` (optional)
-          Password for user.
+            password (Optional[str]):
+                Password for user.
 
-        * verify: ``bool`` (optional)
-          Verify SSL (default: true).
+            verify (Optional[bool]):
+                Verify SSL (default: true).
 
-        * timeout: ``float`` (optional)
-          HTTP request timeout.
+            timeout (Optional[float]):
+                HTTP request timeout.
 
-        * retry: ``dict`` (optional)
-          Retry options to prevent failures if server restarting or temporary
-          network problem.
+            retry (Optional[dict]):
+                Retry options to prevent failures if server restarting or
+                temporary network problem.
 
-          - total: ``int`` Total retries count. (default 0)
-          - factor: ``int`` Sleep between retries (default 0)
-            {factor} * (2 ** ({number of total retries} - 1))
-          - statuses: ``List[int]`` HTTP statues retries on. (default [])
+                - total: ``int`` Total retries count. (default 0)
+                - factor: ``int`` Sleep between retries (default 0)
+                    {factor} * (2 ** ({number of total retries} - 1))
+                - statuses: ``List[int]`` HTTP statues retries on. (default [])
 
-          Example:
+                Example:
 
-          .. code-block:: python
+                .. code-block:: python
 
-            retry = dict(
-                attempts=10,
-                factor=1,
-                statuses=[500]
-            )
+                    retry = dict(
+                        attempts=10,
+                        factor=1,
+                        statuses=[500]
+                    )
 
-          With factor = 1
+                With factor = 1
 
-          ============  =============
-          Retry number  Sleep
-          ============  =============
-          1              0.5 seconds
-          2              1.0 seconds
-          3              2.0 seconds
-          4              4.0 seconds
-          5              8.0 seconds
-          6             16.0 seconds
-          7             32.0 seconds
-          8              1.1 minutes
-          9              2.1 minutes
-          10             4.3 minutes
-          11             8.5 minutes
-          12            17.1 minutes
-          13            34.1 minutes
-          14             1.1 hours
-          15             2.3 hours
-          16             4.6 hours
-          17             9.1 hours
-          18            18.2 hours
-          19            36.4 hours
-          20            72.8 hours
-          ============  =============
+                ============  =============
+                Retry number  Sleep
+                ============  =============
+                1              0.5 seconds
+                2              1.0 seconds
+                3              2.0 seconds
+                4              4.0 seconds
+                5              8.0 seconds
+                6             16.0 seconds
+                7             32.0 seconds
+                8              1.1 minutes
+                9              2.1 minutes
+                10             4.3 minutes
+                11             8.5 minutes
+                12            17.1 minutes
+                13            34.1 minutes
+                14             1.1 hours
+                15             2.3 hours
+                16             4.6 hours
+                17             9.1 hours
+                18            18.2 hours
+                19            36.4 hours
+                20            72.8 hours
+                ============  =============
 
-        :returns: ``Client instance``
-        :raises: ``QBError``
+        Returns:
+            Client instance
         """
         super().__init__()
 
