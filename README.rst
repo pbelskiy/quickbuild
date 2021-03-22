@@ -43,7 +43,7 @@ Get server version:
     from quickbuild import QBClient
 
     client = QBClient('http://server', 'login', 'password')
-    version = client.get_version()
+    version = client.system.get_version()
     print(version)
 
 With async client:
@@ -56,7 +56,7 @@ With async client:
     client = AsyncQBClient('http://server', 'login', 'password')
 
     async def example():
-        await client.get_version()
+        await client.system.get_version()
 
     loop = asyncio.get_event_loop()
     try:

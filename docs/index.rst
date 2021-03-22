@@ -39,6 +39,12 @@ Requests
 .. autoclass:: quickbuild.endpoints.requests.Requests
     :members:
 
+System
+~~~~~~
+
+.. autoclass:: quickbuild.endpoints.system.System
+    :members:
+
 Tokens
 ~~~~~~
 

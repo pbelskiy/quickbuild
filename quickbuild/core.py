@@ -1,14 +1,13 @@
 from abc import ABC, abstractmethod
 from collections import namedtuple
 from http import HTTPStatus
-from typing import Any, Callable, NamedTuple, Optional
-
-import xmltodict
+from typing import Any, Callable, Optional
 
 from quickbuild.endpoints.audits import Audits
 from quickbuild.endpoints.builds import Builds
 from quickbuild.endpoints.groups import Groups
 from quickbuild.endpoints.requests import Requests
+from quickbuild.endpoints.system import System
 from quickbuild.endpoints.tokens import Tokens
 from quickbuild.endpoints.users import Users
 from quickbuild.exceptions import (
@@ -20,10 +19,6 @@ from quickbuild.exceptions import (
 
 Response = namedtuple('Response', ['status', 'body'])
 
-ServerVersion = NamedTuple(
-    'ServerVersion', [('major', int), ('minor', int), ('patch', int)]
-)
-
 
 class QuickBuild(ABC):
 
@@ -32,6 +27,7 @@ class QuickBuild(ABC):
         self.builds = Builds(self)
         self.groups = Groups(self)
         self.requests = Requests(self)
+        self.system = System(self)
         self.tokens = Tokens(self)
         self.users = Users(self)
 
@@ -75,69 +71,3 @@ class QuickBuild(ABC):
     @abstractmethod
     def close(self) -> None:
         raise NotImplementedError
-
-    def get_version(self) -> ServerVersion:
-        """
-        Show server version information.
-
-        Returns:
-            ServerVersion: NamedTuple with major, minor and patch version.
-        """
-        def callback(response: str) -> ServerVersion:
-            return ServerVersion(*map(int, response.split('.')))
-
-        return self._request('GET', 'version', callback)
-
-    def pause(self) -> None:
-        """
-        Pause system.
-
-        Raises:
-            QBError: if system haven`t paused.
-        """
-        def callback(response: str) -> None:
-            if response != 'paused':
-                raise QBError(response)
-
-        return self._request('GET', 'pause', callback)
-
-    def resume(self) -> None:
-        """
-        Resumed system.
-
-        Raises:
-            QBError: if system haven`t resumed.
-        """
-        def callback(response: str) -> None:
-            if response != 'resumed':
-                raise QBError(response)
-
-        return self._request('GET', 'resume', callback)
-
-    def get_pause_information(self) -> None:
-        """
-        Get system pause information including pause reason.
-
-        Returns:
-            ServerVersion: NamedTuple with major, minor and patch version.
-
-        Raises:
-            QBProcessingError: will be raised if system is not paused.
-        """
-        def callback(response: str) -> None:
-            root = xmltodict.parse(response)
-            return root['com.pmease.quickbuild.setting.system.PauseSystem']
-
-        return self._request('GET', 'paused', callback)
-
-    def backup(self, configuration: str) -> str:
-        """
-        Backup database using XML configuration.
-
-        Args:
-            configuration (str): XML document.
-
-        Returns:
-            str: Absolute path to the backup file.
-        """
-        return self._request('POST', 'backup', data=configuration)

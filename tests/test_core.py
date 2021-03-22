@@ -1,12 +1,10 @@
 import re
 
-from http import HTTPStatus
-
 import aiohttp
 import pytest
 import responses
 
-from quickbuild import AsyncQBClient, QBClient, QBError, QBProcessingError
+from quickbuild import AsyncQBClient, QBClient, QBError
 
 GET_VERSION_DATA = '6.0.9'
 
@@ -28,7 +26,7 @@ def test_sync_client():
             timeout=10,
         )
 
-        version = client.get_version()
+        version = client.system.get_version()
         assert version.major == 6
         assert version.minor == 0
         assert version.patch == 9
@@ -71,7 +69,7 @@ async def test_async_client(aiohttp_mock):
             status=200,
         )
 
-        version = await client.get_version()
+        version = await client.system.get_version()
         assert version.major == 6
         assert version.minor == 0
         assert version.patch == 9
@@ -103,7 +101,7 @@ async def test_async_client_retry(aiohttp_mock):
         status=200,
     )
 
-    version = await client.get_version()
+    version = await client.system.get_version()
     assert version.major == 6
     assert version.minor == 0
     assert version.patch == 9
@@ -133,113 +131,6 @@ async def test_async_client_retry_exception(aiohttp_mock):
     )
 
     with pytest.raises(QBError):
-        await client.get_version()
+        await client.system.get_version()
 
     await client.close()
-
-
-@responses.activate
-def test_pause_success():
-    responses.add(
-        responses.GET,
-        re.compile(r'.*/rest/pause'),
-        body='paused'
-    )
-
-    QBClient('http://server').pause()
-
-
-@responses.activate
-def test_pause_error():
-    responses.add(
-        responses.GET,
-        re.compile(r'.*/rest/pause'),
-        body='error'
-    )
-
-    with pytest.raises(QBError):
-        QBClient('http://server').pause()
-
-
-@responses.activate
-def test_resume_success():
-    responses.add(
-        responses.GET,
-        re.compile(r'.*/rest/resume'),
-        body='resumed'
-    )
-
-    QBClient('http://server').resume()
-
-
-@responses.activate
-def test_resume_error():
-    responses.add(
-        responses.GET,
-        re.compile(r'.*/rest/resume'),
-        body='paused'
-    )
-
-    with pytest.raises(QBError):
-        QBClient('http://server').resume()
-
-
-@responses.activate
-def test_get_pause_information_success():
-    BODY = r"""<?xml version="1.0" encoding="UTF-8"?>
-
-    <com.pmease.quickbuild.setting.system.PauseSystem>
-      <user>admin</user>
-    </com.pmease.quickbuild.setting.system.PauseSystem>
-    """
-
-    responses.add(
-        responses.GET,
-        re.compile(r'.*/rest/paused'),
-        body=BODY
-    )
-
-    info = QBClient('http://server').get_pause_information()
-    assert info['user'] == 'admin'
-
-
-@responses.activate
-def test_get_pause_information_error():
-    responses.add(
-        responses.GET,
-        re.compile(r'.*/rest/paused'),
-        status=HTTPStatus.NO_CONTENT,
-    )
-
-    with pytest.raises(QBProcessingError):
-        QBClient('http://server').get_pause_information()
-
-
-@responses.activate
-def test_backup():
-    CONFIGURATION = r"""
-    <com.pmease.quickbuild.web.page.administration.BackupNowOption>
-      <!-- Destination file for the backup -->
-      <backupTo>/path/to/backup.zip</backupTo>
-
-      <!-- Whether or not to exclude builds in the backup -->
-      <excludeBuilds>false</excludeBuilds>
-
-      <!-- Whether or not to exclude measurement data in the backup -->
-      <excludeMeasurements>false</excludeMeasurements>
-
-      <!-- Whether or not to exclude audits in the backup -->
-      <excludeAudits>false</excludeAudits>
-
-      <!-- Whether or not to clear passwords in the backup -->
-      <clearPasswords>false</clearPasswords>
-    </com.pmease.quickbuild.web.page.administration.BackupNowOption>
-    """
-
-    responses.add(
-        responses.POST,
-        re.compile(r'.*/rest/backup'),
-        body='/tmp/backup.zip'
-    )
-
-    assert QBClient('http://server').backup(CONFIGURATION) == '/tmp/backup.zip'
