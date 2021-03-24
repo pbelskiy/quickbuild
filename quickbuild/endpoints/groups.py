@@ -68,7 +68,8 @@ class Groups:
         return self.quickbuild._request(
             'POST',
             'groups',
-            callback
+            callback,
+            data=configuration
         )
 
     def create(self, configuration: str) -> int:
