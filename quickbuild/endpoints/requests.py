@@ -52,3 +52,30 @@ class Requests:
             callback,
             params=params
         )
+
+    def create(self, configuration: str) -> dict:
+        """
+        New build can be requested by posting XML representation of the build
+        request object.
+
+        Args:
+            configuration (str):
+                XML of build request object.
+
+        Returns:
+            dict: content is XML representation of request result including the
+            generated build request id.
+
+        Raises:
+            QBProcessingError: will be raised if the request is aggregated.
+        """
+        def callback(response: str) -> dict:
+            root = xmltodict.parse(response)
+            return root['com.pmease.quickbuild.RequestResult']
+
+        return self.quickbuild._request(
+            'POST',
+            'build_requests',
+            callback,
+            data=configuration,
+        )
