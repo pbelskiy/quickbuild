@@ -92,6 +92,13 @@ CREATE_REQUEST_XML = r"""
 </com.pmease.quickbuild.BuildRequest>
 """
 
+CREATE_REQUEST_RESULT_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
+<com.pmease.quickbuild.RequestResult>
+    <requestId>e8e5fb23-7aff-4efd-9825-162eeac84fca</requestId>
+    <loopedRequest>false</loopedRequest>
+</com.pmease.quickbuild.RequestResult>
+"""
+
 
 @responses.activate
 def test_get():
@@ -128,4 +135,16 @@ def test_create():
     )
 
     response = QBClient('http://server').requests.create(CREATE_REQUEST_XML)
+    assert response['requestId'] == 'e8e5fb23-7aff-4efd-9825-162eeac84fca'
+
+
+@responses.activate
+def test_trigger():
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/trigger'),
+        body=CREATE_REQUEST_RESULT_XML,
+    )
+
+    response = QBClient('http://server').requests.trigger(10)
     assert response['requestId'] == 'e8e5fb23-7aff-4efd-9825-162eeac84fca'

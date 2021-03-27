@@ -10,6 +10,11 @@ class Requests:
     def __init__(self, quickbuild):
         self.quickbuild = quickbuild
 
+    @staticmethod
+    def _request_result_callback(response: str) -> dict:
+        root = xmltodict.parse(response)
+        return root['com.pmease.quickbuild.RequestResult']
+
     def get(self,
             *,
             configuration_id: Optional[int] = None,
@@ -69,13 +74,31 @@ class Requests:
         Raises:
             QBProcessingError: will be raised if the request is aggregated.
         """
-        def callback(response: str) -> dict:
-            root = xmltodict.parse(response)
-            return root['com.pmease.quickbuild.RequestResult']
-
         return self.quickbuild._request(
             'POST',
             'build_requests',
-            callback,
+            self._request_result_callback,
             data=configuration,
+        )
+
+    def trigger(self, configuration_id: int) -> dict:
+        """
+        Since QuickBuild 6.0.14, one can also trigger new build.
+
+        Args:
+            configuration_id (int):
+                Identifier of a configuration.
+
+        Returns:
+            dict: content is XML representation of request result including the
+            generated build request id.
+
+        Raises:
+            QBProcessingError: will be raised if the request is aggregated.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'trigger',
+            self._request_result_callback,
+            params=dict(configuration_id=configuration_id)
         )
