@@ -102,3 +102,17 @@ class Requests:
             self._request_result_callback,
             params=dict(configuration_id=configuration_id)
         )
+
+    def delete(self, request_id: str) -> None:
+        """
+        Delete existing build request. If the build associated with the build
+        request is already running, it will be forcibly stopped.
+
+        Args:
+            request_id (str):
+                Identifier of a build request.
+        """
+        return self.quickbuild._request(
+            'DELETE',
+            'build_requests/{}'.format(request_id),
+        )

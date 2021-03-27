@@ -148,3 +148,13 @@ def test_trigger():
 
     response = QBClient('http://server').requests.trigger(10)
     assert response['requestId'] == 'e8e5fb23-7aff-4efd-9825-162eeac84fca'
+
+
+@responses.activate
+def test_delete():
+    responses.add(
+        responses.DELETE,
+        re.compile(r'.*/rest/build_requests'),
+    )
+
+    QBClient('http://server').requests.delete('e8e5fb23-7aff-4efd-9825-162eeac84fca')
