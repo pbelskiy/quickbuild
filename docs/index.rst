@@ -27,6 +27,12 @@ Builds
 .. autoclass:: quickbuild.endpoints.builds.Builds
     :members:
 
+Configurations
+~~~~~~~~~~~~~~
+
+.. autoclass:: quickbuild.endpoints.configurations.Configurations
+    :members:
+
 Groups
 ~~~~~~
 

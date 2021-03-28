@@ -5,6 +5,7 @@ from typing import Any, Callable, Optional
 
 from quickbuild.endpoints.audits import Audits
 from quickbuild.endpoints.builds import Builds
+from quickbuild.endpoints.configurations import Configurations
 from quickbuild.endpoints.groups import Groups
 from quickbuild.endpoints.requests import Requests
 from quickbuild.endpoints.system import System
@@ -25,6 +26,7 @@ class QuickBuild(ABC):
     def __init__(self):
         self.audits = Audits(self)
         self.builds = Builds(self)
+        self.configurations = Configurations(self)
         self.groups = Groups(self)
         self.requests = Requests(self)
         self.system = System(self)
