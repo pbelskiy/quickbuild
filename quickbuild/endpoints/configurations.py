@@ -8,6 +8,22 @@ class Configurations:
     def __init__(self, quickbuild):
         self.quickbuild = quickbuild
 
+    def _get(self, params: dict) -> List[dict]:
+
+        def callback(response: str) -> List[dict]:
+            root = xmltodict.parse(response)
+            configurations = root['list']['com.pmease.quickbuild.model.Configuration']
+            if isinstance(configurations, list) is False:
+                configurations = [configurations]
+            return configurations
+
+        return self.quickbuild._request(
+            'GET',
+            'configurations',
+            callback,
+            params=params,
+        )
+
     def get(self) -> List[dict]:
         """
         Get all configurations in the system. For performance reason, only
@@ -18,15 +34,28 @@ class Configurations:
         Returns:
             List[dict]: list of configurations.
         """
-        def callback(response: str) -> List[dict]:
-            root = xmltodict.parse(response)
-            configurations = root['list']['com.pmease.quickbuild.model.Configuration']
-            if isinstance(configurations, list) is False:
-                configurations = [configurations]
-            return configurations
+        return self._get(dict(recursive=True))
 
-        return self.quickbuild._request(
-            'GET',
-            'configurations?recursive=true',
-            callback
-        )
+    def get_child(self, parent_id: int) -> List[dict]:
+        """
+        Get a list of child configurations.
+
+        Args:
+            parent_id (int): parent configuration identifier.
+
+        Returns:
+            List[dict]: list of child configurations.
+        """
+        return self._get(dict(parent_id=parent_id))
+
+    def get_descendent(self, parent_id: int) -> List[dict]:
+        """
+        Get a list of descendent configurations.
+
+        Args:
+            parent_id (int): parent configuration identifier.
+
+        Returns:
+            List[dict]: list of descendent configurations.
+        """
+        return self._get(dict(recursive=True, parent_id=parent_id))
