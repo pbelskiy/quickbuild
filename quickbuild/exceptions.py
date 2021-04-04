@@ -12,7 +12,7 @@ class QBProcessingError(QBError):
     ...
 
 
-class QBForbidden(QBError):
+class QBForbiddenError(QBError):
     """
     Raises when request return HTTP code 403 (forbidden)
     """

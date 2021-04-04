@@ -2,7 +2,7 @@ from quickbuild.adapters.aio import AsyncQBClient
 from quickbuild.adapters.sync import QBClient
 from quickbuild.exceptions import (
     QBError,
-    QBForbidden,
+    QBForbiddenError,
     QBNotFoundError,
     QBProcessingError,
 )
@@ -15,7 +15,7 @@ __all__ = (
     'QBClient',
     # exceptions
     'QBError',
-    'QBForbidden',
+    'QBForbiddenError',
     'QBNotFoundError',
     'QBProcessingError',
 )

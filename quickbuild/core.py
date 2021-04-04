@@ -13,7 +13,7 @@ from quickbuild.endpoints.tokens import Tokens
 from quickbuild.endpoints.users import Users
 from quickbuild.exceptions import (
     QBError,
-    QBForbidden,
+    QBForbiddenError,
     QBNotFoundError,
     QBProcessingError,
 )
@@ -42,7 +42,7 @@ class QuickBuild(ABC):
             raise QBNotFoundError(response.body)
 
         if response.status == HTTPStatus.FORBIDDEN:
-            raise QBForbidden(response.body)
+            raise QBForbiddenError(response.body)
 
         if response.status != HTTPStatus.OK:
             raise QBError(response.body)
