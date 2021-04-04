@@ -9,7 +9,7 @@ class Builds:
     def __init__(self, quickbuild):
         self.quickbuild = quickbuild
 
-    def get_info(self, build_id: int, as_xml: bool = False) -> Union[str, dict]:
+    def get_info(self, build_id: int, as_xml: Optional[bool] = False) -> Union[dict, str]:
         """
         Get build info as raw XML string.
 
@@ -23,7 +23,7 @@ class Builds:
         Returns:
             dict: build information.
         """
-        def callback(response: str) -> Union[str, dict]:
+        def callback(response: str) -> Union[dict, str]:
             if as_xml:
                 return response
 

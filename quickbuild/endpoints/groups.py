@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional, Union
 
 import xmltodict
 
@@ -28,7 +28,7 @@ class Groups:
             callback
         )
 
-    def get_info(self, group_id: int) -> dict:
+    def get_info(self, group_id: int, as_xml: Optional[bool] = False) -> Union[dict, str]:
         """
         Get information about specified group.
 
@@ -38,7 +38,10 @@ class Groups:
         Returns:
             dict: group information.
         """
-        def callback(response: str) -> dict:
+        def callback(response: str) -> Union[dict, str]:
+            if as_xml:
+                return response
+
             root = xmltodict.parse(response)
             return root['com.pmease.quickbuild.model.Group']
 

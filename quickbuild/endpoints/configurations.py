@@ -62,7 +62,7 @@ class Configurations:
 
     def get_info(self,
                  configuration_id: int,
-                 as_xml: Optional[bool] = False) -> Union[str, dict]:
+                 as_xml: Optional[bool] = False) -> Union[dict, str]:
         """
         Get full configuration info.
 
@@ -72,7 +72,7 @@ class Configurations:
         Returns:
             Union[str, dict]: configuration content.
         """
-        def callback(response: str) -> Union[str, dict]:
+        def callback(response: str) -> Union[dict, str]:
             if as_xml:
                 return response
 

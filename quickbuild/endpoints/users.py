@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional, Union
 
 import xmltodict
 
@@ -28,7 +28,7 @@ class Users:
             callback
         )
 
-    def get_info(self, user_id: int) -> dict:
+    def get_info(self, user_id: int, as_xml: Optional[bool] = False) -> Union[dict, str]:
         """
         Get information about specified user.
 
@@ -38,7 +38,7 @@ class Users:
         Returns:
             dict: information about user.
         """
-        def callback(response: str) -> dict:
+        def callback(response: str) -> Union[dict, str]:
             root = xmltodict.parse(response)
             return root['com.pmease.quickbuild.model.User']
 
