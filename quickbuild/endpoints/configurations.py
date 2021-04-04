@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional, Union
 
 import xmltodict
 
@@ -59,3 +59,28 @@ class Configurations:
             List[dict]: list of descendent configurations.
         """
         return self._get(dict(recursive=True, parent_id=parent_id))
+
+    def get_info(self,
+                 configuration_id: int,
+                 as_xml: Optional[bool] = False) -> Union[str, dict]:
+        """
+        Get full configuration info.
+
+        Args:
+            configuration_id (int): configuration identifier.
+
+        Returns:
+            Union[str, dict]: configuration content.
+        """
+        def callback(response: str) -> Union[str, dict]:
+            if as_xml:
+                return response
+
+            root = xmltodict.parse(response)
+            return root['com.pmease.quickbuild.model.Configuration']
+
+        return self.quickbuild._request(
+            'GET',
+            'configurations/{}'.format(configuration_id),
+            callback
+        )
