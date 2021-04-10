@@ -31,7 +31,7 @@ Installation
 
 ::
 
-    pip3 install quickbuild
+    pip3 install -U quickbuild
 
 Examples
 --------
