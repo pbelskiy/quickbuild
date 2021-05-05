@@ -4,7 +4,7 @@ import re
 import pytest
 import responses
 
-from quickbuild import AsyncQBClient, QBClient
+from quickbuild import AsyncQBClient
 
 TOKEN_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
@@ -69,7 +69,7 @@ EMPTY_TOKEN_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 
 @responses.activate
-def test_authorize():
+def test_authorize(client):
     RESPONSE_DATA = '120123'
 
     responses.add(
@@ -80,15 +80,15 @@ def test_authorize():
         match_querystring=True,
     )
 
-    response = QBClient('http://server').tokens.authorize('192.168.1.100', 8811)
+    response = client.tokens.authorize('192.168.1.100', 8811)
     assert response == RESPONSE_DATA
 
-    response = QBClient('http://server').tokens.authorize('192.168.1.100')
+    response = client.tokens.authorize('192.168.1.100')
     assert response == RESPONSE_DATA
 
 
 @responses.activate
-def test_unauthorize():
+def test_unauthorize(client):
     RESPONSE_DATA = '120123'
 
     responses.add(
@@ -99,15 +99,15 @@ def test_unauthorize():
         match_querystring=True,
     )
 
-    response = QBClient('http://server').tokens.unauthorize('192.168.1.100', 8811)
+    response = client.tokens.unauthorize('192.168.1.100', 8811)
     assert response == RESPONSE_DATA
 
-    response = QBClient('http://server').tokens.unauthorize('192.168.1.100')
+    response = client.tokens.unauthorize('192.168.1.100')
     assert response == RESPONSE_DATA
 
 
 @responses.activate
-def test_token_and_agent_details():
+def test_token_and_agent_details(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/tokens\?address=quickbuild-agent-192-168-1-100%3A8811'),
@@ -115,13 +115,13 @@ def test_token_and_agent_details():
         body=TOKEN_XML
     )
 
-    response = QBClient('http://server').tokens.get('quickbuild-agent-192-168-1-100:8811')
+    response = client.tokens.get('quickbuild-agent-192-168-1-100:8811')
     assert len(response) == 1
     assert response[0]['id'] == '120204'
 
 
 @responses.activate
-def test_tokens_and_agent_details():
+def test_tokens_and_agent_details(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/tokens'),
@@ -129,7 +129,7 @@ def test_tokens_and_agent_details():
         body=TOKENS_XML,
     )
 
-    response = QBClient('http://server').tokens.get()
+    response = client.tokens.get()
     assert len(response) == 3
     assert response[0]['id'] == '117554'
     assert response[1]['id'] == '115672'
@@ -137,7 +137,7 @@ def test_tokens_and_agent_details():
 
 
 @responses.activate
-def test_tokens_and_agent_details_with_unknown_address():
+def test_tokens_and_agent_details_with_unknown_address(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/tokens\?address=unknown'),
@@ -146,7 +146,7 @@ def test_tokens_and_agent_details_with_unknown_address():
         match_querystring=True,
     )
 
-    response = QBClient('http://server').tokens.get('unknown')
+    response = client.tokens.get('unknown')
     assert len(response) == 0
     assert response == []
 

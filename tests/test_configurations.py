@@ -2,7 +2,6 @@ import re
 
 import responses
 
-from quickbuild import QBClient
 
 GET_CONFIGURATIONS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
@@ -223,7 +222,7 @@ GET_CONFIGURATION_INFO_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 
 @responses.activate
-def test_get():
+def test_get(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/configurations'),
@@ -231,13 +230,13 @@ def test_get():
         body=GET_CONFIGURATIONS_XML,
     )
 
-    response = QBClient('http://server').configurations.get()
+    response = client.configurations.get()
     assert len(response) == 3
     assert response[0]['name'] == 'root'
 
 
 @responses.activate
-def test_get_child():
+def test_get_child(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/configurations'),
@@ -245,13 +244,13 @@ def test_get_child():
         body=GET_CHILD_CONFIGURATIONS_XML,
     )
 
-    response = QBClient('http://server').configurations.get_child(1)
+    response = client.configurations.get_child(1)
     assert len(response) == 1
     assert response[0]['id'] == '2'
 
 
 @responses.activate
-def test_get_descendent():
+def test_get_descendent(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/configurations'),
@@ -259,13 +258,13 @@ def test_get_descendent():
         body=GET_DESCENDENT_CONFIGURATIONS_XML,
     )
 
-    response = QBClient('http://server').configurations.get_descendent(1)
+    response = client.configurations.get_descendent(1)
     assert len(response) == 2
     assert response[0]['id'] == '2'
 
 
 @responses.activate
-def test_get_info():
+def test_get_info(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/configurations/1'),
@@ -273,17 +272,17 @@ def test_get_info():
         body=GET_CONFIGURATION_INFO_XML,
     )
 
-    response = QBClient('http://server').configurations.get_info(1)
+    response = client.configurations.get_info(1)
     assert response['name'] == 'root'
 
 
 @responses.activate
-def test_get_path():
+def test_get_path(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/configurations/1/path'),
         body='root',
     )
 
-    response = QBClient('http://server').configurations.get_path(1)
+    response = client.configurations.get_path(1)
     assert response == 'root'

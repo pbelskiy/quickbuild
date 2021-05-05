@@ -2,8 +2,6 @@ import re
 
 import responses
 
-from quickbuild import QBClient
-
 GROUPS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 <list>
@@ -46,7 +44,7 @@ GROUP_INFO_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 
 @responses.activate
-def test_get():
+def test_get(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/groups'),
@@ -54,13 +52,13 @@ def test_get():
         body=GROUPS_XML,
     )
 
-    response = QBClient('http://server').groups.get()
+    response = client.groups.get()
     assert len(response) == 1
     assert response[0]['id'] == '1'
 
 
 @responses.activate
-def test_get_info():
+def test_get_info(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/groups/1'),
@@ -68,12 +66,12 @@ def test_get_info():
         body=GROUP_INFO_XML,
     )
 
-    response = QBClient('http://server').groups.get_info(1)
+    response = client.groups.get_info(1)
     assert response['id'] == '1'
 
 
 @responses.activate
-def test_update():
+def test_update(client):
     responses.add(
         responses.POST,
         re.compile(r'.*/rest/groups'),
@@ -81,12 +79,12 @@ def test_update():
         body='1',
     )
 
-    response = QBClient('http://server').groups.update(GROUP_INFO_XML)
+    response = client.groups.update(GROUP_INFO_XML)
     assert response == 1
 
 
 @responses.activate
-def test_create():
+def test_create(client):
     responses.add(
         responses.POST,
         re.compile(r'.*/rest/groups'),
@@ -94,15 +92,15 @@ def test_create():
         body='1',
     )
 
-    response = QBClient('http://server').groups.create(GROUP_INFO_XML)
+    response = client.groups.create(GROUP_INFO_XML)
     assert response == 1
 
 
 @responses.activate
-def test_delete():
+def test_delete(client):
     responses.add(
         responses.DELETE,
         re.compile(r'.*/rest/groups/(\d+)'),
     )
 
-    QBClient('http://server').groups.delete(1)
+    client.groups.delete(1)

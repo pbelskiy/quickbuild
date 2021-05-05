@@ -5,22 +5,22 @@ from http import HTTPStatus
 import pytest
 import responses
 
-from quickbuild import QBClient, QBError, QBProcessingError
+from quickbuild import QBError, QBProcessingError
 
 
 @responses.activate
-def test_pause_success():
+def test_pause_success(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/pause'),
         body='paused'
     )
 
-    QBClient('http://server').system.pause()
+    client.system.pause()
 
 
 @responses.activate
-def test_pause_error():
+def test_pause_error(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/pause'),
@@ -28,22 +28,22 @@ def test_pause_error():
     )
 
     with pytest.raises(QBError):
-        QBClient('http://server').system.pause()
+        client.system.pause()
 
 
 @responses.activate
-def test_resume_success():
+def test_resume_success(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/resume'),
         body='resumed'
     )
 
-    QBClient('http://server').system.resume()
+    client.system.resume()
 
 
 @responses.activate
-def test_resume_error():
+def test_resume_error(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/resume'),
@@ -51,11 +51,11 @@ def test_resume_error():
     )
 
     with pytest.raises(QBError):
-        QBClient('http://server').system.resume()
+        client.system.resume()
 
 
 @responses.activate
-def test_get_pause_information_success():
+def test_get_pause_information_success(client):
     BODY = r"""<?xml version="1.0" encoding="UTF-8"?>
 
     <com.pmease.quickbuild.setting.system.PauseSystem>
@@ -69,12 +69,12 @@ def test_get_pause_information_success():
         body=BODY
     )
 
-    info = QBClient('http://server').system.get_pause_information()
+    info = client.system.get_pause_information()
     assert info['user'] == 'admin'
 
 
 @responses.activate
-def test_get_pause_information_error():
+def test_get_pause_information_error(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/paused'),
@@ -82,11 +82,11 @@ def test_get_pause_information_error():
     )
 
     with pytest.raises(QBProcessingError):
-        QBClient('http://server').system.get_pause_information()
+        client.system.get_pause_information()
 
 
 @responses.activate
-def test_backup():
+def test_backup(client):
     CONFIGURATION = r"""
     <com.pmease.quickbuild.web.page.administration.BackupNowOption>
       <!-- Destination file for the backup -->
@@ -112,4 +112,4 @@ def test_backup():
         body='/tmp/backup.zip'
     )
 
-    assert QBClient('http://server').system.backup(CONFIGURATION) == '/tmp/backup.zip'
+    assert client.system.backup(CONFIGURATION) == '/tmp/backup.zip'

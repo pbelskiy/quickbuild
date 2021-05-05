@@ -2,9 +2,6 @@ import re
 
 import responses
 
-from quickbuild import QBClient
-
-
 AUDITS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 <list>
@@ -78,7 +75,7 @@ AUDITS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 
 @responses.activate
-def test_get():
+def test_get(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/audits'),
@@ -86,18 +83,18 @@ def test_get():
         body=AUDITS_XML,
     )
 
-    response = QBClient('http://server').audits.get(count=1)
+    response = client.audits.get(count=1)
     assert len(response) == 1
     assert response[0]['id'] == '11'
 
 
 @responses.activate
-def test_count():
+def test_count(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/audits/count'),
         body='11',
     )
 
-    response = QBClient('http://server').audits.count()
+    response = client.audits.count()
     assert response == 11

@@ -2,8 +2,6 @@ import re
 
 import responses
 
-from quickbuild import QBClient
-
 USERS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 <list>
@@ -34,7 +32,7 @@ USER_INFO_XML = """<?xml version="1.0" encoding="UTF-8"?>
 
 
 @responses.activate
-def test_get():
+def test_get(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/users'),
@@ -42,13 +40,13 @@ def test_get():
         body=USERS_XML,
     )
 
-    response = QBClient('http://server').users.get()
+    response = client.users.get()
     assert len(response) == 1
     assert response[0]['id'] == '1'
 
 
 @responses.activate
-def test_get_info():
+def test_get_info(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/users/1'),
@@ -56,13 +54,13 @@ def test_get_info():
         body=USER_INFO_XML,
     )
 
-    response = QBClient('http://server').users.get_info(1)
+    response = client.users.get_info(1)
     assert response['id'] == '1'
     assert response['name'] == 'admin'
 
 
 @responses.activate
-def test_get_display_name():
+def test_get_display_name(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/users/1/display_name'),
@@ -70,39 +68,39 @@ def test_get_display_name():
         body='admin',
     )
 
-    response = QBClient('http://server').users.get_display_name(1)
+    response = client.users.get_display_name(1)
     assert response == 'admin'
 
 
 @responses.activate
-def test_update():
+def test_update(client):
     responses.add(
         responses.POST,
         re.compile(r'.*/rest/users'),
         body='1',
     )
 
-    response = QBClient('http://server').users.update(USER_INFO_XML)
+    response = client.users.update(USER_INFO_XML)
     assert response == 1
 
 
 @responses.activate
-def test_create():
+def test_create(client):
     responses.add(
         responses.POST,
         re.compile(r'.*/rest/users'),
         body='1',
     )
 
-    response = QBClient('http://server').users.create(USER_INFO_XML)
+    response = client.users.create(USER_INFO_XML)
     assert response == 1
 
 
 @responses.activate
-def test_delete():
+def test_delete(client):
     responses.add(
         responses.DELETE,
         re.compile(r'.*/rest/users')
     )
 
-    QBClient('http://server').users.delete(1)
+    client.users.delete(1)

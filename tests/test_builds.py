@@ -5,7 +5,7 @@ from http import HTTPStatus
 import pytest
 import responses
 
-from quickbuild import AsyncQBClient, QBClient, QBNotFoundError, QBProcessingError
+from quickbuild import AsyncQBClient, QBNotFoundError, QBProcessingError
 
 BUILD_INFO_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
@@ -177,7 +177,7 @@ BUILD_SEARCH_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 
 @responses.activate
-def test_get_info():
+def test_get_info(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/builds/\d+'),
@@ -185,15 +185,15 @@ def test_get_info():
         body=BUILD_INFO_XML,
     )
 
-    response = QBClient('http://server').builds.get_info(1)
+    response = client.builds.get_info(1)
     assert response['id'] == '1'
 
-    response = QBClient('http://server').builds.get_info(1, as_xml=True)
+    response = client.builds.get_info(1, as_xml=True)
     assert isinstance(response, str)
 
 
 @responses.activate
-def test_get_status():
+def test_get_status(client):
     RESPONSE_DATA = 'SUCCESS'
 
     responses.add(
@@ -202,12 +202,12 @@ def test_get_status():
         body=RESPONSE_DATA,
     )
 
-    response = QBClient('http://server').builds.get_status(1)
+    response = client.builds.get_status(1)
     assert response == RESPONSE_DATA
 
 
 @responses.activate
-def test_get_status_not_found():
+def test_get_status_not_found(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/builds/\d+/status'),
@@ -215,11 +215,11 @@ def test_get_status_not_found():
     )
 
     with pytest.raises(QBNotFoundError):
-        QBClient('http://server').builds.get_status(2)
+        client.builds.get_status(2)
 
 
 @responses.activate
-def test_get_begin_date():
+def test_get_begin_date(client):
     RESPONSE_DATA = '1609963192617'  # 2021-01-06 22:59:52.617000
 
     responses.add(
@@ -228,7 +228,7 @@ def test_get_begin_date():
         body=RESPONSE_DATA,
     )
 
-    response = QBClient('http://server').builds.get_begin_date(1)
+    response = client.builds.get_begin_date(1)
     assert response.year == 2021
 
 
@@ -251,7 +251,7 @@ async def test_get_begin_date_async(aiohttp_mock):
 
 
 @responses.activate
-def test_get_version():
+def test_get_version(client):
     RESPONSE_DATA = '1.0.0'
 
     responses.add(
@@ -260,12 +260,12 @@ def test_get_version():
         body=RESPONSE_DATA,
     )
 
-    response = QBClient('http://server').builds.get_version(1)
+    response = client.builds.get_version(1)
     assert response == RESPONSE_DATA
 
 
 @responses.activate
-def test_get_duration():
+def test_get_duration(client):
     RESPONSE_DATA = '137'
 
     responses.add(
@@ -274,12 +274,12 @@ def test_get_duration():
         body=RESPONSE_DATA,
     )
 
-    response = QBClient('http://server').builds.get_duration(1)
+    response = client.builds.get_duration(1)
     assert response == 137
 
 
 @responses.activate
-def test_get_request_id():
+def test_get_request_id(client):
     RESPONSE_DATA = 'fd2339a1-bc71-429d-b4ee-0ac650c342fe'
 
     responses.add(
@@ -288,12 +288,12 @@ def test_get_request_id():
         body=RESPONSE_DATA,
     )
 
-    response = QBClient('http://server').builds.get_request_id(1)
+    response = client.builds.get_request_id(1)
     assert response == RESPONSE_DATA
 
 
 @responses.activate
-def test_get_request_id_finished():
+def test_get_request_id_finished(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/builds/\d+/request_id'),
@@ -301,11 +301,11 @@ def test_get_request_id_finished():
     )
 
     with pytest.raises(QBProcessingError):
-        QBClient('http://server').builds.get_request_id(1)
+        client.builds.get_request_id(1)
 
 
 @responses.activate
-def test_get_steps():
+def test_get_steps(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/builds/\d+/steps'),
@@ -313,12 +313,12 @@ def test_get_steps():
         body=BUILD_STEPS_XML,
     )
 
-    response = QBClient('http://server').builds.get_steps(1)
+    response = client.builds.get_steps(1)
     assert '<name>master</name>' in response
 
 
 @responses.activate
-def test_get_repositories():
+def test_get_repositories(client):
     BUILD_REPOSITORIES_XML = r"""
     <?xml version="1.0" encoding="UTF-8"?>
 
@@ -332,12 +332,12 @@ def test_get_repositories():
         body=BUILD_REPOSITORIES_XML,
     )
 
-    response = QBClient('http://server').builds.get_repositories(1)
+    response = client.builds.get_repositories(1)
     assert 'list' in response
 
 
 @responses.activate
-def test_get_dependencies():
+def test_get_dependencies(client):
     RESPONSE_DATA = r"""
     <?xml version="1.0" encoding="UTF-8"?>
 
@@ -351,12 +351,12 @@ def test_get_dependencies():
         body=RESPONSE_DATA,
     )
 
-    response = QBClient('http://server').builds.get_dependencies(1)
+    response = client.builds.get_dependencies(1)
     assert 'list' in response
 
 
 @responses.activate
-def test_get_dependents():
+def test_get_dependents(client):
     RESPONSE_DATA = r"""
     <?xml version="1.0" encoding="UTF-8"?>
 
@@ -370,12 +370,12 @@ def test_get_dependents():
         body=RESPONSE_DATA,
     )
 
-    response = QBClient('http://server').builds.get_dependents(1)
+    response = client.builds.get_dependents(1)
     assert 'list' in response
 
 
 @responses.activate
-def test_search():
+def test_search(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/builds.*'),
@@ -383,7 +383,7 @@ def test_search():
         body=BUILD_SEARCH_XML,
     )
 
-    response = QBClient('http://server').builds.search(
+    response = client.builds.search(
         count=2,
         configuration_id=1,
         from_date='2021-01-14',
@@ -394,7 +394,7 @@ def test_search():
 
 
 @responses.activate
-def test_count():
+def test_count(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/builds/count'),
@@ -402,7 +402,7 @@ def test_count():
         body='5',
     )
 
-    response = QBClient('http://server').builds.count(
+    response = client.builds.count(
         configuration_id=1,
         recursive=False,
         from_date='2021-01-20',
@@ -417,7 +417,7 @@ def test_count():
 
 
 @responses.activate
-def test_update():
+def test_update(client):
     responses.add(
         responses.POST,
         re.compile(r'.*/rest/builds'),
@@ -425,12 +425,12 @@ def test_update():
         body='5',
     )
 
-    response = QBClient('http://server').builds.update(BUILD_INFO_XML)
+    response = client.builds.update(BUILD_INFO_XML)
     assert response == 5
 
 
 @responses.activate
-def test_create():
+def test_create(client):
     responses.add(
         responses.POST,
         re.compile(r'.*/rest/builds'),
@@ -438,16 +438,16 @@ def test_create():
         body='5',
     )
 
-    response = QBClient('http://server').builds.create(BUILD_INFO_XML)
+    response = client.builds.create(BUILD_INFO_XML)
     assert response == 5
 
 
 @responses.activate
-def test_delete():
+def test_delete(client):
     responses.add(
         responses.DELETE,
         re.compile(r'.*/rest/builds'),
         content_type='text/plain',
     )
 
-    QBClient('http://server').builds.delete(5)
+    client.builds.delete(5)

@@ -2,8 +2,6 @@ import re
 
 import responses
 
-from quickbuild import QBClient
-
 GET_REQUEST_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 <list>
@@ -101,7 +99,7 @@ CREATE_REQUEST_RESULT_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 
 @responses.activate
-def test_get():
+def test_get(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/build_requests'),
@@ -109,7 +107,7 @@ def test_get():
         content_type='application/xml',
     )
 
-    response = QBClient('http://server').requests.get(
+    response = client.requests.get(
         configuration_id=1,
         trigger_user_id=1
     )
@@ -120,7 +118,7 @@ def test_get():
 
 
 @responses.activate
-def test_create():
+def test_create(client):
     CREATE_REQUEST_RESULT_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
     <com.pmease.quickbuild.RequestResult>
         <requestId>e8e5fb23-7aff-4efd-9825-162eeac84fca</requestId>
@@ -134,27 +132,27 @@ def test_create():
         body=CREATE_REQUEST_RESULT_XML,
     )
 
-    response = QBClient('http://server').requests.create(CREATE_REQUEST_XML)
+    response = client.requests.create(CREATE_REQUEST_XML)
     assert response['requestId'] == 'e8e5fb23-7aff-4efd-9825-162eeac84fca'
 
 
 @responses.activate
-def test_trigger():
+def test_trigger(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/trigger'),
         body=CREATE_REQUEST_RESULT_XML,
     )
 
-    response = QBClient('http://server').requests.trigger(10)
+    response = client.requests.trigger(10)
     assert response['requestId'] == 'e8e5fb23-7aff-4efd-9825-162eeac84fca'
 
 
 @responses.activate
-def test_delete():
+def test_delete(client):
     responses.add(
         responses.DELETE,
         re.compile(r'.*/rest/build_requests'),
     )
 
-    QBClient('http://server').requests.delete('e8e5fb23-7aff-4efd-9825-162eeac84fca')
+    client.requests.delete('e8e5fb23-7aff-4efd-9825-162eeac84fca')
