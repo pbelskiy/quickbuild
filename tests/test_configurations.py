@@ -275,3 +275,15 @@ def test_get_info():
 
     response = QBClient('http://server').configurations.get_info(1)
     assert response['name'] == 'root'
+
+
+@responses.activate
+def test_get_path():
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/configurations/1/path'),
+        body='root',
+    )
+
+    response = QBClient('http://server').configurations.get_path(1)
+    assert response == 'root'

@@ -84,3 +84,18 @@ class Configurations:
             'configurations/{}'.format(configuration_id),
             callback
         )
+
+    def get_path(self, configuration_id: int) -> str:
+        """
+        Get configuration path.
+
+        Args:
+            configuration_id (int): configuration identifier.
+
+        Returns:
+            str: configuration path.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'configurations/{}/path'.format(configuration_id),
+        )
