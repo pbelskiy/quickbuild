@@ -286,3 +286,27 @@ def test_get_path(client):
 
     response = client.configurations.get_path(1)
     assert response == 'root'
+
+
+@responses.activate
+def test_get_name(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/configurations/1/name'),
+        body='root',
+    )
+
+    response = client.configurations.get_name(1)
+    assert response == 'root'
+
+
+@responses.activate
+def test_get_description(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/configurations/1/description'),
+        body='root',
+    )
+
+    response = client.configurations.get_description(1)
+    assert response == 'root'

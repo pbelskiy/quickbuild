@@ -99,3 +99,33 @@ class Configurations:
             'GET',
             'configurations/{}/path'.format(configuration_id),
         )
+
+    def get_name(self, configuration_id: int) -> str:
+        """
+        Get configuration name.
+
+        Args:
+            configuration_id (int): configuration identifier.
+
+        Returns:
+            str: configuration name.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'configurations/{}/name'.format(configuration_id),
+        )
+
+    def get_description(self, configuration_id: int) -> str:
+        """
+        Get configuration description.
+
+        Args:
+            configuration_id (int): configuration identifier.
+
+        Returns:
+            str: configuration description.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'configurations/{}/description'.format(configuration_id),
+        )
