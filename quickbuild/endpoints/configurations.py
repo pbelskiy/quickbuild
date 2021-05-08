@@ -129,3 +129,33 @@ class Configurations:
             'GET',
             'configurations/{}/description'.format(configuration_id),
         )
+
+    def get_error_message(self, configuration_id: int) -> str:
+        """
+        Get configuration error message.
+
+        Args:
+            configuration_id (int): configuration identifier.
+
+        Returns:
+            str: configuration error message.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'configurations/{}/error_message'.format(configuration_id),
+        )
+
+    def get_run_mode(self, configuration_id: int) -> str:
+        """
+        Get configuration run mode.
+
+        Args:
+            configuration_id (int): configuration identifier.
+
+        Returns:
+            str: configuration run mode.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'configurations/{}/run_mode'.format(configuration_id),
+        )

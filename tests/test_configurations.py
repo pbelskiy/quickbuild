@@ -310,3 +310,27 @@ def test_get_description(client):
 
     response = client.configurations.get_description(1)
     assert response == 'root'
+
+
+@responses.activate
+def test_get_error_message(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/configurations/1/error_message'),
+        body='error_message',
+    )
+
+    response = client.configurations.get_error_message(1)
+    assert response == 'error_message'
+
+
+@responses.activate
+def test_get_run_mode(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/configurations/1/run_mode'),
+        body='run_mode',
+    )
+
+    response = client.configurations.get_run_mode(1)
+    assert response == 'run_mode'
