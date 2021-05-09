@@ -74,8 +74,8 @@ Build locally:
 
 .. code:: shell
 
-    docker build . -t quickbuild:10
-    docker run -d -p 8810:8810 quickbuild:10
+    docker build .  -f docker/QB10.Dockerfile -t quickbuild:10
+    docker run --restart always --name qb10 -d -p 8810:8810 quickbuild:10
 
 Or using existed images:
 
