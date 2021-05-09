@@ -3,6 +3,20 @@ from typing import List, Optional, Union
 import xmltodict
 
 
+def _to_python(d):
+    for k, v in d.items():
+        if isinstance(v, dict):
+            d[k] = _to_python(v)
+        elif v == 'true':
+            d[k] = True
+        elif v == 'false':
+            d[k] = False
+        elif v.isdigit():
+            d[k] = int(v)
+
+    return d
+
+
 class Configurations:
 
     def __init__(self, quickbuild):
@@ -158,4 +172,28 @@ class Configurations:
         return self.quickbuild._request(
             'GET',
             'configurations/{}/run_mode'.format(configuration_id),
+        )
+
+    def get_schedule(self, configuration_id: int) -> dict:
+        """
+        Get configuration schedule.
+
+        Args:
+            configuration_id (int): configuration identifier.
+
+        Returns:
+            dict: configuration schedule.
+
+        Raises:
+            QBProcessingError: will be raised if schedule is inherited from
+                               parent configuration.
+        """
+        def callback(response: str) -> dict:
+            root = xmltodict.parse(response)
+            return _to_python(root[list(root.keys())[0]])
+
+        return self.quickbuild._request(
+            'GET',
+            'configurations/{}/schedule'.format(configuration_id),
+            callback,
         )

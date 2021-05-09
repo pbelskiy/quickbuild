@@ -334,3 +334,67 @@ def test_get_run_mode(client):
 
     response = client.configurations.get_run_mode(1)
     assert response == 'run_mode'
+
+
+@responses.activate
+def test_get_schedule_empty(client):
+    CONFIGURATION_SCHEDULE_EMPTY_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
+
+    <com.pmease.quickbuild.taskschedule.schedule.NoSchedule>
+      <paused>false</paused>
+      <randomRange>60</randomRange>
+    </com.pmease.quickbuild.taskschedule.schedule.NoSchedule>
+    """
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/configurations/1/schedule'),
+        content_type='application/xml',
+        body=CONFIGURATION_SCHEDULE_EMPTY_XML,
+    )
+
+    response = client.configurations.get_schedule(1)
+    assert response['paused'] is False
+
+
+@responses.activate
+def test_get_schedule_periodical(client):
+    CONFIGURATION_SCHEDULE_PERIODICAL_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
+
+    <com.pmease.quickbuild.taskschedule.schedule.PeriodicalSchedule>
+      <paused>true</paused>
+      <randomRange>60</randomRange>
+      <repeatInterval>300</repeatInterval>
+    </com.pmease.quickbuild.taskschedule.schedule.PeriodicalSchedule>
+    """
+
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/configurations/1/schedule'),
+        content_type='application/xml',
+        body=CONFIGURATION_SCHEDULE_PERIODICAL_XML,
+    )
+
+    response = client.configurations.get_schedule(1)
+    assert response['repeatInterval'] == 300
+
+
+@responses.activate
+def test_get_schedule_cron_xml(client):
+    CONFIGURATION_SCHEDULE_CRON_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
+
+    <com.pmease.quickbuild.taskschedule.schedule.CronSchedule>
+      <paused>false</paused>
+      <randomRange>120</randomRange>
+      <expression>0 0 1 * * ?</expression>
+    </com.pmease.quickbuild.taskschedule.schedule.CronSchedule>
+    """
+
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/configurations/1/schedule'),
+        content_type='application/xml',
+        body=CONFIGURATION_SCHEDULE_CRON_XML,
+    )
+
+    response = client.configurations.get_schedule(1)
+    assert response['expression'] == '0 0 1 * * ?'
