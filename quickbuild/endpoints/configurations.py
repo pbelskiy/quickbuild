@@ -236,3 +236,34 @@ class Configurations:
             _to_python,
             params=params,
         )
+
+    def get_success_rate(self,
+                         configuration_id: int,
+                         *,
+                         from_date: Optional[datetime.date],
+                         to_date: Optional[datetime.date]
+                         ) -> int:
+        """
+        Get configuration success rate.
+
+        Args:
+            configuration_id (int): configuration identifier.
+
+        Returns:
+            int: value in the range of 0~100, with 0 stands for 0%, and 100
+                 stands for 100%.
+        """
+        params = dict()
+
+        if from_date:
+            params['from_date'] = str(from_date)
+
+        if to_date:
+            params['to_date'] = str(to_date)
+
+        return self.quickbuild._request(
+            'GET',
+            'configurations/{}/success_rate'.format(configuration_id),
+            _to_python,
+            params=params,
+        )

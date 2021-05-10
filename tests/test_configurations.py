@@ -428,7 +428,6 @@ def test_get_average_duration(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/configurations/1/average_duration'),
-        content_type='application/json',
         body='71831',
     )
 
@@ -439,3 +438,20 @@ def test_get_average_duration(client):
     )
 
     assert response == 71831
+
+
+@responses.activate
+def test_get_success_rate(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/configurations/1/success_rate'),
+        body='42',
+    )
+
+    response = client.configurations.get_success_rate(
+        1,
+        from_date=datetime.date.today(),
+        to_date=datetime.date.today() - datetime.timedelta(days=50)
+    )
+
+    assert response == 42
