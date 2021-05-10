@@ -1,6 +1,6 @@
 from typing import Dict, List, Optional, Union
 
-import xmltodict
+from quickbuild.helpers import response2py
 
 
 class Audits:
@@ -55,14 +55,6 @@ class Audits:
         Returns:
             List[dict]: list of audits.
         """
-        def callback(response: str) -> List[dict]:
-            root = xmltodict.parse(response)
-            users = root['list']['com.pmease.quickbuild.model.Audit']
-            if isinstance(users, list):
-                return users
-
-            return [users]
-
         params = dict(count=count)  # type: Dict[str, Union[str, int]]
 
         if username:
@@ -86,7 +78,7 @@ class Audits:
         return self.quickbuild._request(
             'GET',
             'audits',
-            callback,
+            callback=response2py,
             params=params,
         )
 
@@ -97,11 +89,8 @@ class Audits:
         Returns:
             int: count of audits.
         """
-        def callback(response: str) -> int:
-            return int(response)
-
         return self.quickbuild._request(
             'GET',
             'audits/count',
-            callback,
+            callback=response2py,
         )

@@ -42,7 +42,7 @@ def test_get(client):
 
     response = client.users.get()
     assert len(response) == 1
-    assert response[0]['id'] == '1'
+    assert response[0]['id'] == 1
 
 
 @responses.activate
@@ -55,7 +55,7 @@ def test_get_info(client):
     )
 
     response = client.users.get_info(1)
-    assert response['id'] == '1'
+    assert response['id'] == 1
     assert response['name'] == 'admin'
 
 

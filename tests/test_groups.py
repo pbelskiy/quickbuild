@@ -54,7 +54,8 @@ def test_get(client):
 
     response = client.groups.get()
     assert len(response) == 1
-    assert response[0]['id'] == '1'
+    assert response[0]['id'] == 1
+    assert response[0]['admin'] is False
 
 
 @responses.activate
@@ -67,7 +68,7 @@ def test_get_info(client):
     )
 
     response = client.groups.get_info(1)
-    assert response['id'] == '1'
+    assert response['id'] == 1
 
 
 @responses.activate

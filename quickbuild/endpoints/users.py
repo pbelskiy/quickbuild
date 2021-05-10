@@ -1,6 +1,6 @@
 from typing import List, Optional, Union
 
-import xmltodict
+from quickbuild.helpers import response2py
 
 
 class Users:
@@ -15,17 +15,10 @@ class Users:
         Returns:
             List[dict]: list of users.
         """
-        def callback(response: str) -> List[dict]:
-            root = xmltodict.parse(response)
-            users = root['list']['com.pmease.quickbuild.model.User']
-            if isinstance(users, list) is False:
-                users = [users]
-            return users
-
         return self.quickbuild._request(
             'GET',
             'users',
-            callback
+            callback=response2py
         )
 
     def get_info(self,
@@ -42,14 +35,10 @@ class Users:
         Returns:
             dict: information about user.
         """
-        def callback(response: str) -> Union[dict, str]:
-            root = xmltodict.parse(response)
-            return root['com.pmease.quickbuild.model.User']
-
         return self.quickbuild._request(
             'GET',
             'users/{}'.format(user_id),
-            callback
+            callback=response2py
         )
 
     def get_display_name(self, user_id: int) -> str:
@@ -78,13 +67,10 @@ class Users:
         Returns:
             int: user id being updated.
         """
-        def callback(response: str) -> int:
-            return int(response)
-
         return self.quickbuild._request(
             'POST',
             'users',
-            callback,
+            callback=response2py,
             data=configuration,
         )
 

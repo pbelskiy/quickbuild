@@ -1,27 +1,8 @@
 import datetime
 
-from typing import Any, List, Optional, Union
+from typing import List, Optional, Union
 
-import xmltodict
-
-
-def _to_python(obj: Any) -> Any:
-    if isinstance(obj, str):
-        if obj.isdigit():
-            return int(obj)
-
-    elif isinstance(obj, dict):
-        for k, v in obj.items():
-            if isinstance(v, dict):
-                obj[k] = _to_python(v)
-            elif v == 'true':
-                obj[k] = True
-            elif v == 'false':
-                obj[k] = False
-            elif v.isdigit():
-                obj[k] = int(v)
-
-    return obj
+from quickbuild.helpers import response2py
 
 
 class Configurations:
@@ -30,18 +11,10 @@ class Configurations:
         self.quickbuild = quickbuild
 
     def _get(self, params: dict) -> List[dict]:
-
-        def callback(response: str) -> List[dict]:
-            root = xmltodict.parse(response)
-            configurations = root['list']['com.pmease.quickbuild.model.Configuration']
-            if isinstance(configurations, list) is False:
-                configurations = [configurations]
-            return configurations
-
         return self.quickbuild._request(
             'GET',
             'configurations',
-            callback,
+            callback=response2py,
             params=params,
         )
 
@@ -99,13 +72,12 @@ class Configurations:
             if as_xml:
                 return response
 
-            root = xmltodict.parse(response)
-            return root['com.pmease.quickbuild.model.Configuration']
+            return response2py(response)
 
         return self.quickbuild._request(
             'GET',
             'configurations/{}'.format(configuration_id),
-            callback
+            callback=callback
         )
 
     def get_path(self, configuration_id: int) -> str:
@@ -197,14 +169,10 @@ class Configurations:
             QBProcessingError: will be raised if schedule is inherited from
                                parent configuration.
         """
-        def callback(response: str) -> dict:
-            root = xmltodict.parse(response)
-            return _to_python(root[list(root.keys())[0]])
-
         return self.quickbuild._request(
             'GET',
             'configurations/{}/schedule'.format(configuration_id),
-            callback,
+            callback=response2py,
         )
 
     def get_average_duration(self,
@@ -233,7 +201,7 @@ class Configurations:
         return self.quickbuild._request(
             'GET',
             'configurations/{}/average_duration'.format(configuration_id),
-            _to_python,
+            callback=response2py,
             params=params,
         )
 
@@ -264,6 +232,6 @@ class Configurations:
         return self.quickbuild._request(
             'GET',
             'configurations/{}/success_rate'.format(configuration_id),
-            _to_python,
+            callback=response2py,
             params=params,
         )

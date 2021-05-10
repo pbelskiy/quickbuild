@@ -85,7 +85,7 @@ def test_get(client):
 
     response = client.audits.get(count=1)
     assert len(response) == 1
-    assert response[0]['id'] == '11'
+    assert response[0]['id'] == 11
 
 
 @responses.activate

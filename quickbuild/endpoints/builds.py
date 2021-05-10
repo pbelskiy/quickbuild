@@ -37,7 +37,7 @@ class Builds:
         return self.quickbuild._request(
             'GET',
             'builds/{}'.format(build_id),
-            callback
+            callback=callback
         )
 
     def get_status(self, build_id: int) -> str:
@@ -50,7 +50,10 @@ class Builds:
         Returns:
             str: Build status, for example: `SUCCESS`
         """
-        return self.quickbuild._request('GET', 'builds/{}/status'.format(build_id))
+        return self.quickbuild._request(
+            'GET',
+            'builds/{}/status'.format(build_id)
+        )
 
     def get_begin_date(self, build_id: int) -> datetime:
         """
@@ -68,7 +71,7 @@ class Builds:
         response = self.quickbuild._request(
             'GET',
             'builds/{}/begin_date'.format(build_id),
-            callback
+            callback=callback
         )
 
         return response
@@ -83,7 +86,10 @@ class Builds:
         Returns:
             str: build version
         """
-        return self.quickbuild._request('GET', 'builds/{}/version'.format(build_id))
+        return self.quickbuild._request(
+            'GET',
+            'builds/{}/version'.format(build_id)
+        )
 
     def get_duration(self, build_id: int) -> int:
         """
@@ -102,7 +108,7 @@ class Builds:
         response = self.quickbuild._request(
             'GET',
             'builds/{}/duration'.format(build_id),
-            callback
+            callback=callback
         )
 
         return response
@@ -401,7 +407,7 @@ class Builds:
         response = self.quickbuild._request(
             'GET',
             'builds/count',
-            callback,
+            callback=callback,
             params=params,
         )
 
@@ -428,7 +434,7 @@ class Builds:
         response = self.quickbuild._request(
             'POST',
             'builds',
-            callback,
+            callback=callback,
             data=configuration,
         )
 

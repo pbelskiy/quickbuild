@@ -63,10 +63,11 @@ class QuickBuild(ABC):
     def _request(self,
                  method: str,
                  path: str,
-                 fcb: Optional[Callable] = None,
+                 *,
+                 callback: Optional[Callable] = None,
                  **kwargs: Any
                  ) -> Any:
-        return self._rest(self._callback, method, path, fcb, **kwargs)
+        return self._rest(self._callback, method, path, callback, **kwargs)
 
     @abstractmethod
     def _rest(self,

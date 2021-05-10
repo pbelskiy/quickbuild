@@ -1,8 +1,7 @@
 from typing import NamedTuple
 
-import xmltodict
-
 from quickbuild.exceptions import QBError
+from quickbuild.helpers import response2py
 
 ServerVersion = NamedTuple(
     'ServerVersion', [('major', int), ('minor', int), ('patch', int)]
@@ -24,7 +23,11 @@ class System:
         def callback(response: str) -> ServerVersion:
             return ServerVersion(*map(int, response.split('.')))
 
-        return self.quickbuild._request('GET', 'version', callback)
+        return self.quickbuild._request(
+            'GET',
+            'version',
+            callback=callback
+        )
 
     def pause(self) -> None:
         """
@@ -37,7 +40,11 @@ class System:
             if response != 'paused':
                 raise QBError(response)
 
-        return self.quickbuild._request('GET', 'pause', callback)
+        return self.quickbuild._request(
+            'GET',
+            'pause',
+            callback=callback
+        )
 
     def resume(self) -> None:
         """
@@ -50,7 +57,11 @@ class System:
             if response != 'resumed':
                 raise QBError(response)
 
-        return self.quickbuild._request('GET', 'resume', callback)
+        return self.quickbuild._request(
+            'GET',
+            'resume',
+            callback=callback
+        )
 
     def get_pause_information(self) -> str:
         """
@@ -62,11 +73,11 @@ class System:
         Raises:
             QBProcessingError: will be raised if system is not paused.
         """
-        def callback(response: str) -> str:
-            root = xmltodict.parse(response)
-            return root['com.pmease.quickbuild.setting.system.PauseSystem']
-
-        return self.quickbuild._request('GET', 'paused', callback)
+        return self.quickbuild._request(
+            'GET',
+            'paused',
+            callback=response2py
+        )
 
     def backup(self, configuration: str) -> str:
         """
@@ -78,4 +89,8 @@ class System:
         Returns:
             str: Absolute path to the backup file.
         """
-        return self.quickbuild._request('POST', 'backup', data=configuration)
+        return self.quickbuild._request(
+            'POST',
+            'backup',
+            data=configuration
+        )

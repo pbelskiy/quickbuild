@@ -1,6 +1,6 @@
 from typing import Dict, List, Optional
 
-import xmltodict
+from quickbuild.helpers import response2py
 
 
 class Requests:
@@ -9,11 +9,6 @@ class Requests:
     """
     def __init__(self, quickbuild):
         self.quickbuild = quickbuild
-
-    @staticmethod
-    def _request_result_callback(response: str) -> dict:
-        root = xmltodict.parse(response)
-        return root['com.pmease.quickbuild.RequestResult']
 
     def get(self,
             *,
@@ -36,13 +31,6 @@ class Requests:
         Returns:
             List[dict]: list of build requests.
         """
-        def callback(response: str) -> List[dict]:
-            root = xmltodict.parse(response)
-            requests = root['list']['com.pmease.quickbuild.BuildRequest']
-            if isinstance(requests, list) is False:
-                requests = [requests]
-            return requests
-
         params = dict()  # type: Dict[str, int]
 
         if configuration_id:
@@ -54,7 +42,7 @@ class Requests:
         return self.quickbuild._request(
             'GET',
             'build_requests',
-            callback,
+            callback=response2py,
             params=params
         )
 
@@ -77,7 +65,7 @@ class Requests:
         return self.quickbuild._request(
             'POST',
             'build_requests',
-            self._request_result_callback,
+            callback=response2py,
             data=configuration,
         )
 
@@ -99,7 +87,7 @@ class Requests:
         return self.quickbuild._request(
             'GET',
             'trigger',
-            self._request_result_callback,
+            callback=response2py,
             params=dict(configuration_id=configuration_id)
         )
 

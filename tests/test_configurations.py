@@ -247,7 +247,7 @@ def test_get_child(client):
 
     response = client.configurations.get_child(1)
     assert len(response) == 1
-    assert response[0]['id'] == '2'
+    assert response[0]['id'] == 2
 
 
 @responses.activate
@@ -261,7 +261,7 @@ def test_get_descendent(client):
 
     response = client.configurations.get_descendent(1)
     assert len(response) == 2
-    assert response[0]['id'] == '2'
+    assert response[0]['id'] == 2
 
 
 @responses.activate
@@ -275,6 +275,9 @@ def test_get_info(client):
 
     response = client.configurations.get_info(1)
     assert response['name'] == 'root'
+    assert response['id'] == 1
+    assert response['concurrent'] is False
+    assert response['schedule']['paused'] is False
 
 
 @responses.activate

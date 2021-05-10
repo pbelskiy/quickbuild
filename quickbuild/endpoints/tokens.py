@@ -1,6 +1,6 @@
 from typing import Dict, List, Optional
 
-import xmltodict
+from quickbuild.helpers import response2py
 
 
 class Tokens:
@@ -23,16 +23,6 @@ class Tokens:
         Returns:
             List[dict]: List of token and agent details
         """
-        def callback(response: str) -> List[dict]:
-            root = xmltodict.parse(response)
-
-            tokens = []
-            if root['list'] is not None:
-                tokens = root['list']['com.pmease.quickbuild.model.Token']
-                if isinstance(tokens, list) is False:
-                    tokens = [tokens]
-            return tokens
-
         params = dict()  # type: Dict[str, str]
 
         if agent_address:
@@ -41,7 +31,7 @@ class Tokens:
         return self.quickbuild._request(
             'GET',
             'tokens',
-            callback,
+            callback=response2py,
             params=params,
         )
 
