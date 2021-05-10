@@ -9,7 +9,11 @@ class Builds:
     def __init__(self, quickbuild):
         self.quickbuild = quickbuild
 
-    def get_info(self, build_id: int, as_xml: Optional[bool] = False) -> Union[dict, str]:
+    def get_info(self,
+                 build_id: int,
+                 *,
+                 as_xml: Optional[bool] = False
+                 ) -> Union[dict, str]:
         """
         Get build info as raw XML string.
 
@@ -21,7 +25,7 @@ class Builds:
                 representation might be usefull to update or create new build.
 
         Returns:
-            dict: build information.
+            Union[dict, str]: build information.
         """
         def callback(response: str) -> Union[dict, str]:
             if as_xml:
@@ -83,7 +87,8 @@ class Builds:
 
     def get_duration(self, build_id: int) -> int:
         """
-        Get build duration in ms. QBProcessingError will be raised if build is not finished.
+        Get build duration in ms. QBProcessingError will be raised if build is
+        not finished.
 
         Args:
             build_id (int): build id.

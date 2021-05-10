@@ -83,7 +83,9 @@ class Configurations:
 
     def get_info(self,
                  configuration_id: int,
-                 as_xml: Optional[bool] = False) -> Union[dict, str]:
+                 *,
+                 as_xml: Optional[bool] = False
+                 ) -> Union[dict, str]:
         """
         Get full configuration info.
 
@@ -209,7 +211,8 @@ class Configurations:
                              configuration_id: int,
                              *,
                              from_date: Optional[datetime.date],
-                             to_date: Optional[datetime.date]) -> int:
+                             to_date: Optional[datetime.date]
+                             ) -> int:
         """
         Get configuration average duration.
 

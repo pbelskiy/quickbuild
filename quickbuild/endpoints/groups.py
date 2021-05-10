@@ -28,7 +28,11 @@ class Groups:
             callback
         )
 
-    def get_info(self, group_id: int, as_xml: Optional[bool] = False) -> Union[dict, str]:
+    def get_info(self,
+                 group_id: int,
+                 *,
+                 as_xml: Optional[bool] = False
+                 ) -> Union[dict, str]:
         """
         Get information about specified group.
 
