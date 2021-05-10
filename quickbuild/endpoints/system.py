@@ -31,7 +31,7 @@ class System:
         Pause system.
 
         Raises:
-            QBError: if system haven`t paused.
+            QBError: system has not paused.
         """
         def callback(response: str) -> None:
             if response != 'paused':
@@ -41,10 +41,10 @@ class System:
 
     def resume(self) -> None:
         """
-        Resumed system.
+        Resume system.
 
         Raises:
-            QBError: if system haven`t resumed.
+            QBError: system has not resumed.
         """
         def callback(response: str) -> None:
             if response != 'resumed':
@@ -52,17 +52,17 @@ class System:
 
         return self.quickbuild._request('GET', 'resume', callback)
 
-    def get_pause_information(self) -> None:
+    def get_pause_information(self) -> str:
         """
         Get system pause information including pause reason.
 
         Returns:
-            ServerVersion: NamedTuple with major, minor and patch version.
+            str: pause information.
 
         Raises:
             QBProcessingError: will be raised if system is not paused.
         """
-        def callback(response: str) -> None:
+        def callback(response: str) -> str:
             root = xmltodict.parse(response)
             return root['com.pmease.quickbuild.setting.system.PauseSystem']
 

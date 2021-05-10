@@ -5,14 +5,16 @@ from collections import namedtuple
 from http import HTTPStatus
 from typing import Any, Callable, Optional, Union
 
-from quickbuild.endpoints.audits import Audits
-from quickbuild.endpoints.builds import Builds
-from quickbuild.endpoints.configurations import Configurations
-from quickbuild.endpoints.groups import Groups
-from quickbuild.endpoints.requests import Requests
-from quickbuild.endpoints.system import System
-from quickbuild.endpoints.tokens import Tokens
-from quickbuild.endpoints.users import Users
+from quickbuild.endpoints import (
+    Audits,
+    Builds,
+    Configurations,
+    Groups,
+    Requests,
+    System,
+    Tokens,
+    Users,
+)
 from quickbuild.exceptions import (
     QBError,
     QBForbiddenError,
