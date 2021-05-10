@@ -1,20 +1,27 @@
-from typing import List, Optional, Union
+import datetime
+
+from typing import Any, List, Optional, Union
 
 import xmltodict
 
 
-def _to_python(d):
-    for k, v in d.items():
-        if isinstance(v, dict):
-            d[k] = _to_python(v)
-        elif v == 'true':
-            d[k] = True
-        elif v == 'false':
-            d[k] = False
-        elif v.isdigit():
-            d[k] = int(v)
+def _to_python(obj: Any) -> Any:
+    if isinstance(obj, str):
+        if obj.isdigit():
+            return int(obj)
 
-    return d
+    elif isinstance(obj, dict):
+        for k, v in obj.items():
+            if isinstance(v, dict):
+                obj[k] = _to_python(v)
+            elif v == 'true':
+                obj[k] = True
+            elif v == 'false':
+                obj[k] = False
+            elif v.isdigit():
+                obj[k] = int(v)
+
+    return obj
 
 
 class Configurations:
@@ -196,4 +203,33 @@ class Configurations:
             'GET',
             'configurations/{}/schedule'.format(configuration_id),
             callback,
+        )
+
+    def get_average_duration(self,
+                             configuration_id: int,
+                             *,
+                             from_date: Optional[datetime.date],
+                             to_date: Optional[datetime.date]) -> int:
+        """
+        Get configuration average duration.
+
+        Args:
+            configuration_id (int): configuration identifier.
+
+        Returns:
+            int: milliseconds of average build duration.
+        """
+        params = dict()
+
+        if from_date:
+            params['from_date'] = str(from_date)
+
+        if to_date:
+            params['to_date'] = str(to_date)
+
+        return self.quickbuild._request(
+            'GET',
+            'configurations/{}/average_duration'.format(configuration_id),
+            _to_python,
+            params=params,
         )

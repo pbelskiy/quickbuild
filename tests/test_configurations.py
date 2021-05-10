@@ -1,3 +1,4 @@
+import datetime
 import re
 
 import responses
@@ -420,3 +421,21 @@ def test_get_schedule_cron_json(client):
     assert response['paused'] is False
     assert response['randomRange'] == 120
     assert response['expression'] == '0 0 1 * * ?'
+
+
+@responses.activate
+def test_get_average_duration(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/configurations/1/average_duration'),
+        content_type='application/json',
+        body='71831',
+    )
+
+    response = client.configurations.get_average_duration(
+        1,
+        from_date=datetime.date.today(),
+        to_date=datetime.date.today() - datetime.timedelta(days=10)
+    )
+
+    assert response == 71831
