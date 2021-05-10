@@ -1,7 +1,9 @@
+import json
+
 from abc import ABC, abstractmethod
 from collections import namedtuple
 from http import HTTPStatus
-from typing import Any, Callable, Optional
+from typing import Any, Callable, Optional, Union
 
 from quickbuild.endpoints.audits import Audits
 from quickbuild.endpoints.builds import Builds
@@ -18,7 +20,7 @@ from quickbuild.exceptions import (
     QBProcessingError,
 )
 
-Response = namedtuple('Response', ['status', 'body'])
+Response = namedtuple('Response', ['status', 'headers', 'body'])
 
 
 class QuickBuild(ABC):
@@ -34,7 +36,7 @@ class QuickBuild(ABC):
         self.users = Users(self)
 
     @staticmethod
-    def _callback(response: Response, fcb: Optional[Callable] = None) -> str:
+    def _callback(response: Response, fcb: Optional[Callable] = None) -> Union[str, dict]:
         if response.status == HTTPStatus.NO_CONTENT:
             raise QBProcessingError(response.body)
 
@@ -46,6 +48,10 @@ class QuickBuild(ABC):
 
         if response.status != HTTPStatus.OK:
             raise QBError(response.body)
+
+        # native json from server
+        if response.headers.get('Content-Type') == 'application/json':
+            return json.loads(response.body)
 
         if fcb:
             return fcb(response.body)

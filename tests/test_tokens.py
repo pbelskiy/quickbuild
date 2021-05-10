@@ -159,6 +159,7 @@ async def test_authorize_async(aiohttp_mock):
     try:
         aiohttp_mock.get(
             re.compile(r'.*/rest/tokens/authorize'),
+            content_type='text/plain',
             body=RESPONSE_DATA,
         )
 
@@ -176,6 +177,7 @@ async def test_unauthorize_async(aiohttp_mock):
     try:
         aiohttp_mock.get(
             re.compile(r'.*/rest/tokens/unauthorize'),
+            content_type='text/plain',
             body=RESPONSE_DATA,
         )
 

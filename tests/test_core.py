@@ -65,6 +65,7 @@ async def test_async_client(aiohttp_mock):
 
         aiohttp_mock.get(
             'http://server/rest/version',
+            content_type='text/plain',
             body=GET_VERSION_DATA,
             status=200,
         )
@@ -91,12 +92,14 @@ async def test_async_client_retry(aiohttp_mock):
 
     aiohttp_mock.get(
         'http://server/rest/version',
+        content_type='text/plain',
         body='Server error',
         status=500,
     )
 
     aiohttp_mock.get(
         'http://server/rest/version',
+        content_type='text/plain',
         body=GET_VERSION_DATA,
         status=200,
     )

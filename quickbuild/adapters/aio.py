@@ -142,7 +142,7 @@ class AsyncQBClient(QuickBuild):
         )
 
         body = await response.text()
-        return callback(Response(response.status, body), fcb)
+        return callback(Response(response.status, response.headers, body), fcb)
 
     async def close(self) -> None:  # type: ignore
         """

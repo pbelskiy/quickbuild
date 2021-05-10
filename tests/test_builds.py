@@ -241,6 +241,7 @@ async def test_get_begin_date_async(aiohttp_mock):
 
         aiohttp_mock.get(
             re.compile(r'.*/rest/builds/\d+/begin_date'),
+            content_type='text/plain',
             body=RESPONSE_DATA,
         )
 

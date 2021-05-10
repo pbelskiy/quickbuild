@@ -131,7 +131,7 @@ class QBClient(QuickBuild):
             **kwargs
         )
 
-        return callback(Response(response.status_code, response.text), fcb)
+        return callback(Response(response.status_code, response.headers, response.text), fcb)
 
     def close(self) -> None:
         """

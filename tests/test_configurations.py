@@ -398,3 +398,25 @@ def test_get_schedule_cron_xml(client):
 
     response = client.configurations.get_schedule(1)
     assert response['expression'] == '0 0 1 * * ?'
+
+
+@responses.activate
+def test_get_schedule_cron_json(client):
+    CONFIGURATION_SCHEDULE_CRON_JSON = r"""{
+        "paused" : false,
+        "randomRange" : 120,
+        "expression" : "0 0 1 * * ?"
+    }
+    """
+
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/configurations/1/schedule'),
+        content_type='application/json',
+        body=CONFIGURATION_SCHEDULE_CRON_JSON,
+    )
+
+    response = client.configurations.get_schedule(1)
+    assert response['paused'] is False
+    assert response['randomRange'] == 120
+    assert response['expression'] == '0 0 1 * * ?'
