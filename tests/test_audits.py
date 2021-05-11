@@ -6,69 +6,25 @@ AUDITS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 <list>
   <com.pmease.quickbuild.model.Audit>
-    <id>11</id>
-    <user>admin</user>
-    <timestamp>2021-02-03T12:18:45.168Z</timestamp>
-    <source>root/</source>
-    <action>Build 1.0.0 (#1) was modified via REST.</action>
-    <content>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-
-&lt;com.pmease.quickbuild.model.Build revision="0.0"&gt;
-  &lt;id&gt;1&lt;/id&gt;
-  &lt;configuration&gt;1&lt;/configuration&gt;
-  &lt;version&gt;1.0.0&lt;/version&gt;
-  &lt;requester&gt;1&lt;/requester&gt;
-  &lt;scheduled&gt;false&lt;/scheduled&gt;
-  &lt;status&gt;SUCCESSFUL&lt;/status&gt;
-  &lt;statusDate&gt;2021-01-06T19:59:52.752Z&lt;/statusDate&gt;
-  &lt;beginDate&gt;2021-01-06T19:59:52.617Z&lt;/beginDate&gt;
-  &lt;duration&gt;777&lt;/duration&gt;
-  &lt;waitDuration&gt;96&lt;/waitDuration&gt;
-  &lt;stepRuntimes&gt;
-    &lt;entry&gt;
-      &lt;string&gt;master&lt;/string&gt;
-      &lt;com.pmease.quickbuild.stepsupport.StepRuntime&gt;
-        &lt;status&gt;SUCCESSFUL&lt;/status&gt;
-        &lt;nodeAddress&gt;5d94ceab5742:8810&lt;/nodeAddress&gt;
-        &lt;resources/&gt;
-        &lt;waitDuration&gt;96&lt;/waitDuration&gt;
-        &lt;duration&gt;11&lt;/duration&gt;
-      &lt;/com.pmease.quickbuild.stepsupport.StepRuntime&gt;
-    &lt;/entry&gt;
-  &lt;/stepRuntimes&gt;
-  &lt;repositoryRuntimes/&gt;
-  &lt;secretAwareVariableValues/&gt;
-&lt;/com.pmease.quickbuild.model.Build&gt;
-</content>
-    <previousContent>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-
-&lt;com.pmease.quickbuild.model.Build revision="0.0"&gt;
-  &lt;id&gt;1&lt;/id&gt;
-  &lt;configuration&gt;1&lt;/configuration&gt;
-  &lt;version&gt;1.0.0&lt;/version&gt;
-  &lt;requester&gt;1&lt;/requester&gt;
-  &lt;scheduled&gt;false&lt;/scheduled&gt;
-  &lt;status&gt;SUCCESSFUL&lt;/status&gt;
-  &lt;statusDate&gt;2021-01-06T19:59:52.752Z&lt;/statusDate&gt;
-  &lt;beginDate&gt;2021-01-06T19:59:52.617Z&lt;/beginDate&gt;
-  &lt;duration&gt;666&lt;/duration&gt;
-  &lt;waitDuration&gt;96&lt;/waitDuration&gt;
-  &lt;stepRuntimes&gt;
-    &lt;entry&gt;
-      &lt;string&gt;master&lt;/string&gt;
-      &lt;com.pmease.quickbuild.stepsupport.StepRuntime&gt;
-        &lt;status&gt;SUCCESSFUL&lt;/status&gt;
-        &lt;nodeAddress&gt;5d94ceab5742:8810&lt;/nodeAddress&gt;
-        &lt;resources/&gt;
-        &lt;waitDuration&gt;96&lt;/waitDuration&gt;
-        &lt;duration&gt;11&lt;/duration&gt;
-      &lt;/com.pmease.quickbuild.stepsupport.StepRuntime&gt;
-    &lt;/entry&gt;
-  &lt;/stepRuntimes&gt;
-  &lt;repositoryRuntimes/&gt;
-  &lt;secretAwareVariableValues/&gt;
-&lt;/com.pmease.quickbuild.model.Build&gt;
-</previousContent>
+    <id>47</id>
+    <user>Anonymous</user>
+    <timestamp>2021-05-10T07:11:32.285Z</timestamp>
+    <configuration>7</configuration>
+    <action>Build request was submitted by scheduler.</action>
+  </com.pmease.quickbuild.model.Audit>
+  <com.pmease.quickbuild.model.Audit>
+    <id>46</id>
+    <user>Anonymous</user>
+    <timestamp>2021-05-10T07:11:20.336Z</timestamp>
+    <configuration>3</configuration>
+    <action>Build request was submitted by scheduler.</action>
+  </com.pmease.quickbuild.model.Audit>
+  <com.pmease.quickbuild.model.Audit>
+    <id>45</id>
+    <user>Anonymous</user>
+    <timestamp>2021-05-10T07:11:14.315Z</timestamp>
+    <configuration>1</configuration>
+    <action>Build request was submitted by scheduler.</action>
   </com.pmease.quickbuild.model.Audit>
 </list>
 """
@@ -83,9 +39,19 @@ def test_get(client):
         body=AUDITS_XML,
     )
 
-    response = client.audits.get(count=1)
-    assert len(response) == 1
-    assert response[0]['id'] == 11
+    response = client.audits.get(
+      count=3,
+      username='Anonymous',
+      source='root',
+      action='Build request was submitted by scheduler.',
+      since='2010-01-01',
+      until='2022-01-01',
+      first=45,
+    )
+
+    assert len(response) == 3
+    assert response[1]['id'] == 46
+    assert response[1]['configuration'] == 3
 
 
 @responses.activate
