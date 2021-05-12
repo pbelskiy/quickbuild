@@ -265,7 +265,7 @@ def test_get_descendent(client):
 
 
 @responses.activate
-def test_get_info(client):
+def test_get_info_as_json(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/configurations/1'),
@@ -278,6 +278,19 @@ def test_get_info(client):
     assert response['id'] == 1
     assert response['concurrent'] is False
     assert response['schedule']['paused'] is False
+
+
+@responses.activate
+def test_get_info_as_xml(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/configurations/1'),
+        content_type='application/xml',
+        body=GET_CONFIGURATION_INFO_XML,
+    )
+
+    response = client.configurations.get_info(1, as_xml=True)
+    assert isinstance(response, str)
 
 
 @responses.activate
