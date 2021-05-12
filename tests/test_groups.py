@@ -59,7 +59,7 @@ def test_get(client):
 
 
 @responses.activate
-def test_get_info(client):
+def test_get_info_as_json(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/groups/1'),
@@ -69,6 +69,19 @@ def test_get_info(client):
 
     response = client.groups.get_info(1)
     assert response['id'] == 1
+
+
+@responses.activate
+def test_get_info_as_xml(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/groups/1'),
+        content_type='application/xml',
+        body=GROUP_INFO_XML,
+    )
+
+    response = client.groups.get_info(1, as_xml=True)
+    assert isinstance(response, str)
 
 
 @responses.activate
