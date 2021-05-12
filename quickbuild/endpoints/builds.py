@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Dict, List, Optional, Union
 
-import xmltodict
+from quickbuild.helpers import response2py
 
 
 class Builds:
@@ -31,8 +31,7 @@ class Builds:
             if as_xml:
                 return response
 
-            root = xmltodict.parse(response)
-            return root['com.pmease.quickbuild.model.Build']
+            return response2py(response)
 
         return self.quickbuild._request(
             'GET',
@@ -267,10 +266,6 @@ class Builds:
         Returns:
             List[dict]: builds search result list.
         """
-        def callback(response: str) -> List[dict]:
-            root = xmltodict.parse(response)
-            return root['list']['com.pmease.quickbuild.model.Build']
-
         params = dict(
             count=count,
         )  # type: Dict[str, Union[str, int, bool]]
@@ -311,6 +306,7 @@ class Builds:
         response = self.quickbuild._request(
             'GET',
             'builds',
+            callback=response2py,
             params=params
         )
 
@@ -372,9 +368,6 @@ class Builds:
         Returns:
             int: builds count.
         """
-        def callback(response: str) -> int:
-            return int(response)
-
         params = dict()  # type: Dict[str, Union[str, int, bool]]
 
         if configuration_id:
@@ -407,7 +400,7 @@ class Builds:
         response = self.quickbuild._request(
             'GET',
             'builds/count',
-            callback=callback,
+            callback=response2py,
             params=params,
         )
 
@@ -428,13 +421,10 @@ class Builds:
         Returns:
             int: build id being updated.
         """
-        def callback(response: str) -> int:
-            return int(response)
-
         response = self.quickbuild._request(
             'POST',
             'builds',
-            callback=callback,
+            callback=response2py,
             data=configuration,
         )
 

@@ -31,19 +31,29 @@ class Users:
 
         Args:
             user_id (int): user identifier.
+            as_xml (Optional[bool]) return XML document instead of json.
 
         Returns:
             dict: information about user.
         """
+        def callback(response: str) -> Union[dict, str]:
+            if as_xml:
+                return response
+
+            return response2py(response)
+
         return self.quickbuild._request(
             'GET',
             'users/{}'.format(user_id),
-            callback=response2py
+            callback=callback
         )
 
     def get_display_name(self, user_id: int) -> str:
         """
         Get display name for specified user.
+
+        Args:
+            user_id (int): user identifier.
 
         Returns:
             str: user name.

@@ -186,7 +186,7 @@ def test_get_info(client):
     )
 
     response = client.builds.get_info(1)
-    assert response['id'] == '1'
+    assert response['id'] == 1
 
     response = client.builds.get_info(1, as_xml=True)
     assert isinstance(response, str)
@@ -391,7 +391,7 @@ def test_search(client):
         first=3,
     )
 
-    len(response) == 2
+    assert len(response) == 2
 
 
 @responses.activate
