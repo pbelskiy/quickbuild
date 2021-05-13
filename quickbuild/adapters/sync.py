@@ -2,7 +2,7 @@ from typing import Any, Callable, Optional
 
 from requests import Session
 from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
+from urllib3.util.retry import Retry
 
 from quickbuild.core import QuickBuild, Response
 
@@ -110,13 +110,13 @@ class QBClient(QuickBuild):
         self.session.mount('http://', adapter)
         self.session.mount('https://', adapter)
 
-    def _rest(self,
-              callback: Callable,
-              method: str,
-              path: str,
-              fcb: Optional[Callable] = None,
-              **kwargs: Any
-              ) -> str:
+    def _request(self,
+                 method: str,
+                 path: str,
+                 *,
+                 callback: Optional[Callable] = None,
+                 **kwargs: Any
+                 ) -> Any:
 
         if self.timeout and 'timeout' not in kwargs:
             kwargs['timeout'] = self.timeout
@@ -131,7 +131,12 @@ class QBClient(QuickBuild):
             **kwargs
         )
 
-        return callback(Response(response.status_code, response.headers, response.text), fcb)
+        result = self._process(
+            Response(response.status_code, response.headers, response.text),
+            callback
+        )
+
+        return result
 
     def close(self) -> None:
         """

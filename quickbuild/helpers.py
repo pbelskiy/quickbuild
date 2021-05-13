@@ -43,8 +43,8 @@ def _to_python(obj: Any) -> Any:
             return int(obj)
 
     elif isinstance(obj, list):
-        for i in range(len(obj)):
-            obj[i] = _to_python(obj[i])
+        for i, v in enumerate(obj):
+            obj[i] = _to_python(v)
         return obj
 
     elif isinstance(obj, dict):

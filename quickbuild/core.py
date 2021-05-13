@@ -1,9 +1,8 @@
 import json
 
-from abc import ABC, abstractmethod
 from collections import namedtuple
 from http import HTTPStatus
-from typing import Any, Callable, Optional, Union
+from typing import Any, Callable, Optional
 
 from quickbuild.endpoints import (
     Audits,
@@ -25,7 +24,7 @@ from quickbuild.exceptions import (
 Response = namedtuple('Response', ['status', 'headers', 'body'])
 
 
-class QuickBuild(ABC):
+class QuickBuild:
 
     def __init__(self):
         self.audits = Audits(self)
@@ -38,7 +37,7 @@ class QuickBuild(ABC):
         self.users = Users(self)
 
     @staticmethod
-    def _callback(response: Response, fcb: Optional[Callable] = None) -> Union[str, dict]:
+    def _process(response: Response, callback: Optional[Callable] = None) -> Any:
         if response.status == HTTPStatus.NO_CONTENT:
             raise QBProcessingError(response.body)
 
@@ -55,30 +54,7 @@ class QuickBuild(ABC):
         if response.headers.get('Content-Type') == 'application/json':
             return json.loads(response.body)
 
-        if fcb:
-            return fcb(response.body)
+        if not callback:
+            return response.body
 
-        return response.body
-
-    def _request(self,
-                 method: str,
-                 path: str,
-                 *,
-                 callback: Optional[Callable] = None,
-                 **kwargs: Any
-                 ) -> Any:
-        return self._rest(self._callback, method, path, callback, **kwargs)
-
-    @abstractmethod
-    def _rest(self,
-              callback: Callable,
-              method: str,
-              path: str,
-              fcb: Optional[Callable] = None,
-              **kwargs: Any
-              ) -> Any:
-        raise NotImplementedError
-
-    @abstractmethod
-    def close(self) -> None:
-        raise NotImplementedError
+        return callback(response.body)
