@@ -235,3 +235,23 @@ class Configurations:
             callback=response2py,
             params=params,
         )
+
+    def get_parent(self, configuration_id: int) -> int:
+        """
+        Get parent configuration id.
+
+        Args:
+            configuration_id (int): configuration identifier.
+
+        Returns:
+            int: id of parent configuration.
+
+        Raises:
+            QBProcessingError: the configuration is root configuration and does
+                               not have parent.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'configurations/{}/parent'.format(configuration_id),
+            callback=response2py,
+        )

@@ -471,3 +471,15 @@ def test_get_success_rate(client):
     )
 
     assert response == 42
+
+
+@responses.activate
+def test_get_parent(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/configurations/1/parent'),
+        body='55',
+    )
+
+    response = client.configurations.get_parent(1)
+    assert response == 55
