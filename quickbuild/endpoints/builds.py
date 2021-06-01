@@ -460,7 +460,7 @@ class Builds:
         Returns:
             None
         """
-        self.quickbuild._request(
+        return self.quickbuild._request(
             'DELETE',
             'builds/{}'.format(build_id)
         )

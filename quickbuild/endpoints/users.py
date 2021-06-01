@@ -112,7 +112,7 @@ class Users:
         Returns:
             None
         """
-        self.quickbuild._request(
+        return self.quickbuild._request(
             'DELETE',
             'users/{}'.format(user_id),
         )
