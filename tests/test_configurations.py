@@ -495,3 +495,15 @@ def test_update(client):
 
     response = client.configurations.update(CONFIGURATION_INFO_XML)
     assert response == 1991
+
+
+@responses.activate
+def test_create(client):
+    responses.add(
+        responses.POST,
+        re.compile(r'.*/rest/configurations'),
+        body='1991',
+    )
+
+    response = client.configurations.create(CONFIGURATION_INFO_XML)
+    assert response == 1991

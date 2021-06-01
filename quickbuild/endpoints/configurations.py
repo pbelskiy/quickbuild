@@ -276,3 +276,32 @@ class Configurations:
             callback=response2py,
             data=configuration
         )
+
+    def create(self, configuration: str) -> int:
+        """
+        Create a configuration using XML configuration.
+
+        Please note that:
+        1. The posted xml should NOT contain the id element; otherwise,
+           QuickBuild will treat the post as an update to the configuration
+           with that id.
+        2. The parent element denotes id of the parent configuration. Normally
+           you do not need to create the xml from scratch: you may retrieve xml
+           representation of a templating configuration using various
+           configuration access methods, remove the id element, modify certain
+           parts and post back to above url.
+        3. Secret elements (Elements with attribute "secret=encrypt" in XML
+           representation of an existing configuration, typically they are
+           repository passwords, secret variable values, etc.) should not contain
+           the "secret" attribute; otherwise QuickBuild will think that the password
+           has already been encrypted. However if you creating configuration by
+           copying existing one and want to remain the passwords, the "secret"
+           attribute should then be preserved.
+
+        Args:
+            configuration (str): XML document.
+
+        Returns:
+            int: configuration id of newly created configuration.
+        """
+        return self.update(configuration)
