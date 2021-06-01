@@ -305,3 +305,18 @@ class Configurations:
             int: configuration id of newly created configuration.
         """
         return self.update(configuration)
+
+    def delete(self, configuration_id: int) -> None:
+        """
+        Delete configuration.
+
+        Args:
+            configuration_id (int): configuration id.
+
+        Returns:
+            None
+        """
+        return self.quickbuild._request(
+            'DELETE',
+            'configurations/{}'.format(configuration_id)
+        )

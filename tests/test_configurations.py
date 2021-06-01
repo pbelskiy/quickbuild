@@ -507,3 +507,14 @@ def test_create(client):
 
     response = client.configurations.create(CONFIGURATION_INFO_XML)
     assert response == 1991
+
+
+@responses.activate
+def test_delete(client):
+    responses.add(
+        responses.DELETE,
+        re.compile(r'.*/rest/configurations/\d'),
+    )
+
+    response = client.configurations.delete(9)
+    assert response == ''
