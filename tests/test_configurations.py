@@ -4,7 +4,7 @@ import re
 import responses
 
 
-GET_CONFIGURATIONS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
+CONFIGURATIONS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 <list>
   <com.pmease.quickbuild.model.Configuration>
@@ -62,7 +62,7 @@ GET_CONFIGURATIONS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 </list>
 """
 
-GET_CHILD_CONFIGURATIONS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
+CHILD_CONFIGURATIONS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 <list>
   <com.pmease.quickbuild.model.Configuration>
@@ -84,7 +84,7 @@ GET_CHILD_CONFIGURATIONS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 </list>
 """
 
-GET_DESCENDENT_CONFIGURATIONS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
+DESCENDENT_CONFIGURATIONS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 <list>
   <com.pmease.quickbuild.model.Configuration>
@@ -123,7 +123,7 @@ GET_DESCENDENT_CONFIGURATIONS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 </list>
 """
 
-GET_CONFIGURATION_INFO_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
+CONFIGURATION_INFO_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 <com.pmease.quickbuild.model.Configuration>
   <id>1</id>
@@ -228,7 +228,7 @@ def test_get(client):
         responses.GET,
         re.compile(r'.*/rest/configurations'),
         content_type='application/xml',
-        body=GET_CONFIGURATIONS_XML,
+        body=CONFIGURATIONS_XML,
     )
 
     response = client.configurations.get()
@@ -242,7 +242,7 @@ def test_get_child(client):
         responses.GET,
         re.compile(r'.*/rest/configurations'),
         content_type='application/xml',
-        body=GET_CHILD_CONFIGURATIONS_XML,
+        body=CHILD_CONFIGURATIONS_XML,
     )
 
     response = client.configurations.get_child(1)
@@ -256,7 +256,7 @@ def test_get_descendent(client):
         responses.GET,
         re.compile(r'.*/rest/configurations'),
         content_type='application/xml',
-        body=GET_DESCENDENT_CONFIGURATIONS_XML,
+        body=DESCENDENT_CONFIGURATIONS_XML,
     )
 
     response = client.configurations.get_descendent(1)
@@ -270,7 +270,7 @@ def test_get_info_as_json(client):
         responses.GET,
         re.compile(r'.*/rest/configurations/1'),
         content_type='application/xml',
-        body=GET_CONFIGURATION_INFO_XML,
+        body=CONFIGURATION_INFO_XML,
     )
 
     response = client.configurations.get_info(1)
@@ -286,7 +286,7 @@ def test_get_info_as_xml(client):
         responses.GET,
         re.compile(r'.*/rest/configurations/1'),
         content_type='application/xml',
-        body=GET_CONFIGURATION_INFO_XML,
+        body=CONFIGURATION_INFO_XML,
     )
 
     response = client.configurations.get_info(1, as_xml=True)
@@ -483,3 +483,15 @@ def test_get_parent(client):
 
     response = client.configurations.get_parent(1)
     assert response == 55
+
+
+@responses.activate
+def test_update(client):
+    responses.add(
+        responses.POST,
+        re.compile(r'.*/rest/configurations'),
+        body='1991',
+    )
+
+    response = client.configurations.update(CONFIGURATION_INFO_XML)
+    assert response == 1991

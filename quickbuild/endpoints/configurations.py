@@ -255,3 +255,24 @@ class Configurations:
             'configurations/{}/parent'.format(configuration_id),
             callback=response2py,
         )
+
+    def update(self, configuration: str) -> int:
+        """
+        Update a configuration using XML configuration.
+
+        Normally you do not need to create the XML from scratch: you may get
+        XML representation of the configuration using `get_info(as_xml=True)`
+        method and modify certain parts of the XML.
+
+        Args:
+            configuration (str): XML document.
+
+        Returns:
+            int: configuration id being updated.
+        """
+        return self.quickbuild._request(
+            'POST',
+            'configurations',
+            callback=response2py,
+            data=configuration
+        )
