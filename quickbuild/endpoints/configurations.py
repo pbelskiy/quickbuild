@@ -320,3 +320,43 @@ class Configurations:
             'DELETE',
             'configurations/{}'.format(configuration_id)
         )
+
+    def copy(self,
+             configuration_id: int,
+             parent_id: int,
+             name: str,
+             recursive: bool
+             ) -> int:
+        """
+        Copy configuration (available since version 4.0.72)
+
+        Args:
+            configuration_id (int):
+                Configuration id to be copied.
+
+            parent_id (int):
+                Configuration id of the parent to place newly copied configuration.
+
+            name (str):
+                Name of the newly copied configuration.
+
+            recursive (bool):
+                Specify parameter recursive=true to copy specified configuration
+                and all its descendant configurations recursively; otherwise,
+                only the configuration itself will be copied.
+
+        Returns:
+            int: configuration id of the newly copied configuration.
+        """
+        params = dict(
+            parent_id=parent_id,
+            name=name,
+            recursive=recursive,
+        )
+
+        return self.quickbuild._request(
+            'GET',
+            'configurations/{}/copy'.format(configuration_id),
+            callback=response2py,
+            params=params,
+        )

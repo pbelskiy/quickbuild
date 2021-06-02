@@ -518,3 +518,21 @@ def test_delete(client):
 
     response = client.configurations.delete(9)
     assert response == ''
+
+
+@responses.activate
+def test_copy(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/configurations/\d+/copy'),
+        body='1972'
+    )
+
+    response = client.configurations.copy(
+        configuration_id=1,
+        parent_id=2,
+        name='new',
+        recursive=True,
+    )
+
+    assert response == 1972
