@@ -318,7 +318,8 @@ class Configurations:
         """
         return self.quickbuild._request(
             'DELETE',
-            'configurations/{}'.format(configuration_id)
+            'configurations/{}'.format(configuration_id),
+            callback=response2py,
         )
 
     def copy(self,

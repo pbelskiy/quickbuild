@@ -115,4 +115,5 @@ class Users:
         return self.quickbuild._request(
             'DELETE',
             'users/{}'.format(user_id),
+            callback=response2py,
         )

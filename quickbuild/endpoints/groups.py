@@ -100,4 +100,5 @@ class Groups:
         return self.quickbuild._request(
             'DELETE',
             'groups/{}'.format(group_id),
+            callback=response2py,
         )

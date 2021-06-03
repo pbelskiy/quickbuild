@@ -462,5 +462,6 @@ class Builds:
         """
         return self.quickbuild._request(
             'DELETE',
-            'builds/{}'.format(build_id)
+            'builds/{}'.format(build_id),
+            callback=response2py,
         )

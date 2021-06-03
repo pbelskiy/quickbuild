@@ -12,6 +12,9 @@ def response2py(obj: Any) -> Any:
     which in strings inside. Also the main goal is to be equal with native json
     response from QuickBuild when used to be consistend in different versions.
     """
+    if obj == '':
+        return None
+
     try:
         obj = xmltodict.parse(obj)  # let's suppose it could be a XML document
     except ExpatError:

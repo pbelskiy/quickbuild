@@ -451,7 +451,7 @@ def test_delete(client):
         content_type='text/plain',
     )
 
-    assert client.builds.delete(5) == ''
+    assert client.builds.delete(5) is None
 
 
 @pytest.mark.asyncio
@@ -465,6 +465,6 @@ async def test_delete_async(aiohttp_mock):
         )
 
         response = await client.builds.delete(5)
-        assert response == ''
+        assert response is None
     finally:
         await client.close()

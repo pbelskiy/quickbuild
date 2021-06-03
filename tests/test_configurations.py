@@ -517,7 +517,7 @@ def test_delete(client):
     )
 
     response = client.configurations.delete(9)
-    assert response == ''
+    assert response is None
 
 
 @responses.activate

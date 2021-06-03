@@ -103,4 +103,5 @@ class Requests:
         return self.quickbuild._request(
             'DELETE',
             'build_requests/{}'.format(request_id),
+            callback=response2py,
         )
