@@ -1,5 +1,6 @@
 from typing import List, Optional, Union
 
+from quickbuild.exceptions import QBError
 from quickbuild.helpers import response2py
 
 
@@ -72,19 +73,23 @@ class Groups:
         """
         Create a group using XML configuration.
 
-        Please note that the posted XML should NOT contain the id element;
-        otherwise, QuickBuild will treat the post as an updating to the group
-        with that id. Normally you do not need to create the XML from scratch:
-        you may retrieve XML representation of a templating group using `get_info()`
-        method, remove the id element, modify certain parts and post back to
-        above url.
+        Normally you do not need to create the XML from scratch: you may retrieve
+        XML representation of a templating group using `get_info(as_xml=True)`
+        remove the id element, modify certain parts and use i XML as configuration
+        for create method.
 
         Args:
             configuration (str): XML document.
 
         Returns:
             int: group id being created.
+
+        Raises:
+            QBError: XML validation error
         """
+        if '</id>' in configuration:
+            raise QBError('`id` element must not be in XML for create method')
+
         return self.update(configuration)
 
     def delete(self, group_id: int) -> None:

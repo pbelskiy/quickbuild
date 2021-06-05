@@ -1,6 +1,7 @@
 import pytest
 
 from aioresponses import aioresponses
+
 from quickbuild import QBClient
 
 

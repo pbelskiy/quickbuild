@@ -1,8 +1,10 @@
 import datetime
 import re
 
+import pytest
 import responses
 
+from quickbuild import QBError
 
 CONFIGURATIONS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
@@ -505,7 +507,13 @@ def test_create(client):
         body='1991',
     )
 
-    response = client.configurations.create(CONFIGURATION_INFO_XML)
+    xml_with_id = CONFIGURATION_INFO_XML
+    xml_without_id = xml_with_id.replace('<id>1</id>', '')
+
+    with pytest.raises(QBError):
+        client.configurations.create(xml_with_id)
+
+    response = client.configurations.create(xml_without_id)
     assert response == 1991
 
 

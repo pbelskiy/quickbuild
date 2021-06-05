@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Dict, List, Optional, Union
 
+from quickbuild.exceptions import QBError
 from quickbuild.helpers import response2py
 
 
@@ -434,20 +435,24 @@ class Builds:
         """
         Create a build using XML configuration.
 
-        Please note that:
-        - The posted xml should NOT contain the id element; otherwise, QuickBuild
-          will treat the post as an updating to the build with that id.
-        - The configuration element denotes id of the belonging configuration.
-          Normally you do not need to create the XML from scratch: you may retrieve
-          XML representation of a templating build, remove the id element, modify
-          certain parts and post back to above url.
+        The configuration element denotes id of the belonging configuration.
+        Normally you do not need to create the XML from scratch: you may retrieve
+        XML representation of a templating build or using `get_info(as_xml=True`)
+        remove the id element, modify certain parts and use it as configuration
+        for create method.
 
         Args:
             configuration (str): XML document.
 
         Returns:
             int: build id of the the newly created build.
+
+        Raises:
+            QBError: XML validation error
         """
+        if '</id>' in configuration:
+            raise QBError('`id` element must not be in XML for create method')
+
         return self.update(configuration)
 
     def delete(self, build_id: int) -> None:

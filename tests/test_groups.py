@@ -1,6 +1,9 @@
 import re
 
+import pytest
 import responses
+
+from quickbuild import QBError
 
 GROUPS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
@@ -106,7 +109,13 @@ def test_create(client):
         body='1',
     )
 
-    response = client.groups.create(GROUP_INFO_XML)
+    xml_with_id = GROUP_INFO_XML
+    xml_without_id = xml_with_id.replace('<id>1</id>', '')
+
+    with pytest.raises(QBError):
+        client.groups.create(xml_with_id)
+
+    response = client.groups.create(xml_without_id)
     assert response == 1
 
 

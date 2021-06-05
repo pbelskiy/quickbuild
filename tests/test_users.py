@@ -1,6 +1,9 @@
 import re
 
+import pytest
 import responses
+
+from quickbuild import QBError
 
 USERS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
@@ -92,7 +95,13 @@ def test_create(client):
         body='1',
     )
 
-    response = client.users.create(USER_INFO_XML)
+    xml_with_id = USER_INFO_XML
+    xml_without_id = xml_with_id.replace('<id>1</id>', '')
+
+    with pytest.raises(QBError):
+        client.users.create(xml_with_id)
+
+    response = client.users.create(xml_without_id)
     assert response == 1
 
 

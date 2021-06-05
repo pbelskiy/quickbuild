@@ -1,5 +1,6 @@
 from typing import List, Optional, Union
 
+from quickbuild.exceptions import QBError
 from quickbuild.helpers import response2py
 
 
@@ -88,18 +89,22 @@ class Users:
         """
         Create a new user using XML configuration.
 
-        Please note that the posted XML should NOT contain the id element;
-        otherwise, QuickBuild will treat the post as an update to the user with
-        that id. Normally you do not need to create the XML from scratch: you may
+        Normally you do not need to create the XML from scratch: you may
         retrieve XML representation of a templating user using ``get_info()``,
-        remove the id element, modify certain parts and post back to above url.
+        remove the id element, modify certain parts and use it.
 
         Args:
             configuration (str): XML document.
 
         Returns:
             int: id of the newly created user.
+
+        Raises:
+            QBError: XML validation error
         """
+        if '</id>' in configuration:
+            raise QBError('`id` element must not be in XML for create method')
+
         return self.update(configuration)
 
     def delete(self, user_id: int) -> None:

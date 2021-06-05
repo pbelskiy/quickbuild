@@ -5,7 +5,12 @@ from http import HTTPStatus
 import pytest
 import responses
 
-from quickbuild import AsyncQBClient, QBNotFoundError, QBProcessingError
+from quickbuild import (
+    AsyncQBClient,
+    QBError,
+    QBNotFoundError,
+    QBProcessingError,
+)
 
 BUILD_INFO_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
@@ -439,7 +444,13 @@ def test_create(client):
         body='5',
     )
 
-    response = client.builds.create(BUILD_INFO_XML)
+    xml_with_id = BUILD_INFO_XML
+    xml_without_id = xml_with_id.replace('<id>1</id>', '')
+
+    with pytest.raises(QBError):
+        client.builds.create(xml_with_id)
+
+    response = client.builds.create(xml_without_id)
     assert response == 5
 
 
