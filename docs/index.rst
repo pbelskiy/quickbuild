@@ -39,6 +39,12 @@ Groups
 .. autoclass:: quickbuild.endpoints.groups.Groups
     :members:
 
+Memberships
+~~~~~~~~~~~
+
+.. autoclass:: quickbuild.endpoints.memberships.Memberships
+    :members:
+
 Requests
 ~~~~~~~~
 

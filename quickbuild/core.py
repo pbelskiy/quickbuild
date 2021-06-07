@@ -9,6 +9,7 @@ from quickbuild.endpoints import (
     Builds,
     Configurations,
     Groups,
+    Memberships,
     Requests,
     System,
     Tokens,
@@ -31,6 +32,7 @@ class QuickBuild:
         self.builds = Builds(self)
         self.configurations = Configurations(self)
         self.groups = Groups(self)
+        self.memberships = Memberships(self)
         self.requests = Requests(self)
         self.system = System(self)
         self.tokens = Tokens(self)
