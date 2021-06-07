@@ -39,5 +39,5 @@ class Memberships:
         return self.quickbuild._request(
             'GET',
             'memberships/{}'.format(membership_id),
-            callback=partial(response2py, as_xml)
+            callback=partial(response2py, as_xml=as_xml)
         )

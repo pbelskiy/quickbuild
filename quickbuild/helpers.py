@@ -4,7 +4,7 @@ from xml.parsers.expat import ExpatError
 import xmltodict
 
 
-def response2py(obj: Any, native: bool = False) -> Any:
+def response2py(obj: Any, as_xml: bool = False) -> Any:
     """
     Smart and heuristic response converter to native python types.
 
@@ -12,7 +12,7 @@ def response2py(obj: Any, native: bool = False) -> Any:
     which in strings inside. Also the main goal is to be equal with native json
     response from QuickBuild when used to be consistend in different versions.
     """
-    if native:
+    if as_xml:
         return obj
 
     if obj == '':

@@ -26,6 +26,16 @@ MEMBERSHIPS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 </list>
 """
 
+MEMBERSHIP_INFO_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
+
+<com.pmease.quickbuild.model.Membership>
+  <id>1</id>
+  <user>1</user>
+  <group>2</group>
+  <assignedLocally>true</assignedLocally>
+</com.pmease.quickbuild.model.Membership>
+"""
+
 
 @responses.activate
 def test_get(client):
@@ -41,3 +51,21 @@ def test_get(client):
     assert response[0]['id'] == 1
     assert response[1]['group'] == 1
     assert response[2]['assignedLocally'] is True
+
+
+@responses.activate
+def test_get_info(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/memberships/\d+'),
+        content_type='application/xml',
+        body=MEMBERSHIP_INFO_XML,
+    )
+
+    response = client.memberships.get_info(1)
+    assert response['id'] == 1
+    assert response['group'] == 2
+    assert response['assignedLocally'] is True
+
+    response = client.memberships.get_info(1, as_xml=True)
+    assert '<com.pmease.quickbuild.model.Membership>' in response
