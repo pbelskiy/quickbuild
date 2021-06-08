@@ -1,5 +1,6 @@
 import datetime
 
+from functools import partial
 from typing import List, Optional, Union
 
 from quickbuild.exceptions import QBError
@@ -69,16 +70,10 @@ class Configurations:
         Returns:
             Union[str, dict]: configuration content.
         """
-        def callback(response: str) -> Union[dict, str]:
-            if as_xml:
-                return response
-
-            return response2py(response)
-
         return self.quickbuild._request(
             'GET',
             'configurations/{}'.format(configuration_id),
-            callback=callback
+            callback=partial(response2py, as_xml=as_xml)
         )
 
     def get_path(self, configuration_id: int) -> str:

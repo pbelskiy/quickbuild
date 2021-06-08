@@ -1,3 +1,4 @@
+from functools import partial
 from typing import List, Optional, Union
 
 from quickbuild.exceptions import QBError
@@ -36,16 +37,10 @@ class Groups:
         Returns:
             dict: group information.
         """
-        def callback(response: str) -> Union[dict, str]:
-            if as_xml:
-                return response
-
-            return response2py(response)
-
         return self.quickbuild._request(
             'GET',
             'groups/{}'.format(group_id),
-            callback=callback
+            callback=partial(response2py, as_xml=as_xml)
         )
 
     def update(self, configuration: str) -> int:
