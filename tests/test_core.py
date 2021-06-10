@@ -4,9 +4,59 @@ import aiohttp
 import pytest
 import responses
 
-from quickbuild import AsyncQBClient, QBClient, QBError
+from quickbuild import AsyncQBClient, ContentType, QBClient, QBError
 
 GET_VERSION_DATA = '6.0.9'
+
+
+USERS_XML = """<?xml version="1.0" encoding="UTF-8"?>
+
+<list>
+  <com.pmease.quickbuild.model.User>
+    <id>1</id>
+    <favoriteDashboardIds>
+      <long>1</long>
+    </favoriteDashboardIds>
+    <name>admin</name>
+    <lastLogin>2021-06-10T14:18:21.292Z</lastLogin>
+    <password secret="hash">0DPiKuNIrrVmD8IUCuw1hQxNqZc=</password>
+    <pluginSettingDOMs/>
+  </com.pmease.quickbuild.model.User>
+  <com.pmease.quickbuild.model.User>
+    <id>2</id>
+    <favoriteDashboardIds/>
+    <name>pbelskiy</name>
+    <lastLogin>2021-06-07T14:24:49.066Z</lastLogin>
+    <password secret="hash">je+glP0P8AYzGoaLZE16xTSJKC8=</password>
+    <pluginSettingDOMs/>
+  </com.pmease.quickbuild.model.User>
+</list>
+"""
+
+USERS_JSON = """[ {
+  "@class" : "com.pmease.quickbuild.model.User",
+  "id" : 1,
+  "favoriteDashboardIds" : [ 1 ],
+  "name" : "admin",
+  "lastLogin" : "2021-06-10T14:18:21.292+00:00",
+  "password" : {
+    "value" : "0DPiKuNIrrVmD8IUCuw1hQxNqZc=",
+    "secret" : "hash"
+  },
+  "pluginSettingDOMs" : { }
+}, {
+  "@class" : "com.pmease.quickbuild.model.User",
+  "id" : 2,
+  "favoriteDashboardIds" : [ ],
+  "name" : "pbelskiy",
+  "lastLogin" : "2021-06-07T14:24:49.066+00:00",
+  "password" : {
+    "value" : "je+glP0P8AYzGoaLZE16xTSJKC8=",
+    "secret" : "hash"
+  },
+  "pluginSettingDOMs" : { }
+} ]
+"""
 
 
 @responses.activate
@@ -137,3 +187,51 @@ async def test_async_client_retry_exception(aiohttp_mock):
         await client.system.get_version()
 
     await client.close()
+
+
+@responses.activate
+def test_content_type_parse_get():
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/users'),
+        content_type='application/xml',
+        body=USERS_XML,
+        status=200,
+    )
+
+    client = QBClient('http://server', content_type=ContentType.PARSE)
+
+    users = client.users.get()
+    assert isinstance(users, list)
+
+
+@responses.activate
+def test_content_type_xml_get():
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/users'),
+        content_type='application/xml',
+        body=USERS_XML,
+        status=200,
+    )
+
+    client = QBClient('http://server', content_type=ContentType.XML)
+
+    users = client.users.get()
+    assert isinstance(users, str)
+
+
+@responses.activate
+def test_content_type_json_get():
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/users'),
+        content_type='application/json',
+        body=USERS_JSON,
+        status=200,
+    )
+
+    client = QBClient('http://server', content_type=ContentType.JSON)
+
+    users = client.users.get()
+    assert isinstance(users, list)

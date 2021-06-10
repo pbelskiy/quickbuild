@@ -4,7 +4,7 @@ from requests import Session
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-from quickbuild.core import QuickBuild, Response
+from quickbuild.core import ContentType, QuickBuild, Response
 
 
 class QBClient(QuickBuild):
@@ -14,6 +14,7 @@ class QBClient(QuickBuild):
                  user: Optional[str] = None,
                  password: Optional[str] = None,
                  *,
+                 content_type: Optional[ContentType] = ContentType.PARSE,
                  verify: bool = True,
                  timeout: Optional[float] = None,
                  retry: Optional[dict] = None
@@ -33,6 +34,11 @@ class QBClient(QuickBuild):
 
             verify (Optional[bool]):
                 Verify SSL (default: true).
+
+            content_type (Optional[ContentType]):
+                How to process server content, get native XML as string, or
+                parsing XML to Python types, or uses native JSON if QB10+ used,
+                default is ContentType.PARSE.
 
             timeout (Optional[float]):
                 HTTP request timeout.
@@ -86,8 +92,9 @@ class QBClient(QuickBuild):
         Returns:
             Client instance
         """
-        super().__init__()
+        super().__init__(content_type)
 
+        self.content_type = content_type
         self.host = url
         self.session = Session()
 
@@ -120,6 +127,10 @@ class QBClient(QuickBuild):
 
         if self.timeout and 'timeout' not in kwargs:
             kwargs['timeout'] = self.timeout
+
+        if self.content_type == ContentType.JSON:
+            kwargs.setdefault('headers', {})
+            kwargs['headers'].update({'Accept': 'application/json'})
 
         response = self.session.request(
             method,

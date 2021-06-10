@@ -1,10 +1,30 @@
+from enum import Enum
 from typing import Any
 from xml.parsers.expat import ExpatError
 
 import xmltodict
 
 
-def response2py(obj: Any, as_xml: bool = False) -> Any:
+class ContentType(Enum):
+    """
+    PARSE - get XML and parse it to native Python types
+      - get: parsed XML to native types
+      - post: only XML
+
+    XML - get and post native XML documents
+      - get: get XML
+      - post: post XML
+
+    JSON - get and post native JSON documents (QuickBuild 10+)
+      - get: parsed JSON
+      - post: dumps to JSON
+    """
+    PARSE = 1
+    XML = 2
+    JSON = 3
+
+
+def response2py(obj: Any, content_type: ContentType, as_xml: bool = False) -> Any:
     """
     Smart and heuristic response converter to native python types.
 
@@ -19,28 +39,31 @@ def response2py(obj: Any, as_xml: bool = False) -> Any:
         return None
 
     try:
-        obj = xmltodict.parse(obj)  # let's suppose it could be a XML document
+        parsed = xmltodict.parse(obj)  # let's suppose it could be a XML document
     except ExpatError:
-        pass
+        parsed = obj
+    else:
+        if content_type == ContentType.XML:
+            return obj
 
     # case №1 - some primitive, like integer
-    if isinstance(obj, dict) is False:
-        return _to_python(obj)
+    if isinstance(parsed, dict) is False:
+        return _to_python(parsed)
 
     # case №2 - one object
-    if 'list' not in obj:
-        return _to_python(obj[next(iter(obj))])
+    if 'list' not in parsed:
+        return _to_python(parsed[next(iter(parsed))])
 
     # case №3 - list of objects
-    obj = obj['list']
-    if obj is None:
+    parsed = parsed['list']
+    if parsed is None:
         return []
 
-    obj = obj[next(iter(obj))]
-    if isinstance(obj, list) is False:
-        return [_to_python(obj)]
+    parsed = parsed[next(iter(parsed))]
+    if isinstance(parsed, list) is False:
+        return [_to_python(parsed)]
 
-    return _to_python(obj)
+    return _to_python(parsed)
 
 
 def _to_python(obj: Any) -> Any:

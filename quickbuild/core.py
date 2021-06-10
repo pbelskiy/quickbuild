@@ -2,6 +2,7 @@ import json
 
 from collections import namedtuple
 from http import HTTPStatus
+from inspect import signature
 from typing import Any, Callable, Optional
 
 from quickbuild.endpoints import (
@@ -20,14 +21,21 @@ from quickbuild.exceptions import (
     QBForbiddenError,
     QBNotFoundError,
     QBProcessingError,
+    QBServerError,
 )
+from quickbuild.helpers import ContentType
 
 Response = namedtuple('Response', ['status', 'headers', 'body'])
 
 
 class QuickBuild:
+    """
+    NB: somehow using -H "Accept: application/json,application/xml,*/*" leads
+    to server error.
+    """
+    def __init__(self, content_type: Optional[ContentType]):
+        self._content_type = content_type
 
-    def __init__(self):
         self.audits = Audits(self)
         self.builds = Builds(self)
         self.configurations = Configurations(self)
@@ -38,8 +46,10 @@ class QuickBuild:
         self.tokens = Tokens(self)
         self.users = Users(self)
 
-    @staticmethod
-    def _process(response: Response, callback: Optional[Callable] = None) -> Any:
+    def _process(self, response: Response, callback: Optional[Callable] = None) -> Any:
+        if response.status == HTTPStatus.INTERNAL_SERVER_ERROR:
+            raise QBServerError('JSON is supported by QB10+\n\n' + response.body)
+
         if response.status == HTTPStatus.NO_CONTENT:
             raise QBProcessingError(response.body)
 
@@ -58,5 +68,8 @@ class QuickBuild:
 
         if not callback:
             return response.body
+
+        if 'content_type' in signature(callback).parameters:
+            return callback(response.body, content_type=self._content_type)
 
         return callback(response.body)

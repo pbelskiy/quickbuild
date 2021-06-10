@@ -6,6 +6,7 @@ from quickbuild.exceptions import (
     QBNotFoundError,
     QBProcessingError,
 )
+from quickbuild.helpers import ContentType
 
 __version__ = '0.4.1'
 
@@ -18,4 +19,6 @@ __all__ = (
     'QBForbiddenError',
     'QBNotFoundError',
     'QBProcessingError',
+    # other
+    'ContentType',
 )

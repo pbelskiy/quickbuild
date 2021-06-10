@@ -10,7 +10,7 @@ from aiohttp import (
     ClientTimeout,
 )
 
-from quickbuild.core import QBError, QuickBuild, Response
+from quickbuild.core import ContentType, QBError, QuickBuild, Response
 
 
 class RetryClientSession:
@@ -51,6 +51,7 @@ class AsyncQBClient(QuickBuild):
                  user: Optional[str] = None,
                  password: Optional[str] = None,
                  *,
+                 content_type: Optional[ContentType] = ContentType.PARSE,
                  loop: Optional[asyncio.AbstractEventLoop] = None,
                  verify: bool = True,
                  timeout: Optional[float] = None,
@@ -68,6 +69,11 @@ class AsyncQBClient(QuickBuild):
 
             password (Optional[str]):
                 Password for user.
+
+            content_type (Optional[ContentType]):
+                How to process server content, get native XML as string, or
+                parsing XML to Python types, or uses native JSON if QB10+ used,
+                default is ContentType.PARSE.
 
             loop (Optional[AbstractEventLoop]):
                 Asyncio current event loop.
@@ -100,8 +106,9 @@ class AsyncQBClient(QuickBuild):
         Returns:
             AsyncClient instance
         """
-        super().__init__()
+        super().__init__(content_type)
 
+        self.content_type = content_type
         self.loop = loop or asyncio.get_event_loop()
         self.host = url
 
@@ -129,6 +136,10 @@ class AsyncQBClient(QuickBuild):
 
         if self.timeout and 'timeout' not in kwargs:
             kwargs['timeout'] = self.timeout
+
+        if self.content_type == ContentType.JSON:
+            kwargs.setdefault('headers', {})
+            kwargs['headers'].update({'Accept': 'application/json'})
 
         response = await self.session.request(
             method,
