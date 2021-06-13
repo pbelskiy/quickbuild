@@ -41,3 +41,20 @@ class Memberships:
             'memberships/{}'.format(membership_id),
             callback=partial(response2py, as_xml=as_xml)
         )
+
+    def get_by_user(self, user_id: int) -> Union[dict, str]:
+        """
+        Get memberships of particular user.
+
+        Args:
+            user_id (int): user identifier.
+
+        Returns:
+            Union[dict, str]: user membership content.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'memberships',
+            params=dict(user_id=user_id),
+            callback=response2py,
+        )
