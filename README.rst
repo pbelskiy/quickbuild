@@ -25,6 +25,7 @@ Documentation
 -------------
 
 `Read the Docs <https://quickbuild.readthedocs.io/en/latest/>`_
+`Official REST API documentation <https://wiki.pmease.com/display/QB10/RESTful+API>`_
 
 Installation
 ------------
@@ -122,7 +123,4 @@ Then just run tox, all dependencies and checks will run automatically
 Contributing
 ------------
 
-Feel free for contributions
-
-`Official REST API documentation <https://wiki.pmease.com/display/QB10/RESTful+API>`_
--------------------------------------------------------------------------------------
+Feel free for any contributions.
