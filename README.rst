@@ -25,6 +25,7 @@ Documentation
 -------------
 
 `Read the Docs <https://quickbuild.readthedocs.io/en/latest/>`_
+
 `Official REST API documentation <https://wiki.pmease.com/display/QB10/RESTful+API>`_
 
 Installation
