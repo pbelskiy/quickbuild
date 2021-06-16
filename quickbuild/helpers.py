@@ -7,24 +7,18 @@ import xmltodict
 
 class ContentType(Enum):
     """
-    PARSE - get XML and parse it to native Python types
-      - get: parsed XML to native types
-      - post: only XML
-
-    XML - get and post native XML documents
-      - get: get XML
-      - post: post XML
-
-    JSON - get and post native JSON documents (QuickBuild 10+)
-      - get: parsed JSON
-      - post: dumps to JSON
+    - PARSE: get XML and parse it to native Python types
+    - XML: get and post native XML documents
+    - JSON: get and post native JSON documents (QuickBuild 10+)
     """
     PARSE = 1
     XML = 2
     JSON = 3
 
+    _DEFAULT = PARSE
 
-def response2py(obj: Any, content_type: ContentType, as_xml: bool = False) -> Any:
+
+def response2py(obj: Any, content_type: ContentType) -> Any:
     """
     Smart and heuristic response converter to native python types.
 
@@ -32,7 +26,7 @@ def response2py(obj: Any, content_type: ContentType, as_xml: bool = False) -> An
     which in strings inside. Also the main goal is to be equal with native json
     response from QuickBuild when used to be consistend in different versions.
     """
-    if as_xml:
+    if content_type == content_type.XML:
         return obj
 
     if obj == '':

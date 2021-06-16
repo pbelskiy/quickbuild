@@ -4,7 +4,7 @@ from functools import partial
 from typing import List, Optional, Union
 
 from quickbuild.exceptions import QBError
-from quickbuild.helpers import response2py
+from quickbuild.helpers import ContentType, response2py
 
 
 class Configurations:
@@ -59,21 +59,27 @@ class Configurations:
     def get_info(self,
                  configuration_id: int,
                  *,
-                 as_xml: Optional[bool] = False
+                 content_type: Optional[ContentType] = None
                  ) -> Union[dict, str]:
         """
         Get full configuration info.
 
         Args:
-            configuration_id (int): configuration identifier.
+            configuration_id (int):
+                Configuration identifier.
+
+            content_type (Optional[ContentType]):
+                Select needed content type if not set, default value of client
+                instance is used.
 
         Returns:
-            Union[str, dict]: configuration content.
+            Union[dict, str]: configuration content.
         """
         return self.quickbuild._request(
             'GET',
             'configurations/{}'.format(configuration_id),
-            callback=partial(response2py, as_xml=as_xml)
+            callback=partial(response2py, content_type=content_type),
+            content_type=content_type,
         )
 
     def get_path(self, configuration_id: int) -> str:
@@ -257,8 +263,8 @@ class Configurations:
         Update a configuration using XML configuration.
 
         Normally you do not need to create the XML from scratch: you may get
-        XML representation of the configuration using `get_info(as_xml=True)`
-        method and modify certain parts of the XML.
+        XML representation of the configuration using `get_info()` method with
+        content_type=ContentType.XML and modify certain parts of the XML.
 
         Args:
             configuration (str): XML document.
@@ -278,11 +284,13 @@ class Configurations:
         Create a configuration using XML configuration.
 
         Please note that:
+
         - The parent element denotes id of the parent configuration. Normally
           you do not need to create the xml from scratch: you may retrieve xml
           representation of a templating configuration using various configuration
-          access methods or get_info(as_xml=True), remove the id element, modify
-          certain parts and use it for create() method.
+          access methods or `get_info()` with content_type=ContentType.XML, remove
+          the id element, modify certain parts and use it for create() method.
+
         - Secret elements (Elements with attribute "secret=encrypt" in XML
           representation of an existing configuration, typically they are
           repository passwords, secret variable values, etc.) should not contain

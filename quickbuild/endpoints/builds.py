@@ -3,7 +3,7 @@ from functools import partial
 from typing import Dict, List, Optional, Union
 
 from quickbuild.exceptions import QBError
-from quickbuild.helpers import response2py
+from quickbuild.helpers import ContentType, response2py
 
 
 class Builds:
@@ -14,7 +14,7 @@ class Builds:
     def get_info(self,
                  build_id: int,
                  *,
-                 as_xml: Optional[bool] = False
+                 content_type: Optional[ContentType] = None
                  ) -> Union[dict, str]:
         """
         Get build info as raw XML string.
@@ -22,9 +22,9 @@ class Builds:
         Args:
             build_id (int): build id.
 
-            as_xml (Optional[bool]):
-                By default returns dict representation of a build, original XML
-                representation might be usefull to update or create new build.
+            content_type (Optional[ContentType]):
+                Select needed content type if not set, default value of client
+                instance is used.
 
         Returns:
             Union[dict, str]: build information.
@@ -32,7 +32,8 @@ class Builds:
         return self.quickbuild._request(
             'GET',
             'builds/{}'.format(build_id),
-            callback=partial(response2py, as_xml=as_xml)
+            callback=partial(response2py, content_type=content_type),
+            content_type=content_type,
         )
 
     def get_status(self, build_id: int) -> str:
@@ -431,10 +432,10 @@ class Builds:
         Create a build using XML configuration.
 
         The configuration element denotes id of the belonging configuration.
-        Normally you do not need to create the XML from scratch: you may retrieve
-        XML representation of a templating build or using `get_info(as_xml=True`)
-        remove the id element, modify certain parts and use it as configuration
-        for create method.
+        Normally you do not need to create the XML from scratch: you may
+        retrieve XML representation of a templating build or using `get_info()`
+        with content_type=ContentType.XML, remove the id element, modify certain
+        parts and use it as configuration for create method.
 
         Args:
             configuration (str): XML document.

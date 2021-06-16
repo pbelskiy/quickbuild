@@ -2,7 +2,7 @@ from functools import partial
 from typing import List, Optional, Union
 
 from quickbuild.exceptions import QBError
-from quickbuild.helpers import response2py
+from quickbuild.helpers import ContentType, response2py
 
 
 class Groups:
@@ -26,13 +26,18 @@ class Groups:
     def get_info(self,
                  group_id: int,
                  *,
-                 as_xml: Optional[bool] = False
+                 content_type: Optional[ContentType] = None
                  ) -> Union[dict, str]:
         """
         Get information about specified group.
 
         Args:
-            group_id (int): group identifier.
+            group_id (int):
+                Group identifier.
+
+            content_type (Optional[ContentType]):
+                Select needed content type if not set, default value of client
+                instance is used.
 
         Returns:
             dict: group information.
@@ -40,7 +45,8 @@ class Groups:
         return self.quickbuild._request(
             'GET',
             'groups/{}'.format(group_id),
-            callback=partial(response2py, as_xml=as_xml)
+            callback=partial(response2py, content_type=content_type),
+            content_type=content_type,
         )
 
     def update(self, configuration: str) -> int:
@@ -69,9 +75,9 @@ class Groups:
         Create a group using XML configuration.
 
         Normally you do not need to create the XML from scratch: you may retrieve
-        XML representation of a templating group using `get_info(as_xml=True)`
-        remove the id element, modify certain parts and use i XML as configuration
-        for create method.
+        XML representation of a templating group using `get_info()` method with
+        content_type=ContentType.XML, remove the id element, modify certain parts
+        and use i XML as configuration for create method.
 
         Args:
             configuration (str): XML document.

@@ -235,3 +235,54 @@ def test_content_type_json_get():
 
     users = client.users.get()
     assert isinstance(users, list)
+
+
+@responses.activate
+def test_content_type_headers_sync_json_json():
+
+    def callback(request):
+        assert request.headers['Accept'] == 'application/json'
+        return (200, request.headers, request.body)
+
+    responses.add_callback(
+        responses.GET,
+        re.compile(r'.*/rest/memberships/\d+'),
+        callback=callback
+    )
+
+    client = QBClient('http://server', content_type=ContentType.JSON)
+    client.memberships.get_info(1)
+
+
+@responses.activate
+def test_content_type_headers_sync_xml_json():
+
+    def callback(request):
+        assert request.headers['Accept'] == 'application/json'
+        return (200, request.headers, request.body)
+
+    responses.add_callback(
+        responses.GET,
+        re.compile(r'.*/rest/memberships/\d+'),
+        callback=callback
+    )
+
+    client = QBClient('http://server', content_type=ContentType.XML)
+    client.memberships.get_info(1, content_type=ContentType.JSON)
+
+
+@responses.activate
+def test_content_type_headers_sync_json_xml():
+
+    def callback(request):
+        assert request.headers['Accept'] == '*/*'
+        return (200, request.headers, request.body)
+
+    responses.add_callback(
+        responses.GET,
+        re.compile(r'.*/rest/memberships/\d+'),
+        callback=callback
+    )
+
+    client = QBClient('http://server', content_type=ContentType.JSON)
+    client.memberships.get_info(1, content_type=ContentType.XML)

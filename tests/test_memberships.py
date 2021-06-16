@@ -2,6 +2,8 @@ import re
 
 import responses
 
+from quickbuild import ContentType
+
 MEMBERSHIPS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 <list>
@@ -86,7 +88,7 @@ def test_get_info(client):
     assert response['group'] == 2
     assert response['assignedLocally'] is True
 
-    response = client.memberships.get_info(1, as_xml=True)
+    response = client.memberships.get_info(1, content_type=ContentType.XML)
     assert '<com.pmease.quickbuild.model.Membership>' in response
 
 

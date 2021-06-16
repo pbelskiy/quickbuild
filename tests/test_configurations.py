@@ -5,6 +5,7 @@ import pytest
 import responses
 
 from quickbuild import QBError
+from quickbuild.helpers import ContentType
 
 CONFIGURATIONS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
@@ -291,7 +292,7 @@ def test_get_info_as_xml(client):
         body=CONFIGURATION_INFO_XML,
     )
 
-    response = client.configurations.get_info(1, as_xml=True)
+    response = client.configurations.get_info(1, content_type=ContentType.XML)
     assert isinstance(response, str)
 
 

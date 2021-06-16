@@ -11,6 +11,7 @@ from quickbuild import (
     QBNotFoundError,
     QBProcessingError,
 )
+from quickbuild.helpers import ContentType
 
 BUILD_INFO_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
@@ -193,7 +194,7 @@ def test_get_info(client):
     response = client.builds.get_info(1)
     assert response['id'] == 1
 
-    response = client.builds.get_info(1, as_xml=True)
+    response = client.builds.get_info(1, content_type=ContentType.XML)
     assert isinstance(response, str)
 
 

@@ -51,7 +51,7 @@ class AsyncQBClient(QuickBuild):
                  user: Optional[str] = None,
                  password: Optional[str] = None,
                  *,
-                 content_type: Optional[ContentType] = ContentType.PARSE,
+                 content_type: Optional[ContentType] = ContentType._DEFAULT,
                  loop: Optional[asyncio.AbstractEventLoop] = None,
                  verify: bool = True,
                  timeout: Optional[float] = None,
@@ -72,8 +72,7 @@ class AsyncQBClient(QuickBuild):
 
             content_type (Optional[ContentType]):
                 How to process server content, get native XML as string, or
-                parsing XML to Python types, or uses native JSON if QB10+ used,
-                default is ContentType.PARSE.
+                parsing XML to Python types, or uses native JSON if QB10+ used.
 
             loop (Optional[AbstractEventLoop]):
                 Asyncio current event loop.
@@ -131,13 +130,15 @@ class AsyncQBClient(QuickBuild):
                        path: str,
                        *,
                        callback: Optional[Callable] = None,
+                       content_type: Optional[ContentType] = None,
                        **kwargs: Any
                        ) -> Any:
 
         if self.timeout and 'timeout' not in kwargs:
             kwargs['timeout'] = self.timeout
 
-        if self.content_type == ContentType.JSON:
+        if content_type == ContentType.JSON or (self.content_type == ContentType.JSON and
+           (content_type == ContentType.JSON or content_type is None)):
             kwargs.setdefault('headers', {})
             kwargs['headers'].update({'Accept': 'application/json'})
 

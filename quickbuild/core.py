@@ -69,7 +69,15 @@ class QuickBuild:
         if not callback:
             return response.body
 
-        if 'content_type' in signature(callback).parameters:
-            return callback(response.body, content_type=self._content_type)
+        cb_parameters = signature(callback).parameters
+
+        if 'content_type' in cb_parameters:
+            if cb_parameters['content_type'].default is None or \
+               cb_parameters['content_type'].default is cb_parameters['content_type'].empty:
+                content_type = self._content_type
+            else:
+                content_type = cb_parameters['content_type'].default
+
+            return callback(response.body, content_type=content_type)
 
         return callback(response.body)

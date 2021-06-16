@@ -2,7 +2,7 @@ from functools import partial
 from typing import List, Optional, Union
 
 from quickbuild.exceptions import QBError
-from quickbuild.helpers import response2py
+from quickbuild.helpers import ContentType, response2py
 
 
 class Users:
@@ -26,14 +26,18 @@ class Users:
     def get_info(self,
                  user_id: int,
                  *,
-                 as_xml: Optional[bool] = False
+                 content_type: Optional[ContentType] = None
                  ) -> Union[dict, str]:
         """
         Get information about specified user.
 
         Args:
-            user_id (int): user identifier.
-            as_xml (Optional[bool]) return XML document instead of json.
+            user_id (int):
+                User identifier.
+
+            content_type (Optional[ContentType]):
+                Select needed content type if not set, default value of client
+                instance is used.
 
         Returns:
             dict: information about user.
@@ -41,7 +45,8 @@ class Users:
         return self.quickbuild._request(
             'GET',
             'users/{}'.format(user_id),
-            callback=partial(response2py, as_xml=as_xml)
+            callback=partial(response2py, content_type=content_type),
+            content_type=content_type,
         )
 
     def get_display_name(self, user_id: int) -> str:
