@@ -25,6 +25,8 @@ from quickbuild.exceptions import (
 )
 from quickbuild.helpers import ContentType
 
+CONTENT_JSON = 'application/json'
+
 Response = namedtuple('Response', ['status', 'headers', 'body'])
 
 
@@ -46,6 +48,18 @@ class QuickBuild:
         self.tokens = Tokens(self)
         self.users = Users(self)
 
+    def _get_headers(self, content_type: Optional[ContentType]) -> dict:
+        headers = {}
+
+        if content_type == ContentType.JSON or (
+           self._content_type == ContentType.JSON and content_type is None):
+            headers.update({
+                'Accept': CONTENT_JSON,
+                'Content-Type': CONTENT_JSON
+            })
+
+        return headers
+
     def _process(self, response: Response, callback: Optional[Callable] = None) -> Any:
         if response.status == HTTPStatus.INTERNAL_SERVER_ERROR:
             raise QBServerError('JSON is supported by QB10+\n\n' + response.body)
@@ -63,7 +77,7 @@ class QuickBuild:
             raise QBError(response.body)
 
         # native json from server
-        if response.headers.get('Content-Type') == 'application/json':
+        if response.headers.get('Content-Type') == CONTENT_JSON:
             return json.loads(response.body)
 
         if not callback:

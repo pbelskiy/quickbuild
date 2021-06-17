@@ -128,10 +128,8 @@ class QBClient(QuickBuild):
         if self.timeout and 'timeout' not in kwargs:
             kwargs['timeout'] = self.timeout
 
-        if content_type == ContentType.JSON or (self.content_type == ContentType.JSON and
-           (content_type == ContentType.JSON or content_type is None)):
-            kwargs.setdefault('headers', {})
-            kwargs['headers'].update({'Accept': 'application/json'})
+        kwargs.setdefault('headers', {})
+        kwargs['headers'].update(self._get_headers(content_type))
 
         response = self.session.request(
             method,
