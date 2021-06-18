@@ -48,7 +48,7 @@ class Memberships:
             content_type=content_type,
         )
 
-    def get_by_user(self, user_id: int) -> Union[dict, str]:
+    def get_by_user(self, user_id: int) -> Union[List[dict], str]:
         """
         Get memberships of particular user.
 
@@ -56,11 +56,28 @@ class Memberships:
             user_id (int): user identifier.
 
         Returns:
-            Union[dict, str]: user membership content.
+            Union[List[dict], str]: user membership content.
         """
         return self.quickbuild._request(
             'GET',
             'memberships',
             params=dict(user_id=user_id),
+            callback=response2py,
+        )
+
+    def get_by_group(self, group_id: int) -> Union[List[dict], str]:
+        """
+        Get memberships of particular group.
+
+        Args:
+            group_id (int): group identifier.
+
+        Returns:
+            Union[List[dict], str]: group membership content.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'memberships',
+            params=dict(group_id=group_id),
             callback=response2py,
         )
