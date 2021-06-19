@@ -134,3 +134,16 @@ def test_get_by_group(client):
     assert response[0]['user'] == 2
     assert response[0]['group'] == 1
     assert response[0]['assignedLocally'] is True
+
+
+@responses.activate
+def test_update(client):
+    responses.add(
+        responses.POST,
+        re.compile(r'.*/rest/memberships'),
+        content_type='application/xml',
+        body='3',
+    )
+
+    response = client.memberships.update(USER_MEMBERSHIPS_XML)
+    assert response == 3

@@ -81,3 +81,34 @@ class Memberships:
             params=dict(group_id=group_id),
             callback=response2py,
         )
+
+    def update(self, representation: str) -> int:
+        """
+        Update membership using XML/JSON representation of the membership.
+
+        Normally you do not need to create the representation from scratch, you
+        may retrieve XML/JSON representation of the membership using `get_info()`
+        method, modify certain parts and use it as new representation for update.
+
+        Demo:
+        -----
+        1. Assume id of user robin is 2, id of group developer is 1, and id of
+           group tester is 2.
+        2. Get memberships of user robin using `get_by_user(2)` method.
+        3. Analyze response of above command to find out the membership with
+           group id.
+        4. Modify response and change the group element to use value of 2.
+        5. Use it as new membership membership to this `update()` method.
+
+        Args:
+            representation (str): representation of membership.
+
+        Returns:
+            int: membership id being updated.
+        """
+        return self.quickbuild._request(
+            'POST',
+            'memberships',
+            callback=response2py,
+            data=representation,
+        )
