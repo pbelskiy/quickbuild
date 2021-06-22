@@ -82,7 +82,7 @@ class Memberships:
             callback=response2py,
         )
 
-    def update(self, representation: str) -> int:
+    def update(self, configuration: str) -> int:
         """
         Update membership using XML/JSON representation of the membership.
 
@@ -110,5 +110,31 @@ class Memberships:
             'POST',
             'memberships',
             callback=response2py,
-            data=representation,
+            data=configuration,
         )
+
+    def create(self, configuration: str) -> int:
+        """
+        Create membership using XML/JSON representation of the membership.
+
+        Normally you do not need to create the representation from scratch, you
+        may retrieve XML/JSON representation of the membership using `get_info()`
+        method, modify certain parts and use it as new representation for create.
+
+        Demo:
+        -----
+        How to add user robin (assume id is 2) to group tester (assume the id is 3).
+
+        .. code-block:: xml
+            <com.pmease.quickbuild.model.Membership>
+              <user>2</user>
+              <group>3</group>
+            </com.pmease.quickbuild.model.Membership>
+
+        Args:
+            representation (str): representation of membership.
+
+        Returns:
+            int: newly created membership id.
+        """
+        return self.update(configuration)

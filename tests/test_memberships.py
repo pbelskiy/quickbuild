@@ -68,6 +68,17 @@ GROUP_MEMBERSHIPS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 </list>
 """
 
+CREATE_MEMBERSHIP_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
+
+<com.pmease.quickbuild.model.Membership>
+  <!-- id of associated user of this membership. -->
+  <user>2</user>
+
+  <!-- id of associated group of this membership. -->
+  <group>1</group>
+</com.pmease.quickbuild.model.Membership>
+"""
+
 
 @responses.activate
 def test_get(client):
@@ -147,3 +158,16 @@ def test_update(client):
 
     response = client.memberships.update(USER_MEMBERSHIPS_XML)
     assert response == 3
+
+
+@responses.activate
+def test_create(client):
+    responses.add(
+        responses.POST,
+        re.compile(r'.*/rest/memberships'),
+        content_type='application/xml',
+        body='5',
+    )
+
+    response = client.memberships.create(CREATE_MEMBERSHIP_XML)
+    assert response == 5
