@@ -171,3 +171,14 @@ def test_create(client):
 
     response = client.memberships.create(CREATE_MEMBERSHIP_XML)
     assert response == 5
+
+
+@responses.activate
+def test_delete(client):
+    responses.add(
+        responses.DELETE,
+        re.compile(r'.*/rest/memberships'),
+    )
+
+    response = client.memberships.delete(100)
+    assert response is None

@@ -138,3 +138,24 @@ class Memberships:
             int: newly created membership id.
         """
         return self.update(configuration)
+
+    def delete(self, membership_id: int) -> None:
+        """
+        Delete membership.
+
+        Demo:
+        -----
+        1. User robin (assume id is 2) from group tester (assume the id is 3).
+        2. Get memberships of user robin with `get_by_user(2)`
+        3. Analyze response of above command to find out id of the membership
+           associated with group id 3, assume id of the found membership is 100.
+        4. Delete the found membership id 100.
+
+        Args:
+            membership_id (str): membership identifier.
+        """
+        return self.quickbuild._request(
+            'DELETE',
+            'memberships/{}'.format(membership_id),
+            callback=response2py,
+        )
