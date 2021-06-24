@@ -33,6 +33,12 @@ Configurations
 .. autoclass:: quickbuild.endpoints.configurations.Configurations
     :members:
 
+Dashboards
+~~~~~~~~~~
+
+.. autoclass:: quickbuild.endpoints.dashboards.Dashboards
+    :members:
+
 Groups
 ~~~~~~
 
