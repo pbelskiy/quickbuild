@@ -36,9 +36,6 @@ def response2py(obj: Any, content_type: ContentType) -> Any:
         parsed = xmltodict.parse(obj)  # let's suppose it could be a XML document
     except ExpatError:
         parsed = obj
-    else:
-        if content_type == ContentType.XML:
-            return obj
 
     # case №1 - some primitive, like integer
     if isinstance(parsed, dict) is False:
