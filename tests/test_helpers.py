@@ -81,6 +81,8 @@ def test_xml_json_equal():
 
     data_xml = parsed_xml[0]
     data_json = parsed_json[0]
+
+    assert data_xml['@class'] == data_json['@class']
     assert data_xml['id'] == data_json['id']
     assert data_xml['user'] == data_json['user']
     assert data_xml['name'] == data_json['name']

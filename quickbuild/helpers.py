@@ -51,10 +51,6 @@ def response2py(obj: Any, content_type: ContentType) -> Any:
     if obj is None:
         return []
 
-    obj = obj[next(iter(obj))]
-    if isinstance(obj, list) is False:
-        return [_to_python(obj)]
-
     return _to_python(obj)
 
 
@@ -77,8 +73,14 @@ def _to_python(obj: Any) -> Any:
         new_obj = []
 
         for k, v in obj.items():
-            v['@class'] = k
-            new_obj.append(_to_python(v))
+            if isinstance(v, list):
+                for item in v:
+                    item = _to_python(item)
+                    item['@class'] = k
+                    new_obj.append(_to_python(item))
+            else:
+                v['@class'] = k
+                new_obj.append(_to_python(v))
 
         return new_obj
 
