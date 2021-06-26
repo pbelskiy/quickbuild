@@ -33,28 +33,29 @@ def response2py(obj: Any, content_type: ContentType) -> Any:
         return None
 
     try:
-        parsed = xmltodict.parse(obj)  # let's suppose it could be a XML document
+        # let's suppose it could be an XML document
+        obj = xmltodict.parse(obj)
     except ExpatError:
-        parsed = obj
+        pass
 
     # case №1 - some primitive, like integer
-    if isinstance(parsed, dict) is False:
-        return _to_python(parsed)
+    if isinstance(obj, dict) is False:
+        return _to_python(obj)
 
     # case №2 - one object
-    if 'list' not in parsed:
-        return _to_python(parsed[next(iter(parsed))])
+    if 'list' not in obj:
+        return _to_python(obj[next(iter(obj))])
 
     # case №3 - list of objects
-    parsed = parsed['list']
-    if parsed is None:
+    obj = obj['list']
+    if obj is None:
         return []
 
-    parsed = parsed[next(iter(parsed))]
-    if isinstance(parsed, list) is False:
-        return [_to_python(parsed)]
+    obj = obj[next(iter(obj))]
+    if isinstance(obj, list) is False:
+        return [_to_python(obj)]
 
-    return _to_python(parsed)
+    return _to_python(obj)
 
 
 def _to_python(obj: Any) -> Any:
