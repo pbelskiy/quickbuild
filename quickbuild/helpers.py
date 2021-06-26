@@ -58,6 +58,8 @@ def response2py(obj: Any, content_type: ContentType) -> Any:
 
 
 def _to_python(obj: Any) -> Any:
+    # pylint: disable=R0912
+
     if isinstance(obj, str):
         if obj.isdigit():
             return int(obj)
@@ -67,17 +69,28 @@ def _to_python(obj: Any) -> Any:
             obj[i] = _to_python(v)
         return obj
 
-    elif isinstance(obj, dict):
+    if isinstance(obj, dict) is False:
+        return obj
+
+    if list(obj.keys())[0].startswith('com.pmease.quickbuild'):
+        new_obj = []
+
         for k, v in obj.items():
-            if isinstance(v, dict):
-                obj[k] = _to_python(v)
-            elif isinstance(v, str) is False:
-                continue
-            elif v == 'true':
-                obj[k] = True
-            elif v == 'false':
-                obj[k] = False
-            elif v.isdigit():
-                obj[k] = int(v)
+            v['@class'] = k
+            new_obj.append(_to_python(v))
+
+        return new_obj
+
+    for k, v in obj.items():
+        if isinstance(v, dict):
+            obj[k] = _to_python(v)
+        elif isinstance(v, str) is False:
+            continue
+        elif v == 'true':
+            obj[k] = True
+        elif v == 'false':
+            obj[k] = False
+        elif v.isdigit():
+            obj[k] = int(v)
 
     return obj

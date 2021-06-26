@@ -23,6 +23,18 @@ DASHBOARDS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
             <displayRequestCount>true</displayRequestCount>
             <displayHistoryCount>true</displayHistoryCount>
           </com.pmease.quickbuild.web.gadget.ConfigurationTreeGadget>
+          <com.pmease.quickbuild.plugin.report.changes.gadget.CommitStatsGadget revision="0.0.0.0.0.0">
+            <title>Commits</title>
+            <configurationPath>root</configurationPath>
+            <reportsets/>
+            <indicators>
+              <string>Commits</string>
+              <string>Modifications</string>
+            </indicators>
+            <groupBy>BY_DAY</groupBy>
+            <excludingFailed>false</excludingFailed>
+            <ignoreNoBuildDays>false</ignoreNoBuildDays>
+          </com.pmease.quickbuild.plugin.report.changes.gadget.CommitStatsGadget>
         </gadgetDOMs>
       </com.pmease.quickbuild.web.page.dashboard.LayoutColumn>
     </columns>
@@ -47,6 +59,15 @@ DASHBOARDS_JSON = """[ {
       "displayRequestCount" : true,
       "displayHistoryCount" : true,
       "@class" : "com.pmease.quickbuild.web.gadget.ConfigurationTreeGadget"
+    }, {
+      "title" : "Commits",
+      "configurationPath" : "root",
+      "reportsets" : [ ],
+      "indicators" : [ "Commits", "Modifications" ],
+      "groupBy" : "BY_DAY",
+      "excludingFailed" : false,
+      "ignoreNoBuildDays" : false,
+      "@class" : "com.pmease.quickbuild.plugin.report.changes.gadget.CommitStatsGadget"
     } ]
   } ]
 } ]
@@ -67,3 +88,12 @@ def test_xml_json_equal():
     assert data_xml['primary'] is data_json['primary']
 
     assert len(data_xml['columns']) == len(data_json['columns'])
+    assert isinstance(data_xml['columns'], list)
+    assert isinstance(data_json['columns'], list)
+
+    column_xml = data_xml['columns'][0]
+    column_json = data_json['columns'][0]
+
+    assert column_xml['width'] == column_json['width']
+    assert len(column_xml['gadgetDOMs']) == len(column_json['gadgetDOMs'])
+    assert column_xml['gadgetDOMs'][0]['@class'] == column_json['gadgetDOMs'][0]['@class']
