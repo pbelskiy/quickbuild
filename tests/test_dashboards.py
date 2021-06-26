@@ -46,6 +46,4 @@ def test_get(client):
     assert response[0]['user'] == 1
     assert response[0]['name'] == 'Default'
     assert response[0]['primary'] is False
-
-    # FIXME: check with JSON response
-    # assert response[0]['columns'][0]['width'] == 100
+    assert response[0]['columns'][0]['width'] == 100
