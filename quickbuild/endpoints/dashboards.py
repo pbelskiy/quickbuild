@@ -47,3 +47,24 @@ class Dashboards:
             callback=partial(response2py, content_type=content_type),
             content_type=content_type,
         )
+
+    def update(self, configuration: str) -> int:
+        """
+        Update a dashboard using XML/JSON configuration.
+
+        Normally you do not need to create the configuration from scratch, you
+        may retrieve it representation of the dashboard using `get_info()`,
+        modify certain parts and use it as new configuration.
+
+        Args:
+            configuration (str): XML/JSON document.
+
+        Returns:
+            int: dashboard id being updated.
+        """
+        return self.quickbuild._request(
+            'POST',
+            'dashboards',
+            callback=response2py,
+            data=configuration
+        )
