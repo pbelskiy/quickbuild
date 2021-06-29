@@ -68,3 +68,33 @@ class Dashboards:
             callback=response2py,
             data=configuration
         )
+
+    def create(self, configuration: str) -> int:
+        """
+        Create a dashboard using XML/JSON configuration.
+
+        Please note that the posted configuration should NOT contain the id
+        element; otherwise, QuickBuild will treat the post as an updating to the
+        dashboard with that id.
+
+        Normally you do not need to create the configuration from scratch, you
+        may retrieve it representation of the dashboard using `get_info()`,
+        modify certain parts and use it as new configuration.
+
+        Args:
+            configuration (str): XML/JSON document.
+
+        Returns:
+            int: dashboard id being created.
+
+        Raises:
+            QBError: configuration validation error
+        """
+        self.quickbuild._validate_for_id(configuration)
+
+        return self.quickbuild._request(
+            'POST',
+            'dashboards',
+            callback=response2py,
+            data=configuration
+        )

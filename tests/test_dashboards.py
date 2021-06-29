@@ -1,6 +1,9 @@
 import re
 
+import pytest
 import responses
+
+from quickbuild import QBError
 
 DASHBOARDS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
@@ -68,6 +71,36 @@ DASHBOARD_INFO_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 </com.pmease.quickbuild.model.Dashboard>
 """
 
+DASHBOARD_INFO_JSON = """{
+  "id" : 1,
+  "user" : 1,
+  "name" : "Default",
+  "description" : "System default dashboard",
+  "primary" : false,
+  "columns" : [ {
+    "width" : 100,
+    "gadgetDOMs" : [ {
+      "title" : "All Configurations",
+      "treeRoot" : 1,
+      "displayTreeRoot" : true,
+      "displaySchedule" : false,
+      "displayRequestCount" : true,
+      "displayHistoryCount" : true,
+      "@class" : "com.pmease.quickbuild.web.gadget.ConfigurationTreeGadget"
+    }, {
+      "title" : "Commits",
+      "configurationPath" : "root",
+      "reportsets" : [ ],
+      "indicators" : [ "Commits", "Modifications" ],
+      "groupBy" : "BY_DAY",
+      "excludingFailed" : false,
+      "ignoreNoBuildDays" : false,
+      "@class" : "com.pmease.quickbuild.plugin.report.changes.gadget.CommitStatsGadget"
+    } ]
+  } ]
+}
+"""
+
 
 @responses.activate
 def test_get(client):
@@ -114,3 +147,23 @@ def test_update(client):
 
     response = client.dashboards.update(DASHBOARD_INFO_XML)
     assert response == 10
+
+
+@responses.activate
+def test_create(client):
+    responses.add(
+        responses.POST,
+        re.compile(r'.*/rest/dashboards'),
+        content_type='application/xml',
+        body='11',
+    )
+
+    configuration_without_id = DASHBOARD_INFO_XML.replace('<id>1</id>', '')
+    response = client.dashboards.create(configuration_without_id)
+    assert response == 11
+
+    with pytest.raises(QBError):
+        client.dashboards.create(DASHBOARD_INFO_XML)
+
+    with pytest.raises(QBError):
+        client.dashboards.create(DASHBOARD_INFO_JSON)

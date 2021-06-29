@@ -97,3 +97,16 @@ class QuickBuild:
             return callback(response.body, content_type=content_type)
 
         return callback(response.body)
+
+    @staticmethod
+    def _validate_for_id(configuration: str) -> None:
+        if '</id>' in configuration:
+            raise QBError('`id` element must not be in XML for create method')
+
+        try:
+            data = json.loads(configuration)
+        except json.JSONDecodeError:
+            return
+
+        if 'id' in data:
+            raise QBError('`id` element must not be in JSON for create method')
