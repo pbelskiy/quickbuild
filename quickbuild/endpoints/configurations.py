@@ -3,7 +3,6 @@ import datetime
 from functools import partial
 from typing import List, Optional, Union
 
-from quickbuild.exceptions import QBError
 from quickbuild.helpers import ContentType, response2py
 
 
@@ -281,7 +280,7 @@ class Configurations:
 
     def create(self, configuration: str) -> int:
         """
-        Create a configuration using XML configuration.
+        Create a configuration using XML/JSON configuration.
 
         Please note that:
 
@@ -300,7 +299,7 @@ class Configurations:
           attribute should then be preserved.
 
         Args:
-            configuration (str): XML document.
+            configuration (str): XML/JSON document.
 
         Returns:
             int: configuration id of newly created configuration.
@@ -308,9 +307,7 @@ class Configurations:
         Raises:
             QBError: XML validation error
         """
-        if '</id>' in configuration:
-            raise QBError('`id` element must not be in XML for create method')
-
+        self.quickbuild._validate_for_id(configuration)
         return self.update(configuration)
 
     def delete(self, configuration_id: int) -> None:

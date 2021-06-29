@@ -1,7 +1,6 @@
 from functools import partial
 from typing import List, Optional, Union
 
-from quickbuild.exceptions import QBError
 from quickbuild.helpers import ContentType, response2py
 
 
@@ -72,7 +71,7 @@ class Groups:
 
     def create(self, configuration: str) -> int:
         """
-        Create a group using XML configuration.
+        Create a group using XML/JSON configuration.
 
         Normally you do not need to create the XML from scratch: you may retrieve
         XML representation of a templating group using `get_info()` method with
@@ -80,7 +79,7 @@ class Groups:
         and use i XML as configuration for create method.
 
         Args:
-            configuration (str): XML document.
+            configuration (str): XML/JSON configuration.
 
         Returns:
             int: group id being created.
@@ -88,9 +87,7 @@ class Groups:
         Raises:
             QBError: XML validation error
         """
-        if '</id>' in configuration:
-            raise QBError('`id` element must not be in XML for create method')
-
+        self.quickbuild._validate_for_id(configuration)
         return self.update(configuration)
 
     def delete(self, group_id: int) -> None:
@@ -101,7 +98,7 @@ class Groups:
             group_id (int): group identifier.
 
         Returns:
-            int: group id being created.
+            int: group id being deleted.
         """
         return self.quickbuild._request(
             'DELETE',

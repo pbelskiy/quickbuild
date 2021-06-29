@@ -1,7 +1,6 @@
 from functools import partial
 from typing import List, Optional, Union
 
-from quickbuild.exceptions import QBError
 from quickbuild.helpers import ContentType, response2py
 
 
@@ -87,24 +86,22 @@ class Users:
 
     def create(self, configuration: str) -> int:
         """
-        Create a new user using XML configuration.
+        Create a new user using XML/JSON configuration.
 
         Normally you do not need to create the XML from scratch: you may
         retrieve XML representation of a templating user using ``get_info()``,
         remove the id element, modify certain parts and use it.
 
         Args:
-            configuration (str): XML document.
+            configuration (str): XML/JSON document.
 
         Returns:
             int: id of the newly created user.
 
         Raises:
-            QBError: XML validation error
+            QBError: configuration validation error.
         """
-        if '</id>' in configuration:
-            raise QBError('`id` element must not be in XML for create method')
-
+        self.quickbuild._validate_for_id(configuration)
         return self.update(configuration)
 
     def delete(self, user_id: int) -> None:
