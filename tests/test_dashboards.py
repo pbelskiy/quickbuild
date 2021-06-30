@@ -167,3 +167,15 @@ def test_create(client):
 
     with pytest.raises(QBError):
         client.dashboards.create(DASHBOARD_INFO_JSON)
+
+
+@responses.activate
+def test_delete(client):
+    responses.add(
+        responses.DELETE,
+        re.compile(r'.*/rest/dashboards'),
+        body='12',
+    )
+
+    response = client.dashboards.delete(12)
+    assert response == 12

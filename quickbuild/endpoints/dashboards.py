@@ -98,3 +98,19 @@ class Dashboards:
             callback=response2py,
             data=configuration
         )
+
+    def delete(self, dashboard_id: int) -> None:
+        """
+        Delete specified dashboard.
+
+        Args:
+            dashboard_id (int): dashboard identifier.
+
+        Returns:
+            int: dashboard id being deleted.
+        """
+        return self.quickbuild._request(
+            'DELETE',
+            'dashboards/{}'.format(dashboard_id),
+            callback=response2py,
+        )
