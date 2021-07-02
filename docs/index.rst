@@ -15,6 +15,12 @@ Core
 .. automodule:: quickbuild.core
     :members:
 
+Agents
+~~~~~~
+
+.. autoclass:: quickbuild.endpoints.agents.Agents
+    :members:
+
 Audits
 ~~~~~~
 

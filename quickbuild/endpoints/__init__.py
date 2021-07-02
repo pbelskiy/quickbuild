@@ -1,3 +1,4 @@
+from .agents import Agents
 from .audits import Audits
 from .builds import Builds
 from .configurations import Configurations
@@ -10,6 +11,7 @@ from .tokens import Tokens
 from .users import Users
 
 __all__ = (
+    'Agents',
     'Audits',
     'Builds',
     'Configurations',

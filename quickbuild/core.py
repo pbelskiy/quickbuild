@@ -6,6 +6,7 @@ from inspect import signature
 from typing import Any, Callable, Optional
 
 from quickbuild.endpoints import (
+    Agents,
     Audits,
     Builds,
     Configurations,
@@ -39,6 +40,7 @@ class QuickBuild:
     def __init__(self, content_type: Optional[ContentType]):
         self._content_type = content_type
 
+        self.agents = Agents(self)
         self.audits = Audits(self)
         self.builds = Builds(self)
         self.configurations = Configurations(self)
