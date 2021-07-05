@@ -21,6 +21,19 @@ class Agents:
             callback=response2py,
         )
 
+    def get_inactive(self) -> Union[List[dict], str]:
+        """
+        Get list of inactive build agents.
+
+        Returns:
+            List[dict]: list of inactive build agents.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'buildagents/inactive',
+            callback=response2py,
+        )
+
     def get_unauthorized(self) -> Union[List[dict], str]:
         """
         Get list of unauthorized build agents.

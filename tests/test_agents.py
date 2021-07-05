@@ -31,6 +31,20 @@ def test_get_active(client):
 
 
 @responses.activate
+def test_get_inactive(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/buildagents/inactive'),
+        content_type='application/xml',
+        body=AGENTS_XML,
+    )
+
+    response = client.agents.get_inactive()
+    assert response[0]['ip'] == '172.17.0.1'
+    assert response[0]['overSSL'] is False
+
+
+@responses.activate
 def test_get_unauthorized(client):
     responses.add(
         responses.GET,
