@@ -8,6 +8,19 @@ class Agents:
     def __init__(self, quickbuild):
         self.quickbuild = quickbuild
 
+    def get_active(self) -> Union[List[dict], str]:
+        """
+        Get list of active build agents.
+
+        Returns:
+            List[dict]: list of active build agents.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'buildagents/active',
+            callback=response2py,
+        )
+
     def get_unauthorized(self) -> Union[List[dict], str]:
         """
         Get list of unauthorized build agents.
