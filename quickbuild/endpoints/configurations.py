@@ -96,6 +96,18 @@ class Configurations:
             'configurations/{}/path'.format(configuration_id),
         )
 
+    def get_id_by_path(self, path: str) -> int:
+        """
+        Get configuration id by path.
+
+        Args:
+            path (str): configuration path.
+
+        Returns:
+            int: configuration identifier.
+        """
+        return self.quickbuild.identifiers.get_configuration_id_by_path(path)
+
     def get_name(self, configuration_id: int) -> str:
         """
         Get configuration name.

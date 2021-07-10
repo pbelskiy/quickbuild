@@ -51,6 +51,12 @@ Groups
 .. autoclass:: quickbuild.endpoints.groups.Groups
     :members:
 
+Identifiers
+~~~~~~~~~~~
+
+.. autoclass:: quickbuild.endpoints.identifiers.Identifiers
+    :members:
+
 Memberships
 ~~~~~~~~~~~
 
