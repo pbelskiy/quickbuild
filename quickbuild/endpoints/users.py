@@ -63,6 +63,21 @@ class Users:
             'users/{}/display_name'.format(user_id)
         )
 
+    def get_id_by_name(self, name: str) -> int:
+        """
+        Get user id by name.
+
+        Args:
+            name (str): user name.
+
+        Returns:
+            int: user identifier.
+
+        Raises:
+            QBProcessingError: will be raised if resource is not found.
+        """
+        return self.quickbuild.identifiers.get_user_id_by_name(name)
+
     def update(self, configuration: str) -> int:
         """
         Update user using XML configuration.

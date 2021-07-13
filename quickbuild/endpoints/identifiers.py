@@ -52,3 +52,18 @@ class Identifiers:
             QBProcessingError: will be raised if resource is not found.
         """
         return self._get(dict(configuration_path=path))
+
+    def get_user_id_by_name(self, name: str) -> int:
+        """
+        Get user id by name.
+
+        Args:
+            name (str): user name.
+
+        Returns:
+            int: user identifier.
+
+        Raises:
+            QBProcessingError: will be raised if resource is not found.
+        """
+        return self._get(dict(user_name=name))
