@@ -48,6 +48,21 @@ class Groups:
             content_type=content_type,
         )
 
+    def get_id_by_name(self, name: str) -> int:
+        """
+        Get group id by name.
+
+        Args:
+            name (str): group name.
+
+        Returns:
+            int: group identifier.
+
+        Raises:
+            QBProcessingError: will be raised if resource is not found.
+        """
+        return self.quickbuild.identifiers.get_group_id_by_name(name)
+
     def update(self, configuration: str) -> int:
         """
         Update a group using XML configuration.

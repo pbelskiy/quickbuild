@@ -67,3 +67,18 @@ class Identifiers:
             QBProcessingError: will be raised if resource is not found.
         """
         return self._get(dict(user_name=name))
+
+    def get_group_id_by_name(self, name: str) -> int:
+        """
+        Get group id by name.
+
+        Args:
+            name (str): group name.
+
+        Returns:
+            int: group identifier.
+
+        Raises:
+            QBProcessingError: will be raised if resource is not found.
+        """
+        return self._get(dict(group_name=name))
