@@ -82,3 +82,18 @@ class Identifiers:
             QBProcessingError: will be raised if resource is not found.
         """
         return self._get(dict(group_name=name))
+
+    def get_queue_id_by_name(self, name: str) -> int:
+        """
+        Get queue id by name.
+
+        Args:
+            name (str): queue name.
+
+        Returns:
+            int: queue identifier.
+
+        Raises:
+            QBProcessingError: will be raised if resource is not found.
+        """
+        return self._get(dict(queue_name=name))
