@@ -112,3 +112,21 @@ class Identifiers:
             QBProcessingError: will be raised if resource is not found.
         """
         return self._get(dict(request_id=identifier))
+
+    def get_build_id_by_build_name(self, name: str) -> int:
+        """
+        Get build id by build name.
+
+        For example how to get id of latest build in configuration with id 1,
+        name will be `1.latest`
+
+        Args:
+            name (str): build name.
+
+        Returns:
+            int: build identifier.
+
+        Raises:
+            QBProcessingError: will be raised if resource is not found.
+        """
+        return self._get(dict(build_name=name))
