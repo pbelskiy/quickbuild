@@ -97,3 +97,18 @@ class Identifiers:
             QBProcessingError: will be raised if resource is not found.
         """
         return self._get(dict(queue_name=name))
+
+    def get_build_id_by_request_id(self, identifier: int) -> int:
+        """
+        Get build id by request id.
+
+        Args:
+            identifier (int): request identifier.
+
+        Returns:
+            int: build identifier.
+
+        Raises:
+            QBProcessingError: will be raised if resource is not found.
+        """
+        return self._get(dict(request_id=identifier))

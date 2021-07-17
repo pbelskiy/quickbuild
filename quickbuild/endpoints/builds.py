@@ -125,6 +125,21 @@ class Builds:
 
         return response
 
+    def get_id_by_request_id(self, identifier: int) -> int:
+        """
+        Get build id by request id.
+
+        Args:
+            identifier (int): request identifier.
+
+        Returns:
+            int: build identifier.
+
+        Raises:
+            QBProcessingError: will be raised if resource is not found.
+        """
+        return self.quickbuild.identifiers.get_build_id_by_request_id(identifier)
+
     def get_steps(self, build_id: int) -> str:
         """
         Get build steps.

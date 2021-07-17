@@ -53,3 +53,16 @@ def test_get_user_id_by_name(client):
 
     response = client.users.get_id_by_name('admin')
     assert response == 1
+
+
+@responses.activate
+def test_get_build_id_by_request_id(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/ids'),
+        content_type='application/text',
+        body='2',
+    )
+
+    response = client.builds.get_id_by_request_id(1)
+    assert response == 2
