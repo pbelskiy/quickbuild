@@ -8,7 +8,7 @@ from quickbuild.exceptions import (
 )
 from quickbuild.helpers import ContentType
 
-__version__ = '0.7.0'
+__version__ = '0.8.0'
 
 __all__ = (
     # adapters
