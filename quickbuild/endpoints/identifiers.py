@@ -130,3 +130,20 @@ class Identifiers:
             QBProcessingError: will be raised if resource is not found.
         """
         return self._get(dict(build_name=name))
+
+    def get_dashboard_id_by_dashboard_fqn(self, fqn: str) -> int:
+        """
+        Get dashboard id by dashboard fqn (fully qualified name).
+
+        <dashboard fqn> is of the form <user id>.<dashboard name>.
+
+        Args:
+            fqn (str): fqn (fully qualified name).
+
+        Returns:
+            int: dashboard identifier.
+
+        Raises:
+            QBProcessingError: will be raised if resource is not found.
+        """
+        return self._get(dict(dashboard_fqn=fqn))

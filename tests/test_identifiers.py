@@ -79,3 +79,16 @@ def test_get_build_id_by_build_name(client):
 
     response = client.builds.get_id_by_build_name('1.latest')
     assert response == 123
+
+
+@responses.activate
+def test_get_dashboard_id_by_dashboard_fqn(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/ids'),
+        content_type='application/text',
+        body='1',
+    )
+
+    response = client.dashboards.get_id_by_fqn('1.project1')
+    assert response == 1

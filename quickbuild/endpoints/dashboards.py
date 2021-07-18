@@ -48,6 +48,23 @@ class Dashboards:
             content_type=content_type,
         )
 
+    def get_id_by_fqn(self, fqn: str) -> int:
+        """
+        Get dashboard id by dashboard fqn (fully qualified name).
+
+        <dashboard fqn> is of the form <user id>.<dashboard name>.
+
+        Args:
+            fqn (str): fqn (fully qualified name).
+
+        Returns:
+            int: dashboard identifier.
+
+        Raises:
+            QBProcessingError: will be raised if resource is not found.
+        """
+        return self.quickbuild.identifiers.get_dashboard_id_by_dashboard_fqn(fqn)
+
     def update(self, configuration: str) -> int:
         """
         Update a dashboard using XML/JSON configuration.
