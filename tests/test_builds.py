@@ -326,8 +326,7 @@ def test_get_steps(client):
 
 @responses.activate
 def test_get_repositories(client):
-    BUILD_REPOSITORIES_XML = r"""
-    <?xml version="1.0" encoding="UTF-8"?>
+    BUILD_REPOSITORIES_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
     <list/>
     """
@@ -345,8 +344,7 @@ def test_get_repositories(client):
 
 @responses.activate
 def test_get_dependencies(client):
-    RESPONSE_DATA = r"""
-    <?xml version="1.0" encoding="UTF-8"?>
+    RESPONSE_DATA = r"""<?xml version="1.0" encoding="UTF-8"?>
 
     <list/>
     """
@@ -364,8 +362,7 @@ def test_get_dependencies(client):
 
 @responses.activate
 def test_get_dependents(client):
-    RESPONSE_DATA = r"""
-    <?xml version="1.0" encoding="UTF-8"?>
+    RESPONSE_DATA = r"""<?xml version="1.0" encoding="UTF-8"?>
 
     <list/>
     """
