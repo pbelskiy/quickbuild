@@ -9,7 +9,7 @@ from quickbuild import AsyncQBClient, ContentType, QBClient, QBError
 GET_VERSION_DATA = '6.0.9'
 
 
-USERS_XML = """<?xml version="1.0" encoding="UTF-8"?>
+USERS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 <list>
   <com.pmease.quickbuild.model.User>

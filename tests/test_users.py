@@ -20,7 +20,7 @@ USERS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 </list>
 """
 
-USER_INFO_XML = """<?xml version="1.0" encoding="UTF-8"?>
+USER_INFO_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 <com.pmease.quickbuild.model.User>
   <id>1</id>

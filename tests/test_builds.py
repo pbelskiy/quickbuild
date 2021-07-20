@@ -44,8 +44,7 @@ BUILD_INFO_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 """
 
 
-BUILD_STEPS_XML = r"""
-<?xml version="1.0" encoding="UTF-8"?>
+BUILD_STEPS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 <list>
   <com.pmease.quickbuild.stepsupport.SequentialStep>

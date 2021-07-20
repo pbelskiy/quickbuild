@@ -32,7 +32,8 @@ GET_REQUEST_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 </list>
 """
 
-CREATE_REQUEST_XML = r"""
+CREATE_REQUEST_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
+
 <com.pmease.quickbuild.BuildRequest>
   <!-- This element tells QuickBuild in what configuration to trigger build. -->
   <configurationId>10</configurationId>
@@ -91,6 +92,7 @@ CREATE_REQUEST_XML = r"""
 """
 
 CREATE_REQUEST_RESULT_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
+
 <com.pmease.quickbuild.RequestResult>
     <requestId>e8e5fb23-7aff-4efd-9825-162eeac84fca</requestId>
     <loopedRequest>false</loopedRequest>
