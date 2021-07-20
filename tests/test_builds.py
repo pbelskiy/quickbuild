@@ -181,6 +181,30 @@ BUILD_SEARCH_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 </list>
 """
 
+BUILD_FILES_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
+
+<list>
+  <com.pmease.quickbuild.rest.FileInfo>
+    <name>file1.zip</name>
+
+    <!-- size in bytes -->
+    <size>287111</size>
+
+    <!-- number of milliseconds since January 1, 1970, 00:00:00 GMT -->
+    <lastModified>1258091663171</lastModified>
+
+    <directory>false</directory>
+  </com.pmease.quickbuild.rest.FileInfo>
+
+  <com.pmease.quickbuild.rest.FileInfo>
+    <name>dir1</name>
+    <size>0</size>
+    <lastModified>1258091663171</lastModified>
+    <directory>true</directory>
+  </com.pmease.quickbuild.rest.FileInfo>
+</list>
+"""
+
 
 @responses.activate
 def test_get_info(client):
@@ -376,6 +400,21 @@ def test_get_dependents(client):
 
     response = client.builds.get_dependents(1)
     assert 'list' in response
+
+
+@responses.activate
+def test_get_files(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/files'),
+        content_type='application/xml',
+        body=BUILD_FILES_XML,
+    )
+
+    response = client.builds.get_files(1, 'some_path')
+    print(response)
+    assert response[0]['name'] == 'file1.zip'
+    assert response[0]['size'] == 287111
 
 
 @responses.activate

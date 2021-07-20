@@ -226,6 +226,38 @@ class Builds:
 
         return response
 
+    def get_files(self, build_id: int, path: str) -> str:
+        """
+        Get information about published files.
+
+        Args:
+            build_id (int):
+                Build id.
+
+            path (str):
+                Represents the relative path under publish directory of the
+                specified build.
+
+        Returns:
+            str: information about files and directories under the specified path.
+
+        Raises:
+            QBProcessingError: will be raised if specified path does not exist.
+        """
+        params = dict(
+            build_id=build_id,
+            path=path,
+        )
+
+        response = self.quickbuild._request(
+            'GET',
+            'files',
+            callback=response2py,
+            params=params,
+        )
+
+        return response
+
     def search(self,
                count: int,
                *,
