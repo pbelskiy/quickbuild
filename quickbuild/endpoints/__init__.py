@@ -5,6 +5,7 @@ from .configurations import Configurations
 from .dashboards import Dashboards
 from .groups import Groups
 from .identifiers import Identifiers
+from .measurements import Measurements
 from .memberships import Memberships
 from .requests import Requests
 from .system import System
@@ -19,6 +20,7 @@ __all__ = (
     'Dashboards',
     'Groups',
     'Identifiers',
+    'Measurements',
     'Memberships',
     'Requests',
     'System',
