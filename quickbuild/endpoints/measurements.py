@@ -79,3 +79,15 @@ class Measurements:
             callback=response2py,
             params=params,
         )
+
+    def get_version(self) -> str:
+        """
+        Get current version for the measurements related REST API.
+
+        Returns:
+            str: measurements version.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'grid/measurements/version',
+        )

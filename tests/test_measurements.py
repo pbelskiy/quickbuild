@@ -43,3 +43,16 @@ def test_get(client):
 
     assert len(response) == 2
     assert response[0]['id'] == 335
+
+
+@responses.activate
+def test_get_version(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/grid/measurements/version'),
+        content_type='application/xml',
+        body='6.0',
+    )
+
+    response = client.measurements.get_version()
+    assert response == '6.0'
