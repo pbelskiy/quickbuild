@@ -258,6 +258,35 @@ class Builds:
 
         return response
 
+    def get_notifications(self,
+                          last_notified_build_id: Optional[int] = None
+                          ) -> Union[List[dict], str]:
+        """
+        Get notifications belonging to current user, specified when client
+        instance was initialized.
+
+        Args:
+            last_notified_build_id (Optional[int]):
+                If not specified, the most recent notification will be returned;
+                otherwise, all notifications after specified build will be returned.
+
+        Returns:
+            Union[List[dict], str]: list of builds to be notified.
+        """
+        params = dict()
+
+        if last_notified_build_id:
+            params['last_notified_build_id'] = last_notified_build_id
+
+        response = self.quickbuild._request(
+            'GET',
+            'notifications',
+            callback=response2py,
+            params=params,
+        )
+
+        return response
+
     def search(self,
                count: int,
                *,

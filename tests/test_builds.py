@@ -204,6 +204,110 @@ BUILD_FILES_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 </list>
 """
 
+BUILD_NOTIFICATIONS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
+
+<list>
+  <com.pmease.quickbuild.model.Build>
+    <id>16</id>
+    <configuration>2</configuration>
+    <version>1.0.15</version>
+    <requester>1</requester>
+
+    <scheduled>false</scheduled>
+    <status>SUCCESSFUL</status>
+    <statusDate>2010-06-09T21:46:11.627+08:00</statusDate>
+    <beginDate>2010-06-09T21:46:11.131+08:00</beginDate>
+    <duration>496</duration>
+    <stepRuntimes>
+
+      <entry>
+        <string>master</string>
+        <com.pmease.quickbuild.stepsupport.StepRuntime>
+          <status>SUCCESSFUL</status>
+          <nodeAddress>matrix:8810</nodeAddress>
+          <duration>424</duration>
+        </com.pmease.quickbuild.stepsupport.StepRuntime>
+
+      </entry>
+      <entry>
+        <string>master&gt;checkout</string>
+        <com.pmease.quickbuild.stepsupport.StepRuntime>
+          <status>SUCCESSFUL</status>
+          <nodeAddress>matrix:8810</nodeAddress>
+          <duration>380</duration>
+
+        </com.pmease.quickbuild.stepsupport.StepRuntime>
+      </entry>
+    </stepRuntimes>
+    <repositoryRuntimes>
+      <entry>
+        <string>svn</string>
+        <com.pmease.quickbuild.repositorysupport.RepositoryRuntime>
+          <revisionDOM>
+
+            <com.pmease.quickbuild.plugin.scm.svn.SvnRevision revision="0.0">
+              <value>101</value>
+            </com.pmease.quickbuild.plugin.scm.svn.SvnRevision>
+          </revisionDOM>
+          <checkout>true</checkout>
+        </com.pmease.quickbuild.repositorysupport.RepositoryRuntime>
+      </entry>
+    </repositoryRuntimes>
+
+    <variableValues/>
+  </com.pmease.quickbuild.model.Build>
+  <com.pmease.quickbuild.model.Build>
+    <id>17</id>
+    <configuration>2</configuration>
+    <version>1.0.16</version>
+    <requester>1</requester>
+
+    <scheduled>false</scheduled>
+    <status>SUCCESSFUL</status>
+    <statusDate>2010-06-09T21:46:13.448+08:00</statusDate>
+    <beginDate>2010-06-09T21:46:12.854+08:00</beginDate>
+    <duration>594</duration>
+    <stepRuntimes>
+
+      <entry>
+        <string>master</string>
+        <com.pmease.quickbuild.stepsupport.StepRuntime>
+          <status>SUCCESSFUL</status>
+          <nodeAddress>matrix:8810</nodeAddress>
+          <duration>535</duration>
+        </com.pmease.quickbuild.stepsupport.StepRuntime>
+
+      </entry>
+      <entry>
+        <string>master&gt;checkout</string>
+        <com.pmease.quickbuild.stepsupport.StepRuntime>
+          <status>SUCCESSFUL</status>
+          <nodeAddress>matrix:8810</nodeAddress>
+          <duration>492</duration>
+
+        </com.pmease.quickbuild.stepsupport.StepRuntime>
+      </entry>
+    </stepRuntimes>
+    <repositoryRuntimes>
+      <entry>
+        <string>svn</string>
+        <com.pmease.quickbuild.repositorysupport.RepositoryRuntime>
+          <revisionDOM>
+
+            <com.pmease.quickbuild.plugin.scm.svn.SvnRevision revision="0.0">
+              <value>101</value>
+            </com.pmease.quickbuild.plugin.scm.svn.SvnRevision>
+          </revisionDOM>
+          <checkout>true</checkout>
+        </com.pmease.quickbuild.repositorysupport.RepositoryRuntime>
+      </entry>
+    </repositoryRuntimes>
+
+    <variableValues/>
+  </com.pmease.quickbuild.model.Build>
+</list>
+"""
+
 
 @responses.activate
 def test_get_info(client):
@@ -411,9 +515,21 @@ def test_get_files(client):
     )
 
     response = client.builds.get_files(1, 'some_path')
-    print(response)
     assert response[0]['name'] == 'file1.zip'
     assert response[0]['size'] == 287111
+
+
+@responses.activate
+def test_get_notifications(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/notifications'),
+        content_type='application/xml',
+        body=BUILD_NOTIFICATIONS_XML,
+    )
+
+    response = client.builds.get_notifications(15)
+    assert response[0]['id'] == 16
 
 
 @responses.activate
