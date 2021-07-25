@@ -1,10 +1,19 @@
 import re
 
+from http import HTTPStatus
+
 import aiohttp
 import pytest
 import responses
 
-from quickbuild import AsyncQBClient, ContentType, QBClient, QBError
+from quickbuild import (
+    AsyncQBClient,
+    ContentType,
+    QBClient,
+    QBError,
+    QBServerError,
+)
+from quickbuild.exceptions import QBForbiddenError
 
 GET_VERSION_DATA = '6.0.9'
 
@@ -286,3 +295,41 @@ def test_content_type_headers_sync_json_xml():
 
     client = QBClient('http://server', content_type=ContentType.JSON)
     client.memberships.get_info(1, content_type=ContentType.XML)
+
+
+@responses.activate
+def test_exception_server_error(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/version'),
+        body=GET_VERSION_DATA,
+        status=HTTPStatus.INTERNAL_SERVER_ERROR
+    )
+
+    with pytest.raises(QBServerError):
+        client.system.get_version()
+
+
+@responses.activate
+def test_exception_forbidden_error(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/version'),
+        body=GET_VERSION_DATA,
+        status=HTTPStatus.FORBIDDEN
+    )
+
+    with pytest.raises(QBForbiddenError):
+        client.system.get_version()
+
+
+@responses.activate
+def test_exception_common_error(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/version'),
+        body=GET_VERSION_DATA,
+        status=HTTPStatus.METHOD_NOT_ALLOWED
+    )
+    with pytest.raises(QBError):
+        client.system.get_version()

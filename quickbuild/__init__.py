@@ -5,6 +5,7 @@ from quickbuild.exceptions import (
     QBForbiddenError,
     QBNotFoundError,
     QBProcessingError,
+    QBServerError,
 )
 from quickbuild.helpers import ContentType
 
@@ -19,6 +20,7 @@ __all__ = (
     'QBForbiddenError',
     'QBNotFoundError',
     'QBProcessingError',
+    'QBServerError',
     # other
     'ContentType',
 )
