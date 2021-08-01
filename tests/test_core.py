@@ -1,3 +1,4 @@
+import http
 import re
 
 from http import HTTPStatus
@@ -74,7 +75,6 @@ def test_sync_client():
         responses.GET,
         re.compile(r'.*/rest/version'),
         body=GET_VERSION_DATA,
-        status=200
     )
 
     try:
@@ -98,6 +98,8 @@ def test_sync_client_retry():
     # responses library does`t support Retry mock
     # https://github.com/getsentry/responses/issues/135
     # so, just cover code of retry constructor
+    statuses = [HTTPStatus.BAD_REQUEST, HTTPStatus.INTERNAL_SERVER_ERROR]
+
     client = QBClient(
         'http://server',
         'login',
@@ -105,11 +107,11 @@ def test_sync_client_retry():
         retry=dict(
             total=10,
             factor=1,
-            statuses=[400, 500],
+            statuses=statuses,
         )
     )
 
-    assert client.session.adapters['http://'].max_retries.status_forcelist == [400, 500]
+    assert client.session.adapters['http://'].max_retries.status_forcelist == statuses
 
 
 @pytest.mark.asyncio
@@ -126,7 +128,7 @@ async def test_async_client(aiohttp_mock):
             'http://server/rest/version',
             content_type='text/plain',
             body=GET_VERSION_DATA,
-            status=200,
+            status=HTTPStatus.OK,
         )
 
         version = await client.system.get_version()
@@ -145,7 +147,7 @@ async def test_async_client_retry(aiohttp_mock):
         'password',
         retry=dict(
             total=10,
-            statuses=[500],
+            statuses=[HTTPStatus.INTERNAL_SERVER_ERROR],
         )
     )
 
@@ -153,14 +155,14 @@ async def test_async_client_retry(aiohttp_mock):
         'http://server/rest/version',
         content_type='text/plain',
         body='Server error',
-        status=500,
+        status=HTTPStatus.INTERNAL_SERVER_ERROR,
     )
 
     aiohttp_mock.get(
         'http://server/rest/version',
         content_type='text/plain',
         body=GET_VERSION_DATA,
-        status=200,
+        status=HTTPStatus.OK,
     )
 
     version = await client.system.get_version()
@@ -178,7 +180,7 @@ async def test_async_client_retry_exception(aiohttp_mock):
         'password',
         retry=dict(
             total=2,
-            statuses=[500],
+            statuses=[HTTPStatus.INTERNAL_SERVER_ERROR],
         )
     )
 
@@ -205,7 +207,6 @@ def test_content_type_parse_get():
         re.compile(r'.*/rest/users'),
         content_type='application/xml',
         body=USERS_XML,
-        status=200,
     )
 
     client = QBClient('http://server', content_type=ContentType.PARSE)
@@ -221,7 +222,6 @@ def test_content_type_xml_get():
         re.compile(r'.*/rest/users'),
         content_type='application/xml',
         body=USERS_XML,
-        status=200,
     )
 
     client = QBClient('http://server', content_type=ContentType.XML)
@@ -237,7 +237,6 @@ def test_content_type_json_get():
         re.compile(r'.*/rest/users'),
         content_type='application/json',
         body=USERS_JSON,
-        status=200,
     )
 
     client = QBClient('http://server', content_type=ContentType.JSON)
@@ -251,7 +250,7 @@ def test_content_type_headers_sync_json_json():
 
     def callback(request):
         assert request.headers['Accept'] == 'application/json'
-        return (200, request.headers, request.body)
+        return (HTTPStatus.OK, request.headers, request.body)
 
     responses.add_callback(
         responses.GET,
@@ -268,7 +267,7 @@ def test_content_type_headers_sync_xml_json():
 
     def callback(request):
         assert request.headers['Accept'] == 'application/json'
-        return (200, request.headers, request.body)
+        return (HTTPStatus.OK, request.headers, request.body)
 
     responses.add_callback(
         responses.GET,
@@ -285,7 +284,7 @@ def test_content_type_headers_sync_json_xml():
 
     def callback(request):
         assert request.headers['Accept'] == '*/*'
-        return (200, request.headers, request.body)
+        return (HTTPStatus.OK, request.headers, request.body)
 
     responses.add_callback(
         responses.GET,
