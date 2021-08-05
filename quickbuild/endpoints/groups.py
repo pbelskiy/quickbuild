@@ -1,6 +1,7 @@
 from functools import partial
 from typing import List, Optional, Union
 
+from quickbuild.endpoints.shares import GroupShares
 from quickbuild.helpers import ContentType, response2py
 
 
@@ -8,6 +9,8 @@ class Groups:
 
     def __init__(self, quickbuild):
         self.quickbuild = quickbuild
+
+        self.shares = GroupShares(quickbuild)
 
     def get(self) -> List[dict]:
         """

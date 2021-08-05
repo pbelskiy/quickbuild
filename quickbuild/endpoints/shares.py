@@ -9,6 +9,7 @@ class Shares:
     """
     def __init__(self, quickbuild):
         self.users = UserShares(quickbuild)
+        self.groups = GroupShares(quickbuild)
 
 
 class UserShares:
@@ -28,5 +29,26 @@ class UserShares:
         return self.quickbuild._request(
             'GET',
             'user_shares',
+            callback=response2py
+        )
+
+
+class GroupShares:
+    """
+    Group share is the object used to control dashboard sharing with groups.
+    """
+    def __init__(self, quickbuild):
+        self.quickbuild = quickbuild
+
+    def get(self) -> Union[List[dict], str]:
+        """
+        Get all group shares in the system.
+
+        Returns:
+            Union[List[dict], str]: list of all group shares.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'group_shares',
             callback=response2py
         )
