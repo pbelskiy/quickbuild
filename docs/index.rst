@@ -75,6 +75,12 @@ Requests
 .. autoclass:: quickbuild.endpoints.requests.Requests
     :members:
 
+Shares
+~~~~~~
+
+.. autoclass:: quickbuild.endpoints.shares.Shares
+    :members:
+
 System
 ~~~~~~
 

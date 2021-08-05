@@ -8,6 +8,7 @@ from .identifiers import Identifiers
 from .measurements import Measurements
 from .memberships import Memberships
 from .requests import Requests
+from .shares import Shares
 from .system import System
 from .tokens import Tokens
 from .users import Users
@@ -23,6 +24,7 @@ __all__ = (
     'Measurements',
     'Memberships',
     'Requests',
+    'Shares',
     'System',
     'Tokens',
     'Users',
