@@ -18,6 +18,15 @@ USER_SHARES_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 </list>
 """
 
+USER_SHARE_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
+
+<com.pmease.quickbuild.model.UserShare>
+  <id>1</id>
+  <user>2</user>
+  <dashboard>1</dashboard>
+</com.pmease.quickbuild.model.UserShare>
+"""
+
 GROUP_SHARES_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
 
 <list>
@@ -48,6 +57,20 @@ def test_get_user_shares(client):
     assert len(response) == 2
     assert response[0]['user'] == 2
     assert client.shares.users.get() == client.users.shares.get()
+
+
+@responses.activate
+def test_get_user_share_by_id(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/user_shares/1'),
+        content_type='application/xml',
+        body=USER_SHARE_XML,
+    )
+
+    response = client.shares.users.get_by_id(1)
+    assert response['user'] == 2
+    assert client.shares.users.get_by_id(1) == client.users.shares.get_by_id(1)
 
 
 @responses.activate
