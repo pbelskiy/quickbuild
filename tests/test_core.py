@@ -200,6 +200,14 @@ async def test_async_client_retry_exception(aiohttp_mock):
     await client.close()
 
 
+def test_retry_argument_validation():
+    with pytest.raises(QBError):
+        QBClient('http://server', retry=dict(total=1, strange_argument=1))
+
+    with pytest.raises(QBError):
+        AsyncQBClient('http://server', 'login', 'password', retry=dict(total=0))
+
+
 @responses.activate
 def test_content_type_parse_get():
     responses.add(

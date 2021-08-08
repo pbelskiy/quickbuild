@@ -44,10 +44,11 @@ class QBClient(QuickBuild):
 
             retry (Optional[dict]):
                 Retry options to prevent failures if server restarting or
-                temporary network problem.
+                temporary network problem. Disabled by default use total > 0
+                to enable.
 
-                - total: ``int`` Total retries count. (default 0)
-                - factor: ``int`` Sleep between retries (default 0)
+                - total: ``int`` Total retries count.
+                - factor: ``int`` Sleep between retries (default 1)
                     {factor} * (2 ** ({number of total retries} - 1))
                 - statuses: ``List[int]`` HTTP statues retries on. (default [])
 
@@ -56,7 +57,7 @@ class QBClient(QuickBuild):
                 .. code-block:: python
 
                     retry = dict(
-                        attempts=10,
+                        total=10,
                         factor=1,
                         statuses=[500]
                     )
@@ -106,9 +107,10 @@ class QBClient(QuickBuild):
         if not retry:
             return
 
+        self._validate_retry_argument(retry)
         adapter = HTTPAdapter(max_retries=Retry(
-            total=retry.get('total', 0),
-            backoff_factor=retry.get('factor', 0),
+            total=retry['total'],
+            backoff_factor=retry.get('factor', 1),
             status_forcelist=retry.get('statuses', []),
             method_whitelist=['GET', 'POST', 'PATCH'],
         ))

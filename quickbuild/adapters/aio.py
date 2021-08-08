@@ -16,8 +16,8 @@ from quickbuild.core import ContentType, QBError, QuickBuild, Response
 class RetryClientSession:
 
     def __init__(self, loop: Optional[asyncio.AbstractEventLoop], options: dict):
-        self.total = options.get('total') or 1
-        self.factor = options.get('factor', 0)
+        self.total = options['total']
+        self.factor = options.get('factor', 1)
         self.statuses = options.get('statuses', [])
 
         self.session = ClientSession(loop=loop)
@@ -85,10 +85,11 @@ class AsyncQBClient(QuickBuild):
 
             retry (Optional[dict]):
                 Retry options to prevent failures if server restarting or
-                temporary network problem.
+                temporary network problem. Disabled by default use total > 0
+                to enable.
 
-                - total: ``int`` Total retries count. (default 0)
-                - factor: ``int`` Sleep between retries (default 0)
+                - total: ``int`` Total retries count.
+                - factor: ``int`` Sleep between retries (default 1)
                     {factor} * (2 ** ({number of total retries} - 1))
                 - statuses: ``List[int]`` HTTP statues retries on. (default [])
 
@@ -97,7 +98,7 @@ class AsyncQBClient(QuickBuild):
                 .. code-block:: python
 
                     retry = dict(
-                        attempts=10,
+                        total=10,
                         factor=1,
                         statuses=[500]
                     )
@@ -116,6 +117,7 @@ class AsyncQBClient(QuickBuild):
             self.auth = BasicAuth(user, password)
 
         if retry:
+            self._validate_retry_argument(retry)
             self.session = RetryClientSession(loop, retry)
         else:
             self.session = ClientSession(loop=self.loop)

@@ -107,6 +107,15 @@ class QuickBuild:
         return callback(response.body)
 
     @staticmethod
+    def _validate_retry_argument(retry: dict) -> None:
+        for key in retry:
+            if key not in ('total', 'factor', 'statuses'):
+                raise QBError('Unknown key in retry argument: ' + key)
+
+        if retry.get('total', 0) <= 0:
+            raise QBError('Invalid `total` in retry argument must be > 0')
+
+    @staticmethod
     def _validate_for_id(configuration: str) -> None:
         if '</id>' in configuration:
             raise QBError('`id` element must not be in XML for create method')
