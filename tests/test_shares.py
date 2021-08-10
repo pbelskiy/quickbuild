@@ -74,6 +74,19 @@ def test_get_user_share_by_id(client):
 
 
 @responses.activate
+def test_get_user_share_by_dashboard_id(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/user_shares'),
+        content_type='application/xml',
+        body=USER_SHARES_XML,
+    )
+
+    response = client.shares.users.get_by_dashboard_id(1)
+    assert response[0]['user'] == 2
+
+
+@responses.activate
 def test_get_group_shares(client):
     responses.add(
         responses.GET,

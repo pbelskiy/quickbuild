@@ -41,12 +41,30 @@ class UserShares:
                 Share identifier.
 
         Returns:
-            Union[dict, str]: list of all user shares.
+            Union[dict, str]: user share.
         """
         return self.quickbuild._request(
             'GET',
             'user_shares/{}'.format(share_id),
             callback=response2py
+        )
+
+    def get_by_dashboard_id(self, dashboard_id: int) -> Union[List[dict], str]:
+        """
+        Get user shares by dashboard identifier.
+
+        Args:
+            dashboard_id (int):
+                Dashboard identifier.
+
+        Returns:
+            Union[List[dict], str]: list of user shares.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'user_shares',
+            callback=response2py,
+            params=dict(dashboard_id=dashboard_id),
         )
 
 
