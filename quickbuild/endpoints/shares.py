@@ -67,6 +67,24 @@ class UserShares:
             params=dict(dashboard_id=dashboard_id),
         )
 
+    def get_by_user_id(self, user_id: int) -> Union[List[dict], str]:
+        """
+        Get user shares by user identifier.
+
+        Args:
+            user_id (int):
+                User identifier.
+
+        Returns:
+            Union[List[dict], str]: list of user shares.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'user_shares',
+            callback=response2py,
+            params=dict(user_id=user_id),
+        )
+
 
 class GroupShares:
     """
