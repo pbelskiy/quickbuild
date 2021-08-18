@@ -85,6 +85,27 @@ class UserShares:
             params=dict(user_id=user_id),
         )
 
+    def update(self, configuration: str) -> int:
+        """
+        Update user share using XML configuration.
+
+        Normally you do not need to create the XML from scratch: you may retrieve
+        XML representation of the share, modify certain parts of the XML and post
+        back to above url.
+
+        Args:
+            configuration (str): XML document.
+
+        Returns:
+            int: user share id being updated.
+        """
+        return self.quickbuild._request(
+            'POST',
+            'user_shares',
+            callback=response2py,
+            data=configuration
+        )
+
 
 class GroupShares:
     """

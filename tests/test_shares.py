@@ -100,6 +100,22 @@ def test_get_user_shares_by_user_id(client):
 
 
 @responses.activate
+def test_update_user_share(client):
+    responses.add(
+        responses.POST,
+        re.compile(r'.*/rest/user_shares'),
+        content_type='application/xml',
+        body='123',
+    )
+
+    response = client.shares.users.update(USER_SHARE_XML)
+    assert response == 123
+
+
+""" ################################ GROUPS ################################ """
+
+
+@responses.activate
 def test_get_group_shares(client):
     responses.add(
         responses.GET,
