@@ -112,6 +112,19 @@ def test_update_user_share(client):
     assert response == 123
 
 
+@responses.activate
+def test_create_user_share(client):
+    responses.add(
+        responses.POST,
+        re.compile(r'.*/rest/user_shares'),
+        content_type='application/xml',
+        body='124',
+    )
+
+    response = client.shares.users.create(USER_SHARE_XML)
+    assert response == 124
+
+
 """ ################################ GROUPS ################################ """
 
 
