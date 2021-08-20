@@ -125,6 +125,16 @@ def test_create_user_share(client):
     assert response == 124
 
 
+@responses.activate
+def test_delete_user_share(client):
+    responses.add(
+        responses.DELETE,
+        re.compile(r'.*/rest/user_shares/.+'),
+    )
+
+    client.shares.users.delete(124)
+
+
 """ ################################ GROUPS ################################ """
 
 

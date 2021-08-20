@@ -124,6 +124,23 @@ class UserShares:
         """
         return self.update(configuration)
 
+    def delete(self, share_id: str) -> None:
+        """
+        Delete the user share.
+
+        Args:
+            share_id (int):
+                Share identifier.
+
+        Returns:
+            int: user share id being deleted.
+        """
+        return self.quickbuild._request(
+            'DELETE',
+            'user_shares/{}'.format(share_id),
+            callback=response2py,
+        )
+
 
 class GroupShares:
     """
