@@ -161,3 +161,20 @@ class GroupShares:
             'group_shares',
             callback=response2py
         )
+
+    def get_by_id(self, share_id: int) -> Union[dict, str]:
+        """
+        Get group share by identifier.
+
+        Args:
+            share_id (int):
+                Share identifier.
+
+        Returns:
+            Union[dict, str]: user share.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'group_shares/{}'.format(share_id),
+            callback=response2py
+        )
