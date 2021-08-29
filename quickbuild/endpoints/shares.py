@@ -178,3 +178,21 @@ class GroupShares:
             'group_shares/{}'.format(share_id),
             callback=response2py
         )
+
+    def get_by_dashboard_id(self, dashboard_id: int) -> Union[List[dict], str]:
+        """
+        Get group shares by dashboard identifier.
+
+        Args:
+            dashboard_id (int):
+                Dashboard identifier.
+
+        Returns:
+            Union[List[dict], str]: list of group shares.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'group_shares',
+            callback=response2py,
+            params=dict(dashboard_id=dashboard_id),
+        )
