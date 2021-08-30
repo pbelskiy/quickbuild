@@ -189,3 +189,18 @@ def test_get_group_shares_by_dashboard_id(client):
     assert len(response) == 2
     assert response[0]['group'] == 2
     assert client.shares.groups.get() == client.groups.shares.get()
+
+
+@responses.activate
+def test_get_group_shares_by_group_id(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/group_shares'),
+        content_type='application/xml',
+        body=GROUP_SHARES_XML,
+    )
+
+    response = client.shares.groups.get_by_group_id(1)
+    assert len(response) == 2
+    assert response[0]['group'] == 2
+    assert client.shares.groups.get() == client.groups.shares.get()

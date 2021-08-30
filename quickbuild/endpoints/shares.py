@@ -196,3 +196,22 @@ class GroupShares:
             callback=response2py,
             params=dict(dashboard_id=dashboard_id),
         )
+
+    def get_by_group_id(self, group_id: int) -> Union[List[dict], str]:
+        """
+        Get group shares by group identifier.
+
+        Args:
+            group_id (int):
+                Represents id of the group to query group share information for.
+                Particularly, use id 0 to query group shares targeting everyone.
+
+        Returns:
+            Union[List[dict], str]: list of group shares.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'group_shares',
+            callback=response2py,
+            params=dict(group_id=group_id),
+        )
