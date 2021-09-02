@@ -113,7 +113,6 @@ def test_update_user_share(client):
     responses.add(
         responses.POST,
         re.compile(r'.*/rest/user_shares'),
-        content_type='application/xml',
         body='123',
     )
 
@@ -126,7 +125,6 @@ def test_create_user_share(client):
     responses.add(
         responses.POST,
         re.compile(r'.*/rest/user_shares'),
-        content_type='application/xml',
         body='124',
     )
 
@@ -173,7 +171,7 @@ def test_get_group_share_by_id(client):
 
     response = client.shares.groups.get_by_id(15)
     assert response['id'] == 1
-    assert client.shares.groups.get_by_id() == client.groups.shares.get_by_id()
+    assert client.shares.groups.get_by_id(15) == client.groups.shares.get_by_id(15)
 
 
 @responses.activate
@@ -204,3 +202,15 @@ def test_get_group_shares_by_group_id(client):
     assert len(response) == 2
     assert response[0]['group'] == 2
     assert client.shares.groups.get() == client.groups.shares.get()
+
+
+@responses.activate
+def test_update_group_share(client):
+    responses.add(
+        responses.POST,
+        re.compile(r'.*/rest/group_shares'),
+        body='123',
+    )
+
+    response = client.shares.groups.update(GROUP_SHARE_XML)
+    assert response == 123
