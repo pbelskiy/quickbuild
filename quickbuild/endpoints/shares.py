@@ -236,3 +236,19 @@ class GroupShares:
             callback=response2py,
             data=configuration
         )
+
+    def create(self, configuration: str) -> int:
+        """
+        Create group share using XML configuration.
+
+        Normally you do not need to create the XML from scratch: you may retrieve
+        XML representation of the share, modify certain parts of the XML and post
+        back to above url.
+
+        Args:
+            configuration (str): XML document.
+
+        Returns:
+            int: group share id being updated.
+        """
+        return self.update(configuration)

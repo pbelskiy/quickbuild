@@ -214,3 +214,15 @@ def test_update_group_share(client):
 
     response = client.shares.groups.update(GROUP_SHARE_XML)
     assert response == 123
+
+
+@responses.activate
+def test_create_group_share(client):
+    responses.add(
+        responses.POST,
+        re.compile(r'.*/rest/group_shares'),
+        body='123',
+    )
+
+    response = client.shares.groups.create(GROUP_SHARE_XML)
+    assert response == 123
