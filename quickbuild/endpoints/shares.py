@@ -252,3 +252,20 @@ class GroupShares:
             int: group share id being updated.
         """
         return self.update(configuration)
+
+    def delete(self, share_id: str) -> None:
+        """
+        Delete group share.
+
+        Args:
+            share_id (int):
+                Share identifier.
+
+        Returns:
+            int: group share id being deleted.
+        """
+        return self.quickbuild._request(
+            'DELETE',
+            'group_shares/{}'.format(share_id),
+            callback=response2py,
+        )
