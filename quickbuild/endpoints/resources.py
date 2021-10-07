@@ -20,3 +20,20 @@ class Resources:
             'resources',
             callback=response2py,
         )
+
+    def get_by_id(self, resource_id: int) -> dict:
+        """
+        Get resource by identifier.
+
+        Args:
+            resource_id (int):
+                Identifier of a resources.
+
+        Returns:
+            dict: resource.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'resources/{}'.format(resource_id),
+            callback=response2py,
+        )
