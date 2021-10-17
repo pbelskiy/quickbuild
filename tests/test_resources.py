@@ -32,4 +32,17 @@ def test_get_by_id(client):
     )
 
     response = client.resources.get_by_id(1)
-    assert response == None
+    assert response is None
+
+
+@responses.activate
+def test_get_total_count(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/resources/1/total'),
+        content_type='application/xml',
+        body='5'
+    )
+
+    response = client.resources.get_total_count(1)
+    assert response == 5
