@@ -37,7 +37,6 @@ setup_args = dict(
     packages=find_packages(),
     package_data={'quickbuild': ['*']},
     author='Petr Belskiy',
-    author_email='petr.belskiy@gmail.com',
     keywords=['PMEase', 'quickbuild'],
     url='https://github.com/pbelskiy/quickbuild',
     download_url='https://pypi.org/project/quickbuild'
