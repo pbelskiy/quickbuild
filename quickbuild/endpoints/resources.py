@@ -54,3 +54,20 @@ class Resources:
             'resources/{}/total'.format(resource_id),
             callback=response2py,
         )
+
+    def get_available_count(self, resource_id: int) -> int:
+        """
+        Get available resource count across nodes.
+
+        Args:
+            resource_id (int):
+                Identifier of a resources.
+
+        Returns:
+            int: total resources count.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'resources/{}/available'.format(resource_id),
+            callback=response2py,
+        )

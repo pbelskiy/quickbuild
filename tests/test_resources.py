@@ -46,3 +46,16 @@ def test_get_total_count(client):
 
     response = client.resources.get_total_count(1)
     assert response == 5
+
+
+@responses.activate
+def test_get_available_count(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/resources/1/available'),
+        content_type='application/xml',
+        body='5'
+    )
+
+    response = client.resources.get_available_count(1)
+    assert response == 5
