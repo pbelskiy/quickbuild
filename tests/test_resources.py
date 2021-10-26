@@ -71,3 +71,15 @@ def test_update(client):
 
     response = client.resources.update('')
     assert response == 100
+
+
+@responses.activate
+def test_create(client):
+    responses.add(
+        responses.POST,
+        re.compile(r'.*/rest/resources'),
+        body='101'
+    )
+
+    response = client.resources.create('')
+    assert response == 101

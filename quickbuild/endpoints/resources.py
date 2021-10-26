@@ -93,3 +93,25 @@ class Resources:
             callback=response2py,
             data=configuration,
         )
+
+    def create(self, configuration: str) -> int:
+        """
+        Create resource.
+
+        Please note that the posted configuration should NOT contain the id
+        element, otherwise, QuickBuild will treat the post as an updating to
+        the resource with that id.
+
+        Normally you do not need to create the configuration from scratch:
+        you may retrieve configuration representation of a templating resource
+        using get_*() methods, remove the id element, modify certain parts
+        and use it as new configuration.
+
+        Args:
+            configuration (str):
+                Resource configuration.
+
+        Returns:
+            int: resource id being created.
+        """
+        return self.update(configuration)
