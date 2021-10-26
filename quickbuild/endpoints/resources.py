@@ -71,3 +71,25 @@ class Resources:
             'resources/{}/available'.format(resource_id),
             callback=response2py,
         )
+
+    def update(self, configuration: str) -> int:
+        """
+        Update resource.
+
+        Normally you do not need to create the configuration from scratch,
+        you may retrieve configuration representation of the resource using
+        get_*() methods, modify certain parts and use it as new configuration.
+
+        Args:
+            configuration (str):
+                Resource configuration.
+
+        Returns:
+            int: resource id being updated.
+        """
+        return self.quickbuild._request(
+            'POST',
+            'resources',
+            callback=response2py,
+            data=configuration,
+        )

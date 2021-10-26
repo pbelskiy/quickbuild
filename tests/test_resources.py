@@ -59,3 +59,15 @@ def test_get_available_count(client):
 
     response = client.resources.get_available_count(1)
     assert response == 5
+
+
+@responses.activate
+def test_update(client):
+    responses.add(
+        responses.POST,
+        re.compile(r'.*/rest/resources'),
+        body='100'
+    )
+
+    response = client.resources.update('')
+    assert response == 100
