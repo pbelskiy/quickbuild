@@ -115,3 +115,20 @@ class Resources:
             int: resource id being created.
         """
         return self.update(configuration)
+
+    def delete(self, resource_id: int) -> None:
+        """
+        Delete resource.
+
+        Args:
+            resource_id (int):
+                Identifier of a resources.
+
+        Returns:
+            None
+        """
+        return self.quickbuild._request(
+            'DELETE',
+            'resources/{}'.format(resource_id),
+            callback=response2py,
+        )

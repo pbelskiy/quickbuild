@@ -83,3 +83,14 @@ def test_create(client):
 
     response = client.resources.create('')
     assert response == 101
+
+
+@responses.activate
+def test_delete(client):
+    responses.add(
+        responses.DELETE,
+        re.compile(r'.*/rest/resources/123'),
+    )
+
+    response = client.resources.delete(123)
+    assert response is None
