@@ -57,6 +57,12 @@ Identifiers
 .. autoclass:: quickbuild.endpoints.identifiers.Identifiers
     :members:
 
+Issues
+~~~~~~
+
+.. autoclass:: quickbuild.endpoints.issues.Issues
+    :members:
+
 Measurements
 ~~~~~~~~~~~~
 

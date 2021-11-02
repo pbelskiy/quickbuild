@@ -13,6 +13,7 @@ from quickbuild.endpoints import (
     Dashboards,
     Groups,
     Identifiers,
+    Issues,
     Measurements,
     Memberships,
     Requests,
@@ -51,6 +52,7 @@ class QuickBuild:
         self.dashboards = Dashboards(self)
         self.groups = Groups(self)
         self.identifiers = Identifiers(self)
+        self.issues = Issues(self)
         self.measurements = Measurements(self)
         self.memberships = Memberships(self)
         self.requests = Requests(self)
