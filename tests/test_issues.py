@@ -19,6 +19,21 @@ ISSUES_LIST_XML = r"""
 </report>
 """
 
+BUILDS_LIST_XML = r"""
+<list>
+  <build>
+    <id>321</id>
+    <version>1.0.15</version>
+    <status>SUCCESSFUL</status>
+    <beginDate>2011-06-10T17:11:35.662+08:00</beginDate>
+    <duration>3409</duration>
+    <scheduled>false</scheduled>
+    <requester>Administrator</requester>
+    <deleted>false</deleted>
+  </build>
+</list>
+"""
+
 
 @responses.activate
 def test_get_version(client):
@@ -67,3 +82,18 @@ def test_get_issues(client):
 
     assert len(issues) == 2
     assert issues[0]['assignee'] == 'admin'
+
+
+@responses.activate
+def test_get_builds(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/jira/.+/builds/.+'),
+        content_type='text/xml',
+        body=BUILDS_LIST_XML,
+    )
+
+    builds = client.issues.get_tracker('jira').get_builds(5, 'QB-123')
+
+    assert len(builds) == 1
+    assert builds[0]['id'] == 321

@@ -144,6 +144,46 @@ class Tracker:
             callback=callback,
         )
 
+    def get_builds(self,
+                   configuration: Union[int, str],
+                   issuekey: str,
+                   *,
+                   count: Optional[int] = None
+                   ) -> List[dict]:
+        """
+        Retrieve the builds of an issue.
+        TODO: add support for QB  version < 5.0.14
+
+        Args:
+            configuration (str):
+                Specify the configuration. By default, specify configuration id
+                here, if you want to specify a configuration path, you need add
+                prefix `PATH:`, for example, `PATH:root/My/DEV`.
+
+            issuekey (str):
+                The issue key you want to search.
+
+            count (Optional[int]):
+                Specify at most how many records you want. If not specified,
+                all records found will return.
+
+        Returns:
+            List[dict]: issues list.
+        """
+        def callback(response: str) -> List[dict]:
+            return response2py(response, self.quickbuild._content_type)['build']
+
+        params = dict()
+
+        if count:
+            params['count'] = count
+
+        return self.quickbuild._request(
+            'GET',
+            '{}/{}/builds/{}'.format(self.name, issuekey, configuration),
+            callback=callback,
+        )
+
 
 class Issues:
 
