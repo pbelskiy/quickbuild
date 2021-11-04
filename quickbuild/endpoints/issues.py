@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional, Union
 
 from quickbuild.helpers import response2py
 
@@ -22,7 +22,7 @@ class Tracker:
         )
 
     def get_size(self,
-                 configuration: str,
+                 configuration: Union[int, str],
                  *,
                  build: Optional[int] = None,
                  from_build: Optional[int] = None,
@@ -33,9 +33,9 @@ class Tracker:
 
         Args:
             configuration (str):
-                Specify the configuration. By default, specify configuration id here,
-                if you want to specify a configuration path, you need add prefix PATH:,
-                for example: `PATH:root/My/DEV`.
+                Specify the configuration. By default, specify configuration id
+                here, if you want to specify a configuration path, you need add
+                prefix `PATH:`, for example: `PATH:root/My/DEV`.
 
                 Since QB version 5.0.14: Specify the configuration path directly
                 for example: `root/My/DEV`, no need `PATH:prefix` anymore.
@@ -67,6 +67,81 @@ class Tracker:
             'GET',
             '{}/size/{}'.format(self.name, configuration),
             callback=response2py,
+        )
+
+    def get_issues(self,
+                   configuration: Union[int, str],
+                   *,
+                   build: Optional[int] = None,
+                   from_build: Optional[int] = None,
+                   to_build: Optional[int] = None,
+                   offset: Optional[int] = None,
+                   limit: Optional[int] = None,
+                   asc: Optional[bool] = None
+                   ) -> List[dict]:
+        """
+        Retrieve the issues.
+
+        Args:
+            configuration (str):
+                Specify the configuration. By default, specify configuration id
+                here, if you want to specify a configuration path, you need add
+                prefix `PATH:`, for example: `PATH:root/My/DEV`.
+
+                Since QB version 5.0.14: Specify the configuration path directly
+                for example: `root/My/DEV`, no need `PATH:prefix` anymore.
+
+            build (Optional[int]):
+                The id of a specific build.
+
+            from_build (Optional[int]):
+                Specify the from build when finding changes in a build range.
+
+            to_build (Optional[int]):
+                Specify the to build when finding changes in a build range.
+
+            offset (Optional[int]):
+                Specify the first record when iterate the records, by default,
+                the offset is 0.
+
+            limit (Optional[int]):
+                Specify the total records you want to retrieve, by default,
+                the limit is 50.
+
+            asc (Optional[bool]):
+                Specify order by issue key ascendent or descendent, by default,
+                it is ascendent.
+
+        Returns:
+            List[dict]: issues list.
+        """
+        def callback(response: str) -> List[dict]:
+            return response2py(response, self.quickbuild._content_type)['row']
+
+        params = dict()
+
+        if build:
+            params['build'] = build
+
+        if from_build:
+            params['from_build'] = from_build
+
+        if to_build:
+            params['to_build'] = to_build
+
+        if offset:
+            params['offset'] = offset
+
+        if limit:
+            params['limit'] = limit
+
+        if asc:
+            params['asc'] = asc
+
+        return self.quickbuild._request(
+            'GET',
+            '{}/issues/{}'.format(self.name, configuration),
+            callback=callback,
         )
 
 

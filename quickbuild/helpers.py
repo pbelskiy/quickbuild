@@ -4,6 +4,8 @@ from xml.parsers.expat import ExpatError
 
 import xmltodict
 
+CLASS_KEYWORD = '@class'
+
 
 class ContentType(Enum):
     """
@@ -79,18 +81,25 @@ def _to_python(obj: Any) -> Any:
             if isinstance(v, list):
                 for item in v:
                     item = _to_python(item)
-                    item['@class'] = k
+                    item[CLASS_KEYWORD] = k
                     new_obj.append(_to_python(item))
             else:
-                v['@class'] = k
+                v[CLASS_KEYWORD] = k
                 new_obj.append(_to_python(v))
 
         return new_obj
 
-    for k, v in obj.items():
-        if isinstance(v, dict):
+    orig, obj = obj, {}
+
+    for k, v in orig.items():
+        # make more json similar
+        if k.startswith('@') and k != CLASS_KEYWORD:
+            k = k[1:]
+
+        if isinstance(v, (dict, list)):
             obj[k] = _to_python(v)
         elif isinstance(v, str) is False:
+            obj[k] = v
             continue
         elif v == 'true':
             obj[k] = True
@@ -98,5 +107,7 @@ def _to_python(obj: Any) -> Any:
             obj[k] = False
         elif v.isdigit():
             obj[k] = int(v)
+        else:
+            obj[k] = v
 
     return obj

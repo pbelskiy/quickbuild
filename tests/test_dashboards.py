@@ -133,7 +133,7 @@ def test_get_info(client):
 
     assert response['@class'] == 'com.pmease.quickbuild.model.Dashboard'
     assert response['id'] == 1
-    assert response['columns'][0]['gadgetDOMs'][0]['@revision'] == '0.0.1'
+    assert response['columns'][0]['gadgetDOMs'][0]['revision'] == '0.0.1'
 
 
 @responses.activate
