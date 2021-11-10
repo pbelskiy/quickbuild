@@ -34,6 +34,31 @@ BUILDS_LIST_XML = r"""
 </list>
 """
 
+CHANGES_LIST_XML = r"""
+<list>
+  <changeset>
+    <user>steve</user>
+    <date>2011-05-31T03:45:55.000+08:00</date>
+    <id>f090cd04725c5551f8a439fe0a53591193ea79c3</id>
+    <repositoryName>hg</repositoryName>
+    <repositoryType>Mercurial</repositoryType>
+    <additional>13</additional>
+    <buildId>321</buildId>
+    <comment>
+       add a big file to related to issue TST-23, TST-24 TST-25
+    </comment>
+    <modifications>
+      <modification>
+        <action>ADD</action>
+        <path>big.java</path>
+        <edition>f090cd04725c5551f8a439fe0a53591193ea79c3</edition>
+        <previousEdition>c11a08aa7525a01e35239b8b6f34d4f8f3bf770b</previousEdition>
+        <additional>13</additional>
+      </modification>
+    </modifications>
+  </changeset>
+</list>
+"""
 
 @responses.activate
 def test_get_version(client):
@@ -97,3 +122,18 @@ def test_get_builds(client):
 
     assert len(builds) == 1
     assert builds[0]['id'] == 321
+
+
+@responses.activate
+def test_get_changes(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/jira/.+/changes/.+'),
+        content_type='text/xml',
+        body=CHANGES_LIST_XML,
+    )
+
+    builds = client.issues.get_tracker('jira').get_changes(5, 'QB-123')
+
+    assert len(builds) == 1
+    assert builds[0]['user'] == 'steve'
