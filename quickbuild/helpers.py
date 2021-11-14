@@ -48,7 +48,7 @@ def response2py(obj: Any, content_type: ContentType) -> Any:
     if 'list' not in obj:
         key = next(iter(obj))
         new_obj = obj[key]
-        new_obj['@class'] = key
+        new_obj[CLASS_KEYWORD] = key
         return _to_python(new_obj)
 
     # case №3 - list of objects
