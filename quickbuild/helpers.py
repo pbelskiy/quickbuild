@@ -83,8 +83,10 @@ def _to_python(obj: Any) -> Any:
                     item = _to_python(item)
                     item[CLASS_KEYWORD] = k
                     new_obj.append(_to_python(item))
-            else:
+            elif isinstance(v, dict):
                 v[CLASS_KEYWORD] = k
+                new_obj.append(_to_python(v))
+            else:
                 new_obj.append(_to_python(v))
 
         return new_obj
