@@ -75,7 +75,7 @@ has native support of JSON content, usually it's much more convenient to use
 native Python types (parsed XML) instead of pure XML string.
 
 So, that is why current package introducing three types of content, this type and
-behaviour can be set globally for client instances, and can be rewritten for some
+behavior can be set globally for client instances, and can be rewritten for some
 methods.
 
 - PARSE (using by default)
