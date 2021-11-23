@@ -33,6 +33,12 @@ Builds
 .. autoclass:: quickbuild.endpoints.builds.Builds
     :members:
 
+Changes
+~~~~~~~
+
+.. autoclass:: quickbuild.endpoints.changes.Changes
+    :members:
+
 Configurations
 ~~~~~~~~~~~~~~
 

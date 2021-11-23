@@ -1,6 +1,7 @@
 from .agents import Agents
 from .audits import Audits
 from .builds import Builds
+from .changes import Changes
 from .configurations import Configurations
 from .dashboards import Dashboards
 from .groups import Groups
@@ -19,6 +20,7 @@ __all__ = (
     'Agents',
     'Audits',
     'Builds',
+    'Changes',
     'Configurations',
     'Dashboards',
     'Groups',
