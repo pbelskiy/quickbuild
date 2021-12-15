@@ -170,12 +170,6 @@ class Tracker:
         Returns:
             List[dict]: issues list.
         """
-        def callback(response: str) -> List[dict]:
-            elements = response2py(response, self.quickbuild._content_type)['build']
-            if not isinstance(elements, list):
-                return [elements]
-            return elements
-
         params = dict()
 
         if count:
@@ -184,7 +178,7 @@ class Tracker:
         return self.quickbuild._request(
             'GET',
             '{}/{}/builds/{}'.format(self.name, issuekey, configuration),
-            callback=callback,
+            callback=response2py,
         )
 
     def get_changes(self,
@@ -212,12 +206,6 @@ class Tracker:
         Returns:
             List[dict]: issues list.
         """
-        def callback(response: str) -> List[dict]:
-            elements = response2py(response, self.quickbuild._content_type)['changeset']
-            if not isinstance(elements, list):
-                return [elements]
-            return elements
-
         params = dict()
 
         if count:
@@ -226,7 +214,7 @@ class Tracker:
         return self.quickbuild._request(
             'GET',
             '{}/{}/changes/{}'.format(self.name, issuekey, configuration),
-            callback=callback,
+            callback=response2py,
         )
 
 

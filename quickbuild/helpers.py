@@ -56,10 +56,10 @@ def response2py(obj: Any, content_type: ContentType) -> Any:
     if obj is None:
         return []
 
-    return _to_python(obj)
+    return _to_python(obj, to_list=True)
 
 
-def _to_python(obj: Any) -> Any:
+def _to_python(obj: Any, to_list: bool = False) -> Any:
     # pylint: disable=R0912
 
     if isinstance(obj, str):
@@ -74,7 +74,7 @@ def _to_python(obj: Any) -> Any:
     if isinstance(obj, dict) is False:
         return obj
 
-    if list(obj.keys())[0].startswith('com.pmease.quickbuild'):
+    if list(obj.keys())[0].startswith('com.pmease.quickbuild') or to_list:
         new_obj = []
 
         for k, v in obj.items():
