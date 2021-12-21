@@ -231,3 +231,26 @@ class Changes:
         )
 
         return response
+
+    def get_build_commits_changesets(self, build_id: int) -> List[dict]:
+        """
+        Get the changesets of the build_id lively.
+
+        Most of the aforementioned APIs are only
+        callable when build finish. Sometimes, you may want to query the
+        changesets during the build is still running.
+
+        Args:
+            build_id (int):
+                Build id.
+
+        Returns:
+            List[dict]: changesets list.
+        """
+        response = self.quickbuild._request(
+            'GET',
+            'changes/commits/build/{}'.format(build_id),
+            callback=response2py,
+        )
+
+        return response

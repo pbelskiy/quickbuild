@@ -102,3 +102,16 @@ def test_get_changesets(client):
     )
 
     assert changesets[0]['user'] == 'steve'
+
+
+@responses.activate
+def test_get_build_commits_changesets(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/changes/commits/build/.+'),
+        content_type='text/xml',
+        body=CHANGESETS_XML,
+    )
+
+    changesets = client.changes.get_build_commits_changesets(123)
+    assert changesets[0]['user'] == 'steve'
