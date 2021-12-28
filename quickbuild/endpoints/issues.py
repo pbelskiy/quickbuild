@@ -219,7 +219,9 @@ class Tracker:
 
 
 class Issues:
-
+    """
+    https://wiki.pmease.com/display/QB10/Interact+with+Issues
+    """
     def __init__(self, quickbuild):
         self.quickbuild = quickbuild
 
@@ -235,6 +237,6 @@ class Issues:
         - Bugzilla - /rest/bugzilla
 
         Returns:
-            List[dict]: list of resources
+            Tracker: Tracker instance
         """
         return Tracker(self.quickbuild, name)
