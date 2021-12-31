@@ -9,6 +9,7 @@ from .identifiers import Identifiers
 from .issues import Issues
 from .measurements import Measurements
 from .memberships import Memberships
+from .reports import Reports
 from .requests import Requests
 from .resources import Resources
 from .shares import Shares
@@ -28,6 +29,7 @@ __all__ = (
     'Issues',
     'Measurements',
     'Memberships',
+    'Reports',
     'Requests',
     'Resources',
     'Shares',
