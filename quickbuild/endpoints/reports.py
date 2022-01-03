@@ -1,3 +1,8 @@
+from typing import List
+
+from quickbuild.helpers import response2py
+
+
 class Tracker:
 
     def __init__(self, quickbuild, name: str):
@@ -14,6 +19,19 @@ class Tracker:
         return self.quickbuild._request(
             'GET',
             '{}/version'.format(self.name)
+        )
+
+    def get_categories(self) -> List[str]:
+        """
+        Get reports tracker categories.
+
+        Returns:
+            List[str]: categories list.
+        """
+        return self.quickbuild._request(
+            'GET',
+            '{}/reports'.format(self.name),
+            callback=response2py,
         )
 
 

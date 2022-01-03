@@ -81,7 +81,8 @@ def _to_python(obj: Any, to_list: bool = False) -> Any:
             if isinstance(v, list):
                 for item in v:
                     item = _to_python(item)
-                    item[CLASS_KEYWORD] = k
+                    if isinstance(item, dict):
+                        item[CLASS_KEYWORD] = k
                     new_obj.append(_to_python(item))
             elif isinstance(v, dict):
                 v[CLASS_KEYWORD] = k
