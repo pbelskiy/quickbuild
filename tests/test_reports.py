@@ -15,6 +15,16 @@ CATEGORIES_XML = r"""
 </list>
 """
 
+DEFINITION_XML = r"""
+<meta name="stats" group="STATISTICS">
+  <column name="ID" isKey="false" indexed="false" nullable="false" updatable="false" sqlType="BIGINT" dataType="ID"/>
+  <column name="buildId" isKey="true" indexed="false" nullable="true" updatable="true" sqlType="BIGINT" dataType="ID"/>
+  <column name="duration" isKey="false" indexed="false" nullable="true" updatable="true" sqlType="BIGINT" dataType="DURATION"/>
+  <column name="tests" isKey="false" indexed="false" nullable="true" updatable="true" sqlType="INT" dataType="INTEGER"/>
+  ... ...
+</meta>
+"""
+
 
 @responses.activate
 def test_get_version(client):
@@ -41,3 +51,17 @@ def test_get_categories(client):
     categories = client.reports.get_tracker('junit').get_categories()
     assert len(categories) == 8
     assert categories[0] == 'unprocessed'
+
+
+@responses.activate
+def test_get_definition(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/junit/meta/stats'),
+        content_type='application/xml',
+        body=DEFINITION_XML,
+    )
+
+    definition = client.reports.get_tracker('junit').get_definition('stats')
+    assert definition['name'] == 'stats'
+    assert definition['column'][0]['name'] == 'ID'

@@ -34,6 +34,37 @@ class Tracker:
             callback=response2py,
         )
 
+    def get_definition(self, name: str) -> dict:
+        """
+        Get the report definition (meta data).
+
+        Args:
+            name (str):
+                Specify the report name from categories API.
+
+        You may consider the report meta data as the schema of a table in
+        database. Each report has an attribute group and in QuickBuild, the
+        following groups are used:
+
+        - BUILD
+        - STATISTICS
+        - HISTORY
+        - AGGREGATION
+
+        the group attribute tells QuickBuild where to find the report, for
+        example, if a report belongs to BUILD group, then this report is
+        stored in build related directory, otherwise, the report is stored in
+        configuration related directory.
+
+        Returns:
+            dict: report definition.
+        """
+        return self.quickbuild._request(
+            'GET',
+            '{}/meta/{}'.format(self.name, name),
+            callback=response2py,
+        )
+
 
 class Reports:
     """
@@ -45,6 +76,9 @@ class Reports:
     def get_tracker(self, name: str) -> Tracker:
         """
         Here, tracker is the type of your reports tracker in QuickBuild:
+
+        Args:
+            name (str): report tracker name, examples table below.
 
         Report Category	Name
         --------------- ----------
