@@ -25,6 +25,14 @@ DEFINITION_XML = r"""
 </meta>
 """
 
+AGGREGATIONS_XML = r"""
+<list>
+  <string>DEFAULT</string>
+  <string>On Linux</string>
+  <string>On Windows</string>
+</list>
+"""
+
 
 @responses.activate
 def test_get_version(client):
@@ -65,3 +73,17 @@ def test_get_definition(client):
     definition = client.reports.get_tracker('junit').get_definition('stats')
     assert definition['name'] == 'stats'
     assert definition['column'][0]['name'] == 'ID'
+
+
+@responses.activate
+def test_get_aggregations(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/junit/reportsets/BUILD/103'),
+        content_type='application/xml',
+        body=AGGREGATIONS_XML,
+    )
+
+    aggregations = client.reports.get_tracker('junit').get_aggregations('BUILD', 103)
+    assert len(aggregations) == 3
+    assert aggregations[0] == 'DEFAULT'

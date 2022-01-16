@@ -65,6 +65,37 @@ class Tracker:
             callback=response2py,
         )
 
+    def get_aggregations(self,
+                         report_group: str,
+                         configuration_or_build_id: int
+                         ) -> List[str]:
+        """
+        In QuickBuild, the report data are stored by report sets or by aggregations.
+        The report set is specified in the publish step, and the aggregation name
+        is specified in the aggregation definition.
+
+        Args:
+            report_group (str):
+                The report group, can be one of the following:
+                BUILD, STATISTICS, HISTORY, AGGREGATION.
+
+            configuration_or_build_id (int):
+                For BUILD group, the id should be a valid build id, otherwise,
+                the configuration id should be specified.
+
+        Returns:
+            List[str]: aggregated report data.
+        """
+        return self.quickbuild._request(
+            'GET',
+            '{}/reportsets/{}/{}'.format(
+                self.name,
+                report_group,
+                configuration_or_build_id,
+            ),
+            callback=response2py,
+        )
+
 
 class Reports:
     """
