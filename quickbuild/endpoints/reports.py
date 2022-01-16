@@ -96,6 +96,26 @@ class Tracker:
             callback=response2py,
         )
 
+    def get_build_stats(self, build_id: int, reportset: str) -> dict:
+        """
+        Get the build stats.
+
+        Args:
+            build_id (int):
+                Specify the build id.
+
+            reportset (str):
+                The report set you want.
+
+        Returns:
+            dict: get build stats.
+        """
+        return self.quickbuild._request(
+            'GET',
+            '{}/buildstats/{}/{}'.format(self.name, build_id, reportset),
+            callback=response2py,
+        )
+
 
 class Reports:
     """

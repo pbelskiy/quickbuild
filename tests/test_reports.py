@@ -33,6 +33,12 @@ AGGREGATIONS_XML = r"""
 </list>
 """
 
+BUILD_STATS_XML = r"""
+<report name="stats" version="0.0.0" locale="en_US">
+  <row ID="1" buildId="103" duration="261466" tests="1006" errors="5" failures="7" skips="0" added="994" newFailed="12" notFixed="0" fixed="0" successes="994" success_rate="0.9880715705765407"/>
+</report>
+"""
+
 
 @responses.activate
 def test_get_version(client):
@@ -87,3 +93,16 @@ def test_get_aggregations(client):
     aggregations = client.reports.get_tracker('junit').get_aggregations('BUILD', 103)
     assert len(aggregations) == 3
     assert aggregations[0] == 'DEFAULT'
+
+
+@responses.activate
+def test_get_build_stats(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/junit/buildstats/103/DEFAULT'),
+        content_type='application/xml',
+        body=BUILD_STATS_XML,
+    )
+
+    stats = client.reports.get_tracker('junit').get_build_stats(103, 'DEFAULT')
+    assert stats['row']['duration'] == 261466
