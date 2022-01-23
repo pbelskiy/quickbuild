@@ -137,7 +137,7 @@ class Tracker:
             reportset (str):
                 Specify the report set or aggregation name.
 
-            filters (Optional[dict]):
+            filters (Optional[str]):
                 Specify filters based on SQL to filter the records, for example,
                 duration>5 and duration<10, the fields available can be found in
                 the report meta data definition.
