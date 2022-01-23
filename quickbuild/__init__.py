@@ -9,7 +9,7 @@ from quickbuild.exceptions import (
 )
 from quickbuild.helpers import ContentType
 
-__version__ = '0.12.0'
+__version__ = '0.13.0'
 
 __all__ = (
     # adapters
