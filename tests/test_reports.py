@@ -39,6 +39,14 @@ BUILD_STATS_XML = r"""
 </report>
 """
 
+RECORDS_DATA_XML = r"""<report name="tests" version="0.0" locale="en_US">
+  <row ID="100" packageName="org.hibernate.test.entitymode.multi" className="MultiRepresentationTest" testName="testPojoRetreival" status="PASS" duration="40" hasSysout="true" totalRuns="2" failedRuns="0" passedRuns="2" diffStatus="ADDED"/>
+  <row ID="101" packageName="org.hibernate.test.entitymode.multi" className="MultiRepresentationTest" testName="testDom4jRetreival" status="PASS" duration="58" hasSysout="true" totalRuns="2" failedRuns="0" passedRuns="2" diffStatus="FIXED"/>
+  <row ID="102" packageName="org.hibernate.test.entitymode.multi" className="MultiRepresentationTest" testName="testDom4jSave" status="PASS" duration="34" hasSysout="true" totalRuns="2" failedRuns="0" passedRuns="2" diffStatus="FIXED"/>
+  <row ID="103" packageName="org.hibernate.test.entitymode.multi" className="MultiRepresentationTest" testName="testDom4jHQL" status="PASS" duration="30" hasSysout="true" totalRuns="2" failedRuns="0" passedRuns="2" diffStatus="ADDED"/>
+</report>
+"""
+
 
 @responses.activate
 def test_get_version(client):
@@ -124,3 +132,22 @@ def test_get_records_size(client):
     )
 
     assert size == 5
+
+
+@responses.activate
+def test_get_records_data(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/junit/records/tests/103/DEFAULT'),
+        content_type='application/xml',
+        body=RECORDS_DATA_XML,
+    )
+
+    data = client.reports.get_tracker('junit').get_records_data(
+        'tests',
+        103,
+        'DEFAULT'
+    )['row']
+
+    assert len(data) == 4
+    assert data[0]['testName'] == 'testPojoRetreival'

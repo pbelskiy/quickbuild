@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 from quickbuild.helpers import response2py
 
@@ -155,6 +155,69 @@ class Tracker:
         return self.quickbuild._request(
             'GET',
             '{}/size/{}/{}/{}'.format(
+                self.name,
+                report_name,
+                configuration_or_build_id,
+                reportset,
+            ),
+            params=params,
+            callback=response2py,
+        )
+
+    def get_records_data(self,
+                         report_name: str,
+                         configuration_or_build_id: int,
+                         reportset: str,
+                         *,
+                         offset: Optional[int] = None,
+                         limit: Optional[int] = None,
+                         filters: Optional[str] = None
+                         ) -> int:  # pylint: disable=too-many-arguments.
+        """
+        Get the report records by page.
+
+        Args:
+            report_name (str):
+                Specify the report name.
+
+            configuration_or_build_id (int):
+                According to the report you specified, the id is a build id when
+                report belongs to BUILD group, otherwise, configuration id is
+                needed.
+
+            reportset (str):
+                The report set or aggregation name
+
+            offset (Optional[int]):
+                The first record you want to retrieve. By default, the offset
+                is 0, i.e., from the first record.
+
+            limit (Optional[int]):
+                The number of records you want to retrieve. By default, the
+                number of limit is 50.
+
+            filters (Optional[str]):
+                Specify filters based on SQL to filter the records, for example,
+                duration>5 and duration<10, the fields available can be found in
+                the report meta data definition.
+
+        Returns:
+            int: number of total records.
+        """
+        params = dict()  # type: Dict[str, Any]
+
+        if offset:
+            params['offset'] = offset
+
+        if limit:
+            params['limit'] = limit
+
+        if filters:
+            params['filters'] = filters
+
+        return self.quickbuild._request(
+            'GET',
+            '{}/records/{}/{}/{}'.format(
                 self.name,
                 report_name,
                 configuration_or_build_id,
