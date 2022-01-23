@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from quickbuild.helpers import response2py
 
@@ -113,6 +113,54 @@ class Tracker:
         return self.quickbuild._request(
             'GET',
             '{}/buildstats/{}/{}'.format(self.name, build_id, reportset),
+            callback=response2py,
+        )
+
+    def get_records_size(self,
+                         report_name: str,
+                         configuration_or_build_id: int,
+                         reportset: str,
+                         filters: Optional[str] = None
+                         ) -> int:
+        """
+        Get number of total records
+
+        Args:
+            report_name (str):
+                Specify the report name.
+
+            configuration_or_build_id (int):
+                According to the report you specified, supply a valid build id
+                when report belongs to BUILD group, otherwise, configuration id
+                is needed.
+
+            reportset (str):
+                Specify the report set or aggregation name.
+
+            filters (Optional[dict]):
+                Specify filters based on SQL to filter the records, for example,
+                duration>5 and duration<10, the fields available can be found in
+                the report meta data definition.
+
+                Example: "(status='ERROR') or (status='FAILURE')"
+
+        Returns:
+            int: number of total records.
+        """
+        params = dict()
+
+        if filters:
+            params['filters'] = filters
+
+        return self.quickbuild._request(
+            'GET',
+            '{}/size/{}/{}/{}'.format(
+                self.name,
+                report_name,
+                configuration_or_build_id,
+                reportset,
+            ),
+            params=params,
             callback=response2py,
         )
 

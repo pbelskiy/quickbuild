@@ -106,3 +106,21 @@ def test_get_build_stats(client):
 
     stats = client.reports.get_tracker('junit').get_build_stats(103, 'DEFAULT')
     assert stats['row']['duration'] == 261466
+
+
+@responses.activate
+def test_get_records_size(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/junit/size/tests/103/DEFAULT'),
+        content_type='text/plain',
+        body='5',
+    )
+
+    size = client.reports.get_tracker('junit').get_records_size(
+        'tests',
+        103,
+        'DEFAULT'
+    )
+
+    assert size == 5
