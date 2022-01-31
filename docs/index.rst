@@ -81,6 +81,12 @@ Memberships
 .. autoclass:: quickbuild.endpoints.memberships.Memberships
     :members:
 
+Nodes
+~~~~~
+
+.. autoclass:: quickbuild.endpoints.nodes.Nodes
+    :members:
+
 Reports
 ~~~~~~~
 

@@ -17,6 +17,7 @@ from quickbuild.endpoints import (
     Issues,
     Measurements,
     Memberships,
+    Nodes,
     Reports,
     Requests,
     Resources,
@@ -58,6 +59,7 @@ class QuickBuild:
         self.issues = Issues(self)
         self.measurements = Measurements(self)
         self.memberships = Memberships(self)
+        self.nodes = Nodes(self)
         self.reports = Reports(self)
         self.requests = Requests(self)
         self.resources = Resources(self)
