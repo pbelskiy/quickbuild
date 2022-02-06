@@ -4,7 +4,7 @@ import responses
 
 
 @responses.activate
-def test_get_version(client):
+def test_get_system_attributes(client):
     responses.add(
         responses.GET,
         re.compile(r'.*/rest/system_attributes/.+'),
