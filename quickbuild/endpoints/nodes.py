@@ -11,6 +11,21 @@ class Nodes:
     def __init__(self, quickbuild):
         self.quickbuild = quickbuild
 
+    def get_user_attributes(self, name: str) -> dict:
+        """
+        Get user attributes of grid node.
+
+        This feature is available since QuickBuild 5.0.26
+
+        Returns:
+            dict: attributes
+        """
+        return self.quickbuild._request(
+            'GET',
+            'user_attributes/{}'.format(name),
+            callback=response2py,
+        )
+
     def get_system_attributes(self, name: str) -> dict:
         """
         Get system attributes of grid node.
