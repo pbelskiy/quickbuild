@@ -26,6 +26,25 @@ class Nodes:
             callback=response2py,
         )
 
+    def set_user_attributes(self, name: str, data: str) -> None:
+        """
+        Set user attributes of grid node.
+
+        * This feature is available since QuickBuild 5.0.26 *
+
+        Args:
+            group_id (int): group identifier.
+
+        Returns:
+            None
+        """
+        return self.quickbuild._request(
+            'POST',
+            'user_attributes/{}'.format(name),
+            callback=response2py,
+            data=data,
+        )
+
     def get_system_attributes(self, name: str) -> dict:
         """
         Get system attributes of grid node.
