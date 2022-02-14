@@ -15,7 +15,7 @@ class Nodes:
         """
         Get user attributes of grid node.
 
-        This feature is available since QuickBuild 5.0.26
+        * This feature is available since QuickBuild 5.0.26 *
 
         Returns:
             dict: attributes
@@ -30,7 +30,7 @@ class Nodes:
         """
         Get system attributes of grid node.
 
-        This feature is available since QuickBuild 5.1.22
+        * This feature is available since QuickBuild 5.1.22 *
 
         Returns:
             dict: attributes
