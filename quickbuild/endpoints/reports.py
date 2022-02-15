@@ -242,25 +242,43 @@ class Reports:
         Args:
             name (str): report tracker name, examples table below.
 
-        Report Category	Name
-        --------------- ----------
-        Build Stats     buildstats
-        SCM Changes     changes
-        CheckStyle      checkstyle
-        Cobertura       cobertura
-        JaCoCo          jacoco
-        CPD             cpd
-        EMMA            emma
-        FindBugs        findbugs
-        Fxcop           fxcop
-        JUnit           junit
-        MBUnit          mbunit
-        MSTest          mstest
-        NCover          ncover
-        NUnit           nunit
-        PMD             pmd
-        TestNG          testng
-        Boost Test      boost
+        +------------------+-------------+
+        | Report category  | Name        |
+        +==================+=============+
+        | Build Stats      | buildstats  |
+        +------------------+-------------+
+        | SCM Changes      | changes     |
+        +------------------+-------------+
+        | CheckStyle       | checkstyle  |
+        +------------------+-------------+
+        | Cobertura        | cobertura   |
+        +------------------+-------------+
+        | JaCoCo           | jacoco      |
+        +------------------+-------------+
+        | CPD              | cpd         |
+        +------------------+-------------+
+        | EMMA             | emma        |
+        +------------------+-------------+
+        | FindBugs         | findbugs    |
+        +------------------+-------------+
+        | Fxcop            | fxcop       |
+        +------------------+-------------+
+        | JUnit            | junit       |
+        +------------------+-------------+
+        | MBUnit           | mbunit      |
+        +------------------+-------------+
+        | MSTest           | mstest      |
+        +------------------+-------------+
+        | NCover           | ncover      |
+        +------------------+-------------+
+        | NUnit            | nunit       |
+        +------------------+-------------+
+        | PMD              | pmd         |
+        +------------------+-------------+
+        | TestNG           | testng      |
+        +------------------+-------------+
+        | Boost Test       | boost       |
+        +------------------+-------------+
 
         Returns:
             Tracker: Tracker instance
