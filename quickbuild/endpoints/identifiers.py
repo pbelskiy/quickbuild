@@ -25,7 +25,8 @@ class Identifiers:
         """
         Get resource id by name.
 
-        **This feature is available since 6.1.35**
+        .. note::
+            This feature is available since 6.1.35
 
         Args:
             name (str): resource path.
