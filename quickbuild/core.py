@@ -8,6 +8,7 @@ from typing import Any, Callable, Optional
 from quickbuild.endpoints import (
     Agents,
     Audits,
+    Authorizations,
     Builds,
     Changes,
     Configurations,
@@ -50,6 +51,7 @@ class QuickBuild:
 
         self.agents = Agents(self)
         self.audits = Audits(self)
+        self.authorizations = Authorizations(self)
         self.builds = Builds(self)
         self.changes = Changes(self)
         self.configurations = Configurations(self)

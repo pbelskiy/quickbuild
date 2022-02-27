@@ -27,6 +27,12 @@ Audits
 .. autoclass:: quickbuild.endpoints.audits.Audits
     :members:
 
+Authorizations
+~~~~~~~~~~~~~~
+
+.. autoclass:: quickbuild.endpoints.authorizations.Authorizations
+    :members:
+
 Builds
 ~~~~~~
 
