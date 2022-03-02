@@ -9,6 +9,20 @@ from quickbuild import QBError, QBProcessingError
 
 
 @responses.activate
+def test_get_version(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/version'),
+        body='6.0.9',
+    )
+
+    version = client.system.get_version()
+    assert version.major == 6
+    assert version.minor == 0
+    assert version.patch == 9
+
+
+@responses.activate
 def test_pause_success(client):
     responses.add(
         responses.GET,
