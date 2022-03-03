@@ -1,10 +1,15 @@
-from typing import NamedTuple
+from typing import NamedTuple, Optional
 
 from quickbuild.exceptions import QBError
 from quickbuild.helpers import response2py
 
 ServerVersion = NamedTuple(
-    'ServerVersion', [('major', int), ('minor', int), ('patch', int)]
+    'ServerVersion', [
+        ('major', int),
+        ('minor', int),
+        ('patch', Optional[int]),
+        ('qualifier', Optional[str]),
+    ]
 )
 
 
@@ -18,10 +23,22 @@ class System:
         Show server version information.
 
         Returns:
-            ServerVersion: NamedTuple with major, minor and patch version.
+            ServerVersion: major, minor, patch version and qualifier.
         """
         def callback(response: str) -> ServerVersion:
-            return ServerVersion(*map(int, response.split('.')))
+            if '-' in response:
+                version, qualifier = response.split('-')
+            else:
+                version, qualifier = response, None
+
+            major, minor, patch = version.split('.')
+
+            return ServerVersion(
+                major=int(major),
+                minor=int(minor),
+                patch=int(patch) if patch.isnumeric() else None,
+                qualifier=qualifier,
+            )
 
         return self.quickbuild._request(
             'GET',

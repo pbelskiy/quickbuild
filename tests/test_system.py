@@ -10,16 +10,33 @@ from quickbuild import QBError, QBProcessingError
 
 @responses.activate
 def test_get_version(client):
-    responses.add(
-        responses.GET,
-        re.compile(r'.*/rest/version'),
-        body='6.0.9',
-    )
-
+    responses.add(responses.GET, re.compile(r'.*/rest/version'), body='6.0.9')
     version = client.system.get_version()
     assert version.major == 6
     assert version.minor == 0
     assert version.patch == 9
+    assert version.qualifier is None
+
+    responses.add(responses.GET, re.compile(r'.*/rest/version'), body='8.0.x')
+    version = client.system.get_version()
+    assert version.major == 8
+    assert version.minor == 0
+    assert version.patch is None
+    assert version.qualifier is None
+
+    responses.add(responses.GET, re.compile(r'.*/rest/version'), body='13.1.2-rc.2')
+    version = client.system.get_version()
+    assert version.major == 13
+    assert version.minor == 1
+    assert version.patch == 2
+    assert version.qualifier == 'rc.2'
+
+    responses.add(responses.GET, re.compile(r'.*/rest/version'), body='12.5.0-beta')
+    version = client.system.get_version()
+    assert version.major == 12
+    assert version.minor == 5
+    assert version.patch == 0
+    assert version.qualifier == 'beta'
 
 
 @responses.activate
