@@ -1,4 +1,4 @@
-from typing import NamedTuple, Optional
+from typing import NamedTuple
 
 from quickbuild.exceptions import QBError
 from quickbuild.helpers import response2py
@@ -7,8 +7,8 @@ ServerVersion = NamedTuple(
     'ServerVersion', [
         ('major', int),
         ('minor', int),
-        ('patch', Optional[int]),
-        ('qualifier', Optional[str]),
+        ('patch', int),
+        ('qualifier', str),
     ]
 )
 
@@ -29,14 +29,14 @@ class System:
             if '-' in response:
                 version, qualifier = response.split('-')
             else:
-                version, qualifier = response, None
+                version, qualifier = response, ''
 
             major, minor, patch = version.split('.')
 
             return ServerVersion(
                 major=int(major),
                 minor=int(minor),
-                patch=int(patch) if patch.isnumeric() else None,
+                patch=int(patch) if patch.isnumeric() else 0,
                 qualifier=qualifier,
             )
 

@@ -15,14 +15,14 @@ def test_get_version(client):
     assert version.major == 6
     assert version.minor == 0
     assert version.patch == 9
-    assert version.qualifier is None
+    assert version.qualifier == ''
 
     responses.add(responses.GET, re.compile(r'.*/rest/version'), body='8.0.x')
     version = client.system.get_version()
     assert version.major == 8
     assert version.minor == 0
-    assert version.patch is None
-    assert version.qualifier is None
+    assert version.patch == 0
+    assert version.qualifier == ''
 
     responses.add(responses.GET, re.compile(r'.*/rest/version'), body='13.1.2-rc.2')
     version = client.system.get_version()
