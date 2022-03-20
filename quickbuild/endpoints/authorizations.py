@@ -20,3 +20,16 @@ class Authorizations:
             'authorizations',
             callback=response2py,
         )
+
+    def get_info(self, authorization_id: int) -> dict:
+        """
+        Get authorization info by id.
+
+        Returns:
+            dict: authorization info.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'authorizations/{}'.format(authorization_id),
+            callback=response2py,
+        )
