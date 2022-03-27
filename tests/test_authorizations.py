@@ -54,3 +54,16 @@ def test_get_info(client):
 
     response = client.authorizations.get_info(3)
     assert response['configuration'] == 3
+
+
+@responses.activate
+def test_get_by_group(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/authorizations'),
+        content_type='application/xml',
+        body=AUTHORIZATION_XML,
+    )
+
+    response = client.authorizations.get_by_group(3)
+    assert response['group'] == 3

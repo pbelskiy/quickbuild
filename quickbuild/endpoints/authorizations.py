@@ -33,3 +33,19 @@ class Authorizations:
             'authorizations/{}'.format(authorization_id),
             callback=response2py,
         )
+
+    def get_by_group(self, group_id: int) -> dict:
+        """
+        Get authorization info by group id.
+
+        Returns:
+            dict: authorization info.
+        """
+        params = dict(group_id=group_id)
+
+        return self.quickbuild._request(
+            'GET',
+            'authorizations',
+            callback=response2py,
+            params=params,
+        )
