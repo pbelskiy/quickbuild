@@ -37,6 +37,6 @@ jobs:
     needs: tests
     runs-on: ubuntu-latest
     steps:
-    - name: Coveralls Finished
+    - name: Coveralls finished
       run: |
         curl https://coveralls.io/webhook?repo_token=${{ secrets.coveralls }} -d "payload[build_num]=${{ github.sha }}&payload[status]=done"
