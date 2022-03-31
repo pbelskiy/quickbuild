@@ -49,3 +49,19 @@ class Authorizations:
             callback=response2py,
             params=params,
         )
+
+    def get_by_configuration(self, configuration_id: int) -> dict:
+        """
+        Get authorization info by configuration_id.
+
+        Returns:
+            dict: authorization info.
+        """
+        params = dict(configuration_id=configuration_id)
+
+        return self.quickbuild._request(
+            'GET',
+            'authorizations',
+            callback=response2py,
+            params=params,
+        )
