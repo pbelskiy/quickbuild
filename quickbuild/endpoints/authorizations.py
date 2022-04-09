@@ -65,3 +65,24 @@ class Authorizations:
             callback=response2py,
             params=params,
         )
+
+    def update(self, configuration: str) -> int:
+        """
+        Update an authorization using XML configuration.
+
+        Normally you do not need to create the XML from scratch: you may retrieve
+        XML representation of the authorization using http GET method, modify
+        certain parts of the XML and post back to above url.
+
+        Args:
+            configuration (str): XML document.
+
+        Returns:
+            int: authorization id being updated.
+        """
+        return self.quickbuild._request(
+            'POST',
+            'authorizations',
+            callback=response2py,
+            data=configuration
+        )
