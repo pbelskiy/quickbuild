@@ -93,3 +93,16 @@ def test_update(client):
 
     response = client.authorizations.update(AUTHORIZATION_XML)
     assert response == 123
+
+
+@responses.activate
+def test_create(client):
+    responses.add(
+        responses.POST,
+        re.compile(r'.*/rest/authorizations'),
+        content_type='application/xml',
+        body='123',
+    )
+
+    response = client.authorizations.create(AUTHORIZATION_XML)
+    assert response == 123

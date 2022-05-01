@@ -86,3 +86,26 @@ class Authorizations:
             callback=response2py,
             data=configuration
         )
+
+    def create(self, configuration: str) -> int:
+        """
+        Create an authorization using XML/JSON configuration.
+
+        Please note that: posted XML should NOT contain the id element; otherwise
+        QuickBuild will treat the post as an updating to the authorization with
+        that id. Normally you do not need to create the XML from scratch: you may
+        retrieve XML representation of a templating authorization using http GET
+        method, remove the id element, modify certain parts and post back to above
+        url.
+
+        Args:
+            configuration (str): XML/JSON document.
+
+        Returns:
+            int: newly created authorizations id.
+
+        Raises:
+            QBError: XML validation error
+        """
+        self.quickbuild._validate_for_id(configuration)
+        return self.update(configuration)
