@@ -106,3 +106,14 @@ def test_create(client):
 
     response = client.authorizations.create(AUTHORIZATION_XML)
     assert response == 123
+
+
+@responses.activate
+def test_delete(client):
+    responses.add(
+        responses.DELETE,
+        re.compile(r'.*/rest/authorizations'),
+        content_type='text/plain',
+    )
+
+    assert client.authorizations.delete(1) is None

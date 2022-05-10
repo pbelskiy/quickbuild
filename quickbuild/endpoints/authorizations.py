@@ -109,3 +109,19 @@ class Authorizations:
         """
         self.quickbuild._validate_for_id(configuration)
         return self.update(configuration)
+
+    def delete(self, configuration_id: int) -> None:
+        """
+        Delete authorization by configuration_id.
+
+        Args:
+            configuration_id (int): configuration id.
+
+        Returns:
+            None
+        """
+        return self.quickbuild._request(
+            'DELETE',
+            'authorizations/{}'.format(configuration_id),
+            callback=response2py,
+        )
