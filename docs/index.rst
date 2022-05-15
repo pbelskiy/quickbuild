@@ -93,6 +93,12 @@ Nodes
 .. autoclass:: quickbuild.endpoints.nodes.Nodes
     :members:
 
+Profiles
+~~~~~~~~
+
+.. autoclass:: quickbuild.endpoints.profiles.Profiles
+    :members:
+
 Reports
 ~~~~~~~
 
