@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 
 from quickbuild.helpers import response2py
 
@@ -19,4 +19,17 @@ class Profiles:
             'GET',
             'cloud_profiles',
             callback=response2py
+        )
+
+    def get_info(self, cloud_profile_id: int) -> Union[dict, str]:
+        """
+        Get information about cloud profile.
+
+        Returns:
+            dict: information cloud profile.
+        """
+        return self.quickbuild._request(
+            'GET',
+            'cloud_profiles/{}'.format(cloud_profile_id),
+            callback=response2py,
         )
