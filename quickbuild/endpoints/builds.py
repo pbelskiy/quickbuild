@@ -97,13 +97,10 @@ class Builds:
         Returns:
             int: build duration in ms
         """
-        def callback(response: str) -> int:
-            return int(response)
-
         response = self.quickbuild._request(
             'GET',
             'builds/{}/duration'.format(build_id),
-            callback=callback
+            callback=response2py
         )
 
         return response
