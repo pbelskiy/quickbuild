@@ -1,6 +1,6 @@
 from datetime import datetime
 from functools import partial
-from typing import Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 from quickbuild.helpers import ContentType, response2py
 
@@ -544,7 +544,15 @@ class Builds:
 
     def delete(self, build_id: int) -> None:
         """
-        Delete build.
+        Delete build. This service simply deletes the build object in database,
+        and is different from build cancellation. You may follow below steps to
+        cancel a running build:
+
+        1. Get build request id using `get_request_id()`
+        2. Delete the build request with build request id if it is not empty
+           using `requests.delete()`
+
+        Or using `stop()` which wraps above calls.
 
         Args:
             build_id (int): build id.
@@ -557,3 +565,21 @@ class Builds:
             'builds/{}'.format(build_id),
             callback=response2py,
         )
+
+    def stop(self, build_id: int) -> None:
+        """
+        Stop build, it's just wrapper for two calls.
+
+        Args:
+            build_id (int): build id.
+
+        Returns:
+            None
+        """
+        def callback1(_) -> Any:
+            return partial(self.get_request_id, build_id)
+
+        def callback2(request_id: str) -> None:
+            return self.quickbuild.requests.delete(request_id)
+
+        return self.quickbuild._chain([callback1, callback2])

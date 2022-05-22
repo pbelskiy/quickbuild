@@ -631,3 +631,41 @@ async def test_delete_async(aiohttp_mock):
         assert response is None
     finally:
         await client.close()
+
+
+@responses.activate
+def test_stop(client):
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/builds/\d+/request_id'),
+        body='fd2339a1-bc71-429d-b4ee-0ac650c342fe',
+    )
+
+    responses.add(
+        responses.DELETE,
+        re.compile(r'.*/rest/build_requests'),
+    )
+
+    assert client.builds.stop(5) is None
+
+
+@pytest.mark.asyncio
+async def test_stop_async(aiohttp_mock):
+    try:
+        client = AsyncQBClient('http://server')
+
+        aiohttp_mock.get(
+            re.compile(r'.*/rest/builds/\d+/request_id'),
+            body='fd2339a1-bc71-429d-b4ee-0ac650c342fe',
+            content_type='text/plain',
+        )
+
+        aiohttp_mock.delete(
+            re.compile(r'.*/rest/build_requests'),
+            content_type='text/plain',
+        )
+
+        response = await client.builds.stop(5)
+        assert response is None
+    finally:
+        await client.close()

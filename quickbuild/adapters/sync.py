@@ -1,10 +1,11 @@
-from typing import Any, Callable, Optional
+from typing import Any, Callable, List, Optional
 
 from requests import Session
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 from quickbuild.core import ContentType, QuickBuild, Response
+from quickbuild.exceptions import QBError
 
 
 class QBClient(QuickBuild):
@@ -149,6 +150,27 @@ class QBClient(QuickBuild):
         )
 
         return result
+
+    @staticmethod
+    def _chain(functions: List[Callable]) -> Any:
+        """
+        Helper function for creating call chain for functions.
+        """
+        prev = None
+
+        for func in functions:
+            try:
+                prev = func(prev)
+
+                while True:
+                    if callable(prev):
+                        prev = prev()
+                    else:
+                        break
+            except QBError as e:
+                prev = e
+
+        return prev
 
     def close(self) -> None:
         """

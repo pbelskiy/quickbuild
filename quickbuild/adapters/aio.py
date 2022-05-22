@@ -1,6 +1,6 @@
 import asyncio
 
-from typing import Any, Callable, Optional, Union
+from typing import Any, Callable, List, Optional, Union
 
 from aiohttp import (
     BasicAuth,
@@ -10,7 +10,8 @@ from aiohttp import (
     ClientTimeout,
 )
 
-from quickbuild.core import ContentType, QBError, QuickBuild, Response
+from quickbuild.core import ContentType, QuickBuild, Response
+from quickbuild.exceptions import QBError
 
 
 class RetryClientSession:
@@ -161,6 +162,29 @@ class AsyncQBClient(QuickBuild):
         )
 
         return result
+
+    @staticmethod
+    async def _chain(functions: List[Callable]) -> Any:
+        """
+        Helper function for creating call chain of async and sync functions.
+        """
+        prev = None
+
+        for func in functions:
+            try:
+                prev = func(prev)
+
+                while True:
+                    if asyncio.iscoroutine(prev):
+                        prev = await prev  # type: ignore
+                    elif callable(prev):
+                        prev = prev()
+                    else:
+                        break
+            except QBError as e:
+                prev = e
+
+        return prev
 
     async def close(self) -> None:  # type: ignore
         """
