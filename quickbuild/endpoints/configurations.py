@@ -72,7 +72,7 @@ class Configurations:
                 instance is used.
 
         Returns:
-            Union[dict, str]: configuration content.
+            Union[dict, str]: configuration info.
         """
         return self.quickbuild._request(
             'GET',

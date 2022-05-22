@@ -1,6 +1,6 @@
-from typing import List
+from typing import List, Optional, Union
 
-from quickbuild.helpers import response2py
+from quickbuild.helpers import ContentType, response2py
 
 
 class Authorizations:
@@ -21,17 +21,30 @@ class Authorizations:
             callback=response2py,
         )
 
-    def get_info(self, authorization_id: int) -> dict:
+    def get_info(self,
+                 authorization_id: int,
+                 *,
+                 content_type: Optional[ContentType] = None
+                 ) -> Union[dict, str]:
         """
         Get authorization info by id.
 
+        Args:
+            authorization_id (int):
+                Authorization identifier.
+
+            content_type (Optional[ContentType]):
+                Select needed content type if not set, default value of client
+                instance is used.
+
         Returns:
-            dict: authorization info.
+            Union[dict, str]: authorization info.
         """
         return self.quickbuild._request(
             'GET',
             'authorizations/{}'.format(authorization_id),
             callback=response2py,
+            content_type=content_type,
         )
 
     def get_by_group(self, group_id: int) -> dict:

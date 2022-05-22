@@ -42,7 +42,7 @@ class Users:
                 instance is used.
 
         Returns:
-            dict: information about user.
+            Union[dict, str]: information about user.
         """
         return self.quickbuild._request(
             'GET',

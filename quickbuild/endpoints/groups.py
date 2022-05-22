@@ -42,7 +42,7 @@ class Groups:
                 instance is used.
 
         Returns:
-            dict: group information.
+            Union[dict, str]: group information.
         """
         return self.quickbuild._request(
             'GET',

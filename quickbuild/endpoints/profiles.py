@@ -1,6 +1,6 @@
-from typing import List, Union
+from typing import List, Optional, Union
 
-from quickbuild.helpers import response2py
+from quickbuild.helpers import ContentType, response2py
 
 
 class Profiles:
@@ -21,17 +21,30 @@ class Profiles:
             callback=response2py
         )
 
-    def get_info(self, cloud_profile_id: int) -> Union[dict, str]:
+    def get_info(self,
+                 cloud_profile_id: int,
+                 *,
+                 content_type: Optional[ContentType] = None
+                 ) -> Union[dict, str]:
         """
         Get information about cloud profile.
 
+        Args:
+            cloud_profile_id (int):
+                Cloud profile identifier.
+
+            content_type (Optional[ContentType]):
+                Select needed content type if not set, default value of client
+                instance is used.
+
         Returns:
-            dict: information cloud profile.
+            Union[dict, str]: information cloud profile.
         """
         return self.quickbuild._request(
             'GET',
             'cloud_profiles/{}'.format(cloud_profile_id),
             callback=response2py,
+            content_type=content_type
         )
 
     def update(self, configuration: str) -> int:
