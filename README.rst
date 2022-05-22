@@ -18,6 +18,8 @@ Python client for PMEase `QuickBuild <https://www.pmease.com/quickbuild>`_
 .. |Downloads status|
    image:: https://img.shields.io/pypi/dm/quickbuild?color=1&label=Downloads
 
+----
+
 Package supports sync and async syntax with same code base.
 
 .. code:: python
@@ -51,7 +53,7 @@ Get server version:
     version = client.system.get_version()
     print(version)
 
-With async client:
+Get server version with async manner:
 
 .. code:: python
 
@@ -69,6 +71,15 @@ With async client:
     finally:
         loop.run_until_complete(client.close())
         loop.close()
+        
+Stop build:
+
+.. code:: python
+
+    from quickbuild import QBClient
+
+    client = QBClient('http://server', 'login', 'password')
+    client.builds.stop(123)
 
 Content type
 ------------
