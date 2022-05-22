@@ -1,9 +1,6 @@
 Python client for PMEase `QuickBuild <https://www.pmease.com/quickbuild>`_
 ==========================================================================
 
-Status
-------
-
 |Build status|
 |Docs status|
 |Coverage status|
@@ -20,6 +17,12 @@ Status
    image:: https://img.shields.io/pypi/pyversions/quickbuild?label=Python
 .. |Downloads status|
    image:: https://img.shields.io/pypi/dm/quickbuild?color=1&label=Downloads
+
+Package supports sync and async syntax with same code base.
+
+.. code:: python
+
+    from quickbuild import AsyncQBClient, QBClient
 
 Documentation
 -------------
