@@ -1,5 +1,5 @@
-Python client for `QuickBuild <https://www.pmease.com/quickbuild>`_
-===================================================================
+Python client for PMEase `QuickBuild <https://www.pmease.com/quickbuild>`_
+==========================================================================
 
 Status
 ------
