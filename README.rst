@@ -49,36 +49,28 @@ Get server version:
 
     from quickbuild import QBClient
 
-    client = QBClient('http://server', 'login', 'password')
+    client = QBClient('https://server', 'login', 'password')
     version = client.system.get_version()
     print(version)
 
-Get server version with async manner:
+Get server version with using async syntax:
 
 .. code:: python
 
     import asyncio
     from quickbuild import AsyncQBClient
 
-    client = AsyncQBClient('http://server', 'login', 'password')
+    client = AsyncQBClient('https://server', 'login', 'password')
+    version = asyncio.run(client.system.get_version())
+    print(version)
 
-    async def example():
-        await client.system.get_version()
-
-    loop = asyncio.get_event_loop()
-    try:
-        loop.run_until_complete(example())
-    finally:
-        loop.run_until_complete(client.close())
-        loop.close()
-        
 Stop build:
 
 .. code:: python
 
     from quickbuild import QBClient
 
-    client = QBClient('http://server', 'login', 'password')
+    client = QBClient('https://server', 'login', 'password')
     client.builds.stop(123)
 
 Content type
