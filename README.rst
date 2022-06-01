@@ -29,9 +29,11 @@ Package supports sync and async syntax with same code base.
 Documentation
 -------------
 
-`Read the Docs <https://quickbuild.readthedocs.io/en/latest/>`_
+`Package Read the Docs <https://quickbuild.readthedocs.io/en/latest/>`_
 
-`Official REST API documentation <https://wiki.pmease.com/display/QB10/RESTful+API>`_
+`Official REST API documentation <https://wiki.pmease.com/display/QB12/RESTful+API>`_
+
+`Available REST API Clients <https://wiki.pmease.com/display/QB12/Available+Clients>`_
 
 Installation
 ------------
