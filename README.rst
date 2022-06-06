@@ -38,9 +38,9 @@ Documentation
 Installation
 ------------
 
-::
+.. code:: shell
 
-    pip3 install -U quickbuild
+    pip3 install quickbuild
 
 Examples
 --------
