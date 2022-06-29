@@ -15,7 +15,7 @@ with open(init_file_path, encoding='utf-8') as f:
         raise RuntimeError('Unable to get package version')
 
 with open('README.rst', encoding='utf-8') as f:
-    README = readme_file.read()
+    README = f.read()
 
 setup_args = dict(
     name='quickbuild',
