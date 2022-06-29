@@ -51,7 +51,7 @@ Get server version:
 
     from quickbuild import QBClient
 
-    client = QBClient('https://server', 'login', 'password')
+    client = QBClient('https://server', 'user', 'password')
     version = client.system.get_version()
     print(version)
 
@@ -62,7 +62,7 @@ Get server version with using async syntax:
     import asyncio
     from quickbuild import AsyncQBClient
 
-    client = AsyncQBClient('https://server', 'login', 'password')
+    client = AsyncQBClient('https://server', 'user', 'password')
     version = asyncio.run(client.system.get_version())
     print(version)
 
@@ -72,7 +72,7 @@ Stop build:
 
     from quickbuild import QBClient
 
-    client = QBClient('https://server', 'login', 'password')
+    client = QBClient('https://server', 'user', 'password')
     client.builds.stop(123)
 
 Content type
@@ -82,7 +82,7 @@ By default QuickBuild returns XML content, but starting from 10 version it also
 has native support of JSON content, usually it's much more convenient to use
 native Python types (parsed XML) instead of pure XML string.
 
-So, that is why three types of content were indtoduced, this type and behavior 
+So, that is why three types of content were indtoduced, this type and behavior
 can be set globally for client instances, and can be rewritten for some methods.
 
 - PARSE (using by default)

@@ -63,10 +63,10 @@ class AsyncQBClient(QuickBuild):
 
         Args:
             url (str):
-                Url of QuickBuild server, must include API version.
+                URL of QuickBuild server, must include API version.
 
             user (Optional[str]):
-                User name, login.
+                User name.
 
             password (Optional[str]):
                 Password for user.

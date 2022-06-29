@@ -25,10 +25,10 @@ class QBClient(QuickBuild):
 
         Args:
             url (str):
-                Url of QuickBuild server.
+                URL of QuickBuild server.
 
             user (Optional[str]):
-                User name, login.
+                User name.
 
             password (Optional[str]):
                 Password for user.

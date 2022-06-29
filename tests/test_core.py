@@ -80,7 +80,7 @@ def test_sync_client():
     try:
         client = QBClient(
             'http://server',
-            'login',
+            'user',
             'password',
             timeout=10,
         )
@@ -102,7 +102,7 @@ def test_sync_client_retry():
 
     client = QBClient(
         'http://server',
-        'login',
+        'user',
         'password',
         retry=dict(
             total=10,
@@ -119,7 +119,7 @@ async def test_async_client(aiohttp_mock):
     try:
         client = AsyncQBClient(
             'http://server',
-            'login',
+            'user',
             'password',
             timeout=10,
         )
@@ -143,7 +143,7 @@ async def test_async_client(aiohttp_mock):
 async def test_async_client_retry(aiohttp_mock):
     client = AsyncQBClient(
         'http://server',
-        'login',
+        'user',
         'password',
         retry=dict(
             total=10,
@@ -176,7 +176,7 @@ async def test_async_client_retry(aiohttp_mock):
 async def test_async_client_retry_exception(aiohttp_mock):
     client = AsyncQBClient(
         'http://server',
-        'login',
+        'user',
         'password',
         retry=dict(
             total=2,
@@ -205,7 +205,7 @@ def test_retry_argument_validation():
         QBClient('http://server', retry=dict(total=1, strange_argument=1))
 
     with pytest.raises(QBError):
-        AsyncQBClient('http://server', 'login', 'password', retry=dict(total=0))
+        AsyncQBClient('http://server', 'user', 'password', retry=dict(total=0))
 
 
 @responses.activate
