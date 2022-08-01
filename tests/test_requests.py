@@ -121,13 +121,6 @@ def test_get(client):
 
 @responses.activate
 def test_create(client):
-    CREATE_REQUEST_RESULT_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
-    <com.pmease.quickbuild.RequestResult>
-        <requestId>e8e5fb23-7aff-4efd-9825-162eeac84fca</requestId>
-        <loopedRequest>false</loopedRequest>
-    </com.pmease.quickbuild.RequestResult>
-    """
-
     responses.add(
         responses.POST,
         re.compile(r'.*/rest/build_requests'),

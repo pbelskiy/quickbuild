@@ -1,4 +1,3 @@
-import http
 import re
 
 from http import HTTPStatus
