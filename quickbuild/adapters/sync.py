@@ -113,7 +113,7 @@ class QBClient(QuickBuild):
             total=retry['total'],
             backoff_factor=retry.get('factor', 1),
             status_forcelist=retry.get('statuses', []),
-            method_whitelist=['GET', 'POST', 'PATCH'],
+            allowed_methods=['GET', 'POST', 'PATCH'],
         ))
 
         self.session.mount('http://', adapter)
