@@ -35,15 +35,24 @@ AGGREGATIONS_XML = r"""
 
 BUILD_STATS_XML = r"""
 <report name="stats" version="0.0.0" locale="en_US">
-  <row ID="1" buildId="103" duration="261466" tests="1006" errors="5" failures="7" skips="0" added="994" newFailed="12" notFixed="0" fixed="0" successes="994" success_rate="0.9880715705765407"/>
+  <row ID="1" buildId="103" duration="261466" tests="1006" errors="5" failures="7" skips="0"
+   added="994" newFailed="12" notFixed="0" fixed="0" successes="994" success_rate="0.9880715705765407"/>
 </report>
 """
 
 RECORDS_DATA_XML = r"""<report name="tests" version="0.0" locale="en_US">
-  <row ID="100" packageName="org.hibernate.test.entitymode.multi" className="MultiRepresentationTest" testName="testPojoRetreival" status="PASS" duration="40" hasSysout="true" totalRuns="2" failedRuns="0" passedRuns="2" diffStatus="ADDED"/>
-  <row ID="101" packageName="org.hibernate.test.entitymode.multi" className="MultiRepresentationTest" testName="testDom4jRetreival" status="PASS" duration="58" hasSysout="true" totalRuns="2" failedRuns="0" passedRuns="2" diffStatus="FIXED"/>
-  <row ID="102" packageName="org.hibernate.test.entitymode.multi" className="MultiRepresentationTest" testName="testDom4jSave" status="PASS" duration="34" hasSysout="true" totalRuns="2" failedRuns="0" passedRuns="2" diffStatus="FIXED"/>
-  <row ID="103" packageName="org.hibernate.test.entitymode.multi" className="MultiRepresentationTest" testName="testDom4jHQL" status="PASS" duration="30" hasSysout="true" totalRuns="2" failedRuns="0" passedRuns="2" diffStatus="ADDED"/>
+  <row ID="100" packageName="org.hibernate.test.entitymode.multi" className="MultiRepresentationTest"
+       testName="testPojoRetreival" status="PASS" duration="40" hasSysout="true" totalRuns="2"
+       failedRuns="0" passedRuns="2" diffStatus="ADDED"/>
+  <row ID="101" packageName="org.hibernate.test.entitymode.multi" className="MultiRepresentationTest"
+       testName="testDom4jRetreival" status="PASS" duration="58" hasSysout="true" totalRuns="2"
+       failedRuns="0" passedRuns="2" diffStatus="FIXED"/>
+  <row ID="102" packageName="org.hibernate.test.entitymode.multi" className="MultiRepresentationTest"
+       testName="testDom4jSave" status="PASS" duration="34" hasSysout="true" totalRuns="2"
+       failedRuns="0" passedRuns="2" diffStatus="FIXED"/>
+  <row ID="103" packageName="org.hibernate.test.entitymode.multi" className="MultiRepresentationTest"
+       testName="testDom4jHQL" status="PASS" duration="30" hasSysout="true" totalRuns="2"
+       failedRuns="0" passedRuns="2" diffStatus="ADDED"/>
 </report>
 """
 

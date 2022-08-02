@@ -111,7 +111,7 @@ DESCENDENT_CONFIGURATIONS_XML = r"""<?xml version="1.0" encoding="UTF-8"?>
     <disabled>false</disabled>
     <parent>2</parent>
     <name>sync configurations</name>
-    <description>This configuration is created to demonstrate how to use the "Maintenance/Sync Configurations" step to sync configuration settings from remote QuickBuild server. To sync, just run this configuration and fill in necessary information on the build option page.</description>
+    <description>This configuration is created to demonstrate...</description>
     <order>100</order>
     <statusDate>2021-03-08T16:51:42.216Z</statusDate>
     <pluginSettingDOMs/>
