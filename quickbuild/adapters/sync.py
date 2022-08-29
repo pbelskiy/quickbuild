@@ -19,7 +19,7 @@ class QBClient(QuickBuild):
                  verify: bool = True,
                  timeout: Optional[float] = None,
                  retry: Optional[dict] = None
-                 ):
+                 ) -> None:
         """
         QuickBuild client class.
 

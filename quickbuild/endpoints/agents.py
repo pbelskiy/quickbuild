@@ -5,7 +5,7 @@ from quickbuild.helpers import response2py
 
 class Agents:
 
-    def __init__(self, quickbuild):
+    def __init__(self, quickbuild) -> None:
         self.quickbuild = quickbuild
 
     def get_active(self) -> Union[List[dict], str]:

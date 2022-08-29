@@ -7,7 +7,7 @@ from quickbuild.helpers import ContentType, response2py
 
 class Users:
 
-    def __init__(self, quickbuild):
+    def __init__(self, quickbuild) -> None:
         self.quickbuild = quickbuild
 
         self.shares = UserShares(quickbuild)

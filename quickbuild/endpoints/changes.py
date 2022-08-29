@@ -24,7 +24,7 @@ class Changes:
     and then ADD, and maybe there are also other actions, QuickBuild will use
     MODIFY action to represent.
     """
-    def __init__(self, quickbuild):
+    def __init__(self, quickbuild) -> None:
         self.quickbuild = quickbuild
 
     def get_version(self) -> str:

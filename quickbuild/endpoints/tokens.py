@@ -8,7 +8,7 @@ class Tokens:
     By operating tokens, one can authorize/unauthorize agents, or access agent
     details including token value and latest usage information.
     """
-    def __init__(self, quickbuild):
+    def __init__(self, quickbuild) -> None:
         self.quickbuild = quickbuild
 
     def get(self, agent_address: Optional[str] = None) -> List[dict]:

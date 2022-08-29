@@ -5,7 +5,7 @@ from quickbuild.helpers import response2py
 
 class Tracker:
 
-    def __init__(self, quickbuild, name: str):
+    def __init__(self, quickbuild, name: str) -> None:
         self.quickbuild = quickbuild
         self.name = name
 

@@ -15,7 +15,7 @@ ServerVersion = NamedTuple(
 
 class System:
 
-    def __init__(self, quickbuild):
+    def __init__(self, quickbuild) -> None:
         self.quickbuild = quickbuild
 
     def get_version(self) -> ServerVersion:

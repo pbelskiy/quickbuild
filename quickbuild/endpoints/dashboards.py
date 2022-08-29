@@ -6,7 +6,7 @@ from quickbuild.helpers import ContentType, response2py
 
 class Dashboards:
 
-    def __init__(self, quickbuild):
+    def __init__(self, quickbuild) -> None:
         self.quickbuild = quickbuild
 
     def get(self) -> List[dict]:

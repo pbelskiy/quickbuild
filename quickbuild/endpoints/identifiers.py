@@ -10,7 +10,7 @@ class Identifiers:
 
     https://wiki.pmease.com/display/QB10/Retrieve+Object+Identifier
     """
-    def __init__(self, quickbuild):
+    def __init__(self, quickbuild) -> None:
         self.quickbuild = quickbuild
 
     def _get(self, params: dict) -> Any:

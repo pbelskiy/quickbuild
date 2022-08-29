@@ -16,7 +16,7 @@ from quickbuild.exceptions import QBError
 
 class RetryClientSession:
 
-    def __init__(self, loop: Optional[asyncio.AbstractEventLoop], options: dict):
+    def __init__(self, loop: Optional[asyncio.AbstractEventLoop], options: dict) -> None:
         self.total = options['total']
         self.factor = options.get('factor', 1)
         self.statuses = options.get('statuses', [])
@@ -57,7 +57,7 @@ class AsyncQBClient(QuickBuild):
                  verify: bool = True,
                  timeout: Optional[float] = None,
                  retry: Optional[dict] = None
-                 ):
+                 ) -> None:
         """
         QuickBuild async client class.
 

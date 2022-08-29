@@ -7,7 +7,7 @@ class Requests:
     """
     Build request object can be used to request new build or cancel running build.
     """
-    def __init__(self, quickbuild):
+    def __init__(self, quickbuild) -> None:
         self.quickbuild = quickbuild
 
     def get(self,

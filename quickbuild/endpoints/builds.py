@@ -7,7 +7,7 @@ from quickbuild.helpers import ContentType, response2py
 
 class Builds:
 
-    def __init__(self, quickbuild):
+    def __init__(self, quickbuild) -> None:
         self.quickbuild = quickbuild
 
     def get_info(self,

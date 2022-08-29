@@ -5,7 +5,7 @@ from quickbuild.helpers import response2py
 
 class Tracker:
 
-    def __init__(self, quickbuild, name: str):
+    def __init__(self, quickbuild, name: str) -> None:
         self.quickbuild = quickbuild
         self.name = name
 
@@ -232,7 +232,7 @@ class Reports:
     """
     https://wiki.pmease.com/display/QB10/Interact+with+Reports
     """
-    def __init__(self, quickbuild):
+    def __init__(self, quickbuild) -> None:
         self.quickbuild = quickbuild
 
     def get_tracker(self, name: str) -> Tracker:

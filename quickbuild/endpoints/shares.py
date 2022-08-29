@@ -7,7 +7,7 @@ class Shares:
     """
     Share is the object used to control dashboard sharing with users or groups.
     """
-    def __init__(self, quickbuild):
+    def __init__(self, quickbuild) -> None:
         self.users = UserShares(quickbuild)
         self.groups = GroupShares(quickbuild)
 
@@ -18,7 +18,7 @@ class UserShares:
 
     https://wiki.pmease.com/display/QB10/Interact+with+User+Share
     """
-    def __init__(self, quickbuild):
+    def __init__(self, quickbuild) -> None:
         self.quickbuild = quickbuild
 
     def get(self) -> Union[List[dict], str]:
@@ -146,7 +146,7 @@ class GroupShares:
     """
     Group share is the object used to control dashboard sharing with groups.
     """
-    def __init__(self, quickbuild):
+    def __init__(self, quickbuild) -> None:
         self.quickbuild = quickbuild
 
     def get(self) -> Union[List[dict], str]:

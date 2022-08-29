@@ -8,7 +8,7 @@ class Nodes:
     https://wiki.pmease.com/display/QB10/Get+and+Set+User+Attributes+of+Grid+Node
     https://wiki.pmease.com/display/QB10/Get+System+Attributes+of+Grid+Node
     """
-    def __init__(self, quickbuild):
+    def __init__(self, quickbuild) -> None:
         self.quickbuild = quickbuild
 
     def get_user_attributes(self, name: str) -> dict:
