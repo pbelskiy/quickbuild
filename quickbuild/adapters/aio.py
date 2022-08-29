@@ -16,12 +16,12 @@ from quickbuild.exceptions import QBError
 
 class RetryClientSession:
 
-    def __init__(self, loop: Optional[asyncio.AbstractEventLoop], options: dict) -> None:
+    def __init__(self, options: dict) -> None:
         self.total = options['total']
         self.factor = options.get('factor', 1)
         self.statuses = options.get('statuses', [])
 
-        self.session = ClientSession(loop=loop)
+        self.session = ClientSession()
 
     async def request(self, *args: Any, **kwargs: Any) -> ClientResponse:
         for total in range(self.total):
@@ -53,7 +53,6 @@ class AsyncQBClient(QuickBuild):
                  password: Optional[str] = None,
                  *,
                  content_type: Optional[ContentType] = ContentType._DEFAULT,
-                 loop: Optional[asyncio.AbstractEventLoop] = None,
                  verify: bool = True,
                  timeout: Optional[float] = None,
                  retry: Optional[dict] = None
@@ -74,9 +73,6 @@ class AsyncQBClient(QuickBuild):
             content_type (Optional[ContentType]):
                 How to process server content, get native XML as string, or
                 parsing XML to Python types, or uses native JSON if QB10+ used.
-
-            loop (Optional[AbstractEventLoop]):
-                Asyncio current event loop.
 
             verify (Optional[bool]):
                 Verify SSL (default: true).
@@ -110,7 +106,6 @@ class AsyncQBClient(QuickBuild):
         super().__init__(content_type)
 
         self.content_type = content_type
-        self.loop = loop or asyncio.get_event_loop()
         self.host = url
 
         self.auth = None
@@ -119,9 +114,9 @@ class AsyncQBClient(QuickBuild):
 
         if retry:
             self._validate_retry_argument(retry)
-            self.session = RetryClientSession(loop, retry)
+            self.session = RetryClientSession(retry)
         else:
-            self.session = ClientSession(loop=self.loop)
+            self.session = ClientSession()
 
         self.verify = verify
 
