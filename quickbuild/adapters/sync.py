@@ -52,6 +52,8 @@ class QBClient(QuickBuild):
                 - factor: ``int`` Sleep between retries (default 1)
                     {factor} * (2 ** ({number of total retries} - 1))
                 - statuses: ``List[int]`` HTTP statues retries on. (default [])
+                - methods: ``List[str]`` list of HTTP methods to retry, udempotent
+                    methods are used by default.
 
                 Example:
 
@@ -113,7 +115,9 @@ class QBClient(QuickBuild):
             total=retry['total'],
             backoff_factor=retry.get('factor', 1),
             status_forcelist=retry.get('statuses', []),
-            method_whitelist=['GET', 'POST', 'PATCH'],
+            method_whitelist=retry.get('methods', [
+                'DELETE', 'GET', 'HEAD', 'OPTIONS', 'PUT', 'TRACE'
+            ]),
         ))
 
         self.session.mount('http://', adapter)
