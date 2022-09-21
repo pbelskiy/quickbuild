@@ -35,7 +35,7 @@ class Tokens:
             params=params,
         )
 
-    def authorize(self, agent_ip: str, agent_port: Optional[int] = 8811) -> str:
+    def authorize(self, agent_ip: str, agent_port: int = 8811) -> str:
         """
         Authorize a build agent to join the build grid.
 
@@ -43,7 +43,7 @@ class Tokens:
             agent_ip (str):
                 The build agent IP address.
 
-            agent_port (Optional[int]):
+            agent_port (int):
                 The build agent port (default: 8811).
 
         Returns:
@@ -57,7 +57,7 @@ class Tokens:
 
         return response
 
-    def unauthorize(self, agent_ip: str, agent_port: Optional[int] = 8811) -> str:
+    def unauthorize(self, agent_ip: str, agent_port: int = 8811) -> str:
         """
         Unauthorize an already authorized build agent.
 
@@ -65,7 +65,7 @@ class Tokens:
             agent_ip (str):
                 The build agent IP address.
 
-            agent_port (Optional[int]):
+            agent_port (int):
                 The build agent port (default: 8811).
 
         Returns:

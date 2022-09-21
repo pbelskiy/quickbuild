@@ -57,7 +57,7 @@ class AsyncQBClient(QuickBuild):
                  user: Optional[str] = None,
                  password: Optional[str] = None,
                  *,
-                 content_type: Optional[ContentType] = ContentType._DEFAULT,
+                 content_type: ContentType = ContentType._DEFAULT,
                  verify: bool = True,
                  timeout: Optional[float] = None,
                  retry: Optional[dict] = None
@@ -75,7 +75,7 @@ class AsyncQBClient(QuickBuild):
             password (Optional[str]):
                 Password for user.
 
-            content_type (Optional[ContentType]):
+            content_type (ContentType):
                 How to process server content, get native XML as string, or
                 parsing XML to Python types, or uses native JSON if QB10+ used.
 
@@ -94,7 +94,7 @@ class AsyncQBClient(QuickBuild):
                 - factor: ``int`` Sleep between retries (default 1)
                     {factor} * (2 ** ({number of total retries} - 1))
                 - statuses: ``List[int]`` HTTP statues retries on. (default [])
-                - methods: ``List[str]`` list of HTTP methods to retry, udempotent
+                - methods: ``List[str]`` list of HTTP methods to retry, idempotent
                     methods are used by default.
 
                 Example:

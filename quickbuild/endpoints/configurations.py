@@ -198,7 +198,13 @@ class Configurations:
         Get configuration average duration.
 
         Args:
-            configuration_id (int): configuration identifier.
+            configuration_id (int):
+                Configuration identifier.
+
+            from_date (datetime.date)
+
+            to_date (to_date):
+
 
         Returns:
             int: milliseconds of average build duration.
