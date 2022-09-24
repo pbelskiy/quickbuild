@@ -191,8 +191,8 @@ class Configurations:
     def get_average_duration(self,
                              configuration_id: int,
                              *,
-                             from_date: Optional[datetime.date],
-                             to_date: Optional[datetime.date]
+                             from_date: Optional[datetime.date] = None,
+                             to_date: Optional[datetime.date] = None
                              ) -> int:
         """
         Get configuration average duration.
@@ -201,10 +201,11 @@ class Configurations:
             configuration_id (int):
                 Configuration identifier.
 
-            from_date (datetime.date)
+            from_date (Optiona[datetime.date]):
+                Date from search starts.
 
-            to_date (to_date):
-
+            to_date (Optiona[datetime.date]):
+                Date where search ends.
 
         Returns:
             int: milliseconds of average build duration.
@@ -227,14 +228,21 @@ class Configurations:
     def get_success_rate(self,
                          configuration_id: int,
                          *,
-                         from_date: Optional[datetime.date],
-                         to_date: Optional[datetime.date]
+                         from_date: Optional[datetime.date] = None,
+                         to_date: Optional[datetime.date] = None
                          ) -> int:
         """
         Get configuration success rate.
 
         Args:
-            configuration_id (int): configuration identifier.
+            configuration_id (int):
+                Configuration identifier.
+
+            from_date (Optiona[datetime.date]):
+                Date from search starts.
+
+            to_date (Optiona[datetime.date]):
+                Date where search ends.
 
         Returns:
             int: value in the range of 0~100, with 0 stands for 0%, and 100
