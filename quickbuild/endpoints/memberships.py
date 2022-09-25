@@ -53,7 +53,8 @@ class Memberships:
         Get memberships of particular user.
 
         Args:
-            user_id (int): user identifier.
+            user_id (int):
+                User identifier.
 
         Returns:
             Union[List[dict], str]: user membership content.
@@ -70,7 +71,8 @@ class Memberships:
         Get memberships of particular group.
 
         Args:
-            group_id (int): group identifier.
+            group_id (int):
+                Group identifier.
 
         Returns:
             Union[List[dict], str]: group membership content.
@@ -132,7 +134,8 @@ class Memberships:
             </com.pmease.quickbuild.model.Membership>
 
         Args:
-            representation (str): representation of membership.
+            representation (str):
+                Representation of a membership.
 
         Returns:
             int: newly created membership id.
@@ -153,6 +156,9 @@ class Memberships:
 
         Args:
             membership_id (str): membership identifier.
+
+        Retruns:
+            None
         """
         return self.quickbuild._request(
             'DELETE',

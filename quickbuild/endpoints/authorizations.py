@@ -51,6 +51,10 @@ class Authorizations:
         """
         Get authorization info by group id.
 
+        Args:
+            group_id (int):
+                Group identifier.
+
         Returns:
             dict: authorization info.
         """
@@ -66,6 +70,10 @@ class Authorizations:
     def get_by_configuration(self, configuration_id: int) -> dict:
         """
         Get authorization info by configuration_id.
+
+        Args:
+            configuration_id (int):
+                Configuration identifier.
 
         Returns:
             dict: authorization info.
@@ -88,7 +96,8 @@ class Authorizations:
         certain parts of the XML and post back to above url.
 
         Args:
-            configuration (str): XML document.
+            configuration (str):
+                XML document.
 
         Returns:
             int: authorization id being updated.
@@ -112,7 +121,8 @@ class Authorizations:
         url.
 
         Args:
-            configuration (str): XML/JSON document.
+            configuration (str):
+                XML/JSON document.
 
         Returns:
             int: newly created authorizations id.
@@ -128,7 +138,8 @@ class Authorizations:
         Delete authorization by configuration_id.
 
         Args:
-            configuration_id (int): configuration id.
+            configuration_id (int):
+                Configuration identifier.
 
         Returns:
             None

@@ -56,7 +56,8 @@ class Groups:
         Get group id by name.
 
         Args:
-            name (str): group name.
+            name (str):
+                Group name.
 
         Returns:
             int: group identifier.
@@ -75,7 +76,8 @@ class Groups:
         parts of the XML and post back to above url.
 
         Args:
-            configuration (str): XML document.
+            configuration (str):
+                XML document.
 
         Returns:
             int: group id being updated.
@@ -97,7 +99,8 @@ class Groups:
         and use i XML as configuration for create method.
 
         Args:
-            configuration (str): XML/JSON configuration.
+            configuration (str):
+                XML/JSON configuration.
 
         Returns:
             int: group id being created.
@@ -113,7 +116,8 @@ class Groups:
         Delete specified group.
 
         Args:
-            group_id (int): group identifier.
+            group_id (int):
+                Group identifier.
 
         Returns:
             int: group id being deleted.

@@ -18,6 +18,10 @@ class Nodes:
         .. note::
             This feature is available since QuickBuild 5.0.26
 
+        Args:
+            name (str):
+                Node name.
+
         Returns:
             dict: attributes
         """
@@ -35,7 +39,11 @@ class Nodes:
             This feature is available since QuickBuild 5.0.26
 
         Args:
-            group_id (int): group identifier.
+            name (str):
+                Node name.
+
+            group_id (int):
+                Group identifier.
 
         Returns:
             None
@@ -53,6 +61,10 @@ class Nodes:
 
         .. note::
             This feature is available since QuickBuild 5.1.22
+
+        Args:
+            name (str):
+                Node name.
 
         Returns:
             dict: attributes

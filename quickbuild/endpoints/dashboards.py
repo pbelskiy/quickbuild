@@ -55,7 +55,8 @@ class Dashboards:
         <dashboard fqn> is of the form <user id>.<dashboard name>.
 
         Args:
-            fqn (str): fqn (fully qualified name).
+            fqn (str):
+                Fully qualified name.
 
         Returns:
             int: dashboard identifier.
@@ -74,7 +75,8 @@ class Dashboards:
         modify certain parts and use it as new configuration.
 
         Args:
-            configuration (str): XML/JSON document.
+            configuration (str):
+                XML/JSON document.
 
         Returns:
             int: dashboard id being updated.
@@ -99,7 +101,8 @@ class Dashboards:
         modify certain parts and use it as new configuration.
 
         Args:
-            configuration (str): XML/JSON document.
+            configuration (str):
+                XML/JSON document.
 
         Returns:
             int: dashboard id being created.
@@ -121,7 +124,8 @@ class Dashboards:
         Delete specified dashboard.
 
         Args:
-            dashboard_id (int): dashboard identifier.
+            dashboard_id (int):
+                Dashboard identifier.
 
         Returns:
             int: dashboard id being deleted.

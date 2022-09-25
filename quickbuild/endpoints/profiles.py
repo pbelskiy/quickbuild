@@ -56,7 +56,8 @@ class Profiles:
         content_type=ContentType.XML and modify certain parts of the XML.
 
         Args:
-            configuration (str): XML document.
+            configuration (str):
+                XML document.
 
         Returns:
             int: cloud profile id being updated.
@@ -81,7 +82,8 @@ class Profiles:
         remove the id element, modify certain parts and post back to above url.
 
         Args:
-            configuration (str): XML/JSON document.
+            configuration (str):
+                XML/JSON document.
 
         Returns:
             int: id of newly created cloud profile.
@@ -97,7 +99,8 @@ class Profiles:
         Delete cloud profile.
 
         Args:
-            cloud_profile_id (int): cloud profile id.
+            cloud_profile_id (int):
+                Cloud profile id.
 
         Returns:
             None

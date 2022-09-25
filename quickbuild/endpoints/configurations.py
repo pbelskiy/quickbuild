@@ -36,7 +36,8 @@ class Configurations:
         Get a list of child configurations.
 
         Args:
-            parent_id (int): parent configuration identifier.
+            parent_id (int):
+                Parent configuration identifier.
 
         Returns:
             List[dict]: list of child configurations.
@@ -48,7 +49,8 @@ class Configurations:
         Get a list of descendent configurations.
 
         Args:
-            parent_id (int): parent configuration identifier.
+            parent_id (int):
+                Parent configuration identifier.
 
         Returns:
             List[dict]: list of descendent configurations.
@@ -86,7 +88,8 @@ class Configurations:
         Get configuration path.
 
         Args:
-            configuration_id (int): configuration identifier.
+            configuration_id (int):
+                Configuration identifier.
 
         Returns:
             str: configuration path.
@@ -101,7 +104,8 @@ class Configurations:
         Get configuration id by path.
 
         Args:
-            path (str): configuration path.
+            path (str):
+                Configuration path.
 
         Returns:
             int: configuration identifier.
@@ -113,7 +117,8 @@ class Configurations:
         Get configuration name.
 
         Args:
-            configuration_id (int): configuration identifier.
+            configuration_id (int):
+                Configuration identifier.
 
         Returns:
             str: configuration name.
@@ -128,7 +133,8 @@ class Configurations:
         Get configuration description.
 
         Args:
-            configuration_id (int): configuration identifier.
+            configuration_id (int):
+                Configuration identifier.
 
         Returns:
             str: configuration description.
@@ -143,7 +149,8 @@ class Configurations:
         Get configuration error message.
 
         Args:
-            configuration_id (int): configuration identifier.
+            configuration_id (int):
+                Configuration identifier.
 
         Returns:
             str: configuration error message.
@@ -158,7 +165,8 @@ class Configurations:
         Get configuration run mode.
 
         Args:
-            configuration_id (int): configuration identifier.
+            configuration_id (int):
+                Configuration identifier.
 
         Returns:
             str: configuration run mode.
@@ -173,7 +181,8 @@ class Configurations:
         Get configuration schedule.
 
         Args:
-            configuration_id (int): configuration identifier.
+            configuration_id (int):
+                Configuration identifier.
 
         Returns:
             dict: configuration schedule.
@@ -268,10 +277,11 @@ class Configurations:
         Get parent configuration id.
 
         Args:
-            configuration_id (int): configuration identifier.
+            configuration_id (int):
+                Configuration identifier.
 
         Returns:
-            int: id of parent configuration.
+            int: id of a parent configuration.
 
         Raises:
             QBProcessingError: the configuration is root configuration and does
@@ -292,7 +302,8 @@ class Configurations:
         content_type=ContentType.XML and modify certain parts of the XML.
 
         Args:
-            configuration (str): XML document.
+            configuration (str):
+                XML document.
 
         Returns:
             int: configuration id being updated.
@@ -325,7 +336,8 @@ class Configurations:
           attribute should then be preserved.
 
         Args:
-            configuration (str): XML/JSON document.
+            configuration (str):
+                XML/JSON document.
 
         Returns:
             int: configuration id of newly created configuration.
@@ -341,7 +353,8 @@ class Configurations:
         Delete configuration.
 
         Args:
-            configuration_id (int): configuration id.
+            configuration_id (int):
+                Configuration id.
 
         Returns:
             None
@@ -359,7 +372,10 @@ class Configurations:
              recursive: bool
              ) -> int:
         """
-        Copy configuration (available since version 4.0.72)
+        Copy configuration.
+
+        .. note::
+            This feature is available since QuickBuild 4.0.72.
 
         Args:
             configuration_id (int):

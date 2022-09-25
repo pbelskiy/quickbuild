@@ -56,7 +56,8 @@ class Users:
         Get display name for specified user.
 
         Args:
-            user_id (int): user identifier.
+            user_id (int):
+                User identifier.
 
         Returns:
             str: user name.
@@ -71,7 +72,8 @@ class Users:
         Get user id by name.
 
         Args:
-            name (str): user name.
+            name (str):
+                User name.
 
         Returns:
             int: user identifier.
@@ -90,7 +92,8 @@ class Users:
         parts of the XML and post back to above url.
 
         Args:
-            configuration (str): XML document.
+            configuration (str):
+                XML document.
 
         Returns:
             int: user id being updated.
@@ -127,7 +130,8 @@ class Users:
         Delete user by user id.
 
         Args:
-            user_id (int): user identifier.
+            user_id (int):
+                User identifier.
 
         Returns:
             None

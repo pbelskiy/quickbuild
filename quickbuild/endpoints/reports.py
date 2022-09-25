@@ -38,10 +38,6 @@ class Tracker:
         """
         Get the report definition (meta data).
 
-        Args:
-            name (str):
-                Specify the report name from categories API.
-
         You may consider the report meta data as the schema of a table in
         database. Each report has an attribute group and in QuickBuild, the
         following groups are used:
@@ -55,6 +51,10 @@ class Tracker:
         example, if a report belongs to BUILD group, then this report is
         stored in build related directory, otherwise, the report is stored in
         configuration related directory.
+
+        Args:
+            name (str):
+                Specify the report name from categories API.
 
         Returns:
             dict: report definition.

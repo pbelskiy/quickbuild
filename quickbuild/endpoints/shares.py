@@ -96,7 +96,8 @@ class UserShares:
         back to above url.
 
         Args:
-            configuration (str): XML document.
+            configuration (str):
+                XML document.
 
         Returns:
             int: user share id being updated.
@@ -117,7 +118,8 @@ class UserShares:
         back to above url.
 
         Args:
-            configuration (str): XML document.
+            configuration (str):
+                XML document.
 
         Returns:
             int: user share id being created.

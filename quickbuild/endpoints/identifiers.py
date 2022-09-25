@@ -29,7 +29,8 @@ class Identifiers:
             This feature is available since 6.1.35
 
         Args:
-            name (str): resource path.
+            name (str):
+                Resource path.
 
         Returns:
             int: resource identifier.
@@ -44,7 +45,8 @@ class Identifiers:
         Get configuration id by path.
 
         Args:
-            path (str): configuration path.
+            path (str):
+                Configuration path.
 
         Returns:
             int: configuration identifier.
@@ -59,7 +61,8 @@ class Identifiers:
         Get user id by name.
 
         Args:
-            name (str): user name.
+            name (str):
+                User name.
 
         Returns:
             int: user identifier.
@@ -74,7 +77,8 @@ class Identifiers:
         Get group id by name.
 
         Args:
-            name (str): group name.
+            name (str):
+                Group name.
 
         Returns:
             int: group identifier.
@@ -89,7 +93,8 @@ class Identifiers:
         Get queue id by name.
 
         Args:
-            name (str): queue name.
+            name (str):
+                Queue name.
 
         Returns:
             int: queue identifier.
@@ -104,7 +109,8 @@ class Identifiers:
         Get build id by request id.
 
         Args:
-            identifier (int): request identifier.
+            identifier (int):
+                Request identifier.
 
         Returns:
             int: build identifier.
@@ -122,7 +128,8 @@ class Identifiers:
         name will be `1.latest`
 
         Args:
-            name (str): build name.
+            name (str):
+                Build name.
 
         Returns:
             int: build identifier.
@@ -139,7 +146,8 @@ class Identifiers:
         <dashboard fqn> is of the form <user id>.<dashboard name>.
 
         Args:
-            fqn (str): fqn (fully qualified name).
+            fqn (str):
+                Fully qualified name.
 
         Returns:
             int: dashboard identifier.

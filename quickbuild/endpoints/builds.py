@@ -19,7 +19,8 @@ class Builds:
         Get build info as raw XML string.
 
         Args:
-            build_id (int): build id.
+            build_id (int):
+                Build identifier.
 
             content_type (Optional[ContentType]):
                 Select needed content type if not set, default value of client
@@ -40,7 +41,8 @@ class Builds:
         Get build status.
 
         Args:
-            build_id (int): build id.
+            build_id (int):
+                Build identifier.
 
         Returns:
             str: Build status, for example: `SUCCESS`
@@ -55,7 +57,8 @@ class Builds:
         Get build begin date.
 
         Args:
-            build_id (int): build id.
+            build_id (int):
+                Build identifier.
 
         Returns:
             datetime: return datetime from stdlib.
@@ -76,7 +79,8 @@ class Builds:
         Get build version.
 
         Args:
-            build_id (int): build id.
+            build_id (int):
+                Build identifier.
 
         Returns:
             str: build version
@@ -92,10 +96,11 @@ class Builds:
         not finished.
 
         Args:
-            build_id (int): build id.
+            build_id (int):
+                Build identifier.
 
         Returns:
-            int: build duration in ms
+            int: build duration in ms.
         """
         response = self.quickbuild._request(
             'GET',
@@ -110,7 +115,8 @@ class Builds:
         Get request id. QBProcessingError will be raised if build is finished.
 
         Args:
-            build_id (int): build id.
+            build_id (int):
+                Build identifier.
 
         Returns:
             str: request id. Example: fd2339a1-bc71-429d-b4ee-0ac650c342fe
@@ -127,7 +133,8 @@ class Builds:
         Get build id by request id.
 
         Args:
-            identifier (int): request identifier.
+            identifier (int):
+                Request identifier.
 
         Returns:
             int: build identifier.
@@ -145,7 +152,8 @@ class Builds:
         name will be `1.latest`
 
         Args:
-            name (str): build name.
+            name (str):
+                Build name.
 
         Returns:
             int: build identifier.
@@ -160,7 +168,8 @@ class Builds:
         Get build steps.
 
         Args:
-            build_id (int): build id.
+            build_id (int):
+                Build identifier.
 
         Returns:
             str: builds steps as XML document
@@ -177,7 +186,8 @@ class Builds:
         Get build repositories.
 
         Args:
-            build_id (int): build id.
+            build_id (int):
+                Build identifier.
 
         Returns:
             str: builds repositories as XML document
@@ -194,7 +204,8 @@ class Builds:
         Get build dependencies.
 
         Args:
-            build_id (int): build id.
+            build_id (int):
+                Build identifier.
 
         Returns:
             str: builds dependencies as XML document
@@ -211,7 +222,8 @@ class Builds:
         Get build dependents.
 
         Args:
-            build_id (int): build id.
+            build_id (int):
+                Build identifier.
 
         Returns:
             str: builds dependents as XML document
@@ -307,8 +319,8 @@ class Builds:
                 Specify number of builds to return. This parameter is required.
 
             configuration_id (Optional[int]):
-                This tells QuickBuild under which configuration id to search builds.
-                If not specified, all configurations will be searched.
+                This tells QuickBuild under which configuration id to search
+                builds. If not specified, all configurations will be searched.
 
             recursive (Optional[bool]):
                 If set to true, QuickBuild will also search builds in all descendent
@@ -503,7 +515,8 @@ class Builds:
         of the XML and post back to above url.
 
         Args:
-            configuration (str): XML document.
+            configuration (str):
+                XML document.
 
         Returns:
             int: build id being updated.
@@ -552,7 +565,8 @@ class Builds:
         Or using `stop()` which wraps above calls.
 
         Args:
-            build_id (int): build id.
+            build_id (int):
+                Build identifier.
 
         Returns:
             None
@@ -568,7 +582,8 @@ class Builds:
         Stop build, it's just wrapper for two calls.
 
         Args:
-            build_id (int): build id.
+            build_id (int):
+                Build identifier.
 
         Returns:
             None

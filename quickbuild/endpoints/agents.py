@@ -49,7 +49,14 @@ class Agents:
 
     def get_running_steps(self, node_address: str) -> Union[List[dict], str]:
         """
-        Get list of running steps on specified build agent (since 5.1.24).
+        Get list of running steps on specified build agent.
+
+        .. note::
+            This feature is available since QuickBuild 5.1.24
+
+        Args:
+            node_address (str):
+                Address of target node.
 
         Returns:
             List[dict]: list of running steps.
