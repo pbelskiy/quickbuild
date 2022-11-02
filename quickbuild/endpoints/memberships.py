@@ -128,6 +128,7 @@ class Memberships:
         How to add user robin (assume id is 2) to group tester (assume the id is 3).
 
         .. code-block:: xml
+
             <com.pmease.quickbuild.model.Membership>
               <user>2</user>
               <group>3</group>

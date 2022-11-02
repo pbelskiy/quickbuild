@@ -44,8 +44,8 @@ Response = namedtuple('Response', ['status', 'headers', 'body'])
 
 class QuickBuild:
     """
-    NB: somehow using -H "Accept: application/json,application/xml,*/*" leads
-    to server error.
+    NB: somehow using -H Accept: application/json,application/xml,*/* leads to
+    server error.
     """
     def __init__(self, content_type: Optional[ContentType]) -> None:
         self._content_type = content_type
