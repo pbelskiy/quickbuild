@@ -92,8 +92,8 @@ class Memberships:
         may retrieve XML/JSON representation of the membership using `get_info()`
         method, modify certain parts and use it as new representation for update.
 
-        Demo:
-        -----
+        Example:
+
         1. Assume id of user robin is 2, id of group developer is 1, and id of
            group tester is 2.
         2. Get memberships of user robin using `get_by_user(2)` method.
@@ -123,8 +123,8 @@ class Memberships:
         may retrieve XML/JSON representation of the membership using `get_info()`
         method, modify certain parts and use it as new representation for create.
 
-        Demo:
-        -----
+        Example:
+
         How to add user robin (assume id is 2) to group tester (assume the id is 3).
 
         .. code-block:: xml
@@ -147,8 +147,8 @@ class Memberships:
         """
         Delete membership.
 
-        Demo:
-        -----
+        Example:
+
         1. User robin (assume id is 2) from group tester (assume the id is 3).
         2. Get memberships of user robin with `get_by_user(2)`
         3. Analyze response of above command to find out id of the membership
