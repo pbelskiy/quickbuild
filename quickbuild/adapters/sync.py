@@ -1,11 +1,11 @@
-from typing import Any, Callable, List, Optional
+from typing import Any, Callable, List, Optional, Tuple
 
 from requests import Session
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 from quickbuild.core import ContentType, QuickBuild, Response
-from quickbuild.exceptions import QBError
+from quickbuild.exceptions import QBError, QBUnauthorizedError
 
 
 class QBClient(QuickBuild):
@@ -18,7 +18,8 @@ class QBClient(QuickBuild):
                  content_type: ContentType = ContentType._DEFAULT,
                  verify: bool = True,
                  timeout: Optional[float] = None,
-                 retry: Optional[dict] = None
+                 retry: Optional[dict] = None,
+                 auth_update_callback: Optional[Callable[[], Tuple[str, str]]] = None
                  ) -> None:
         """
         QuickBuild client class.
@@ -92,6 +93,10 @@ class QBClient(QuickBuild):
                 20            72.8 hours
                 ============  =============
 
+            auth_update_callback (Optional[Callable[[], Tuple[str, str]]])
+                Callback function which will be called on QBUnauthorizedError
+                to update user and password and retry request again.
+
         Returns:
             Client instance
         """
@@ -106,6 +111,8 @@ class QBClient(QuickBuild):
 
         self.timeout = timeout
         self.verify = verify
+
+        self.auth_update_callback = auth_update_callback
 
         if not retry:
             return
@@ -123,14 +130,14 @@ class QBClient(QuickBuild):
         self.session.mount('http://', adapter)
         self.session.mount('https://', adapter)
 
-    def _request(self,
-                 method: str,
-                 path: str,
-                 *,
-                 callback: Optional[Callable] = None,
-                 content_type: Optional[ContentType] = None,
-                 **kwargs: Any
-                 ) -> Any:
+    def _http_request(self,
+                      method: str,
+                      path: str,
+                      *,
+                      callback: Optional[Callable] = None,
+                      content_type: Optional[ContentType] = None,
+                      **kwargs: Any
+                      ) -> Any:
 
         if self.timeout and 'timeout' not in kwargs:
             kwargs['timeout'] = self.timeout
@@ -154,6 +161,17 @@ class QBClient(QuickBuild):
         )
 
         return result
+
+    def _request(self, *args: Any, **kwargs: Any) -> Any:
+        try:
+            return self._http_request(*args, **kwargs)
+        except QBUnauthorizedError:
+            if self.auth_update_callback is None:
+                raise
+
+            user, password = self.auth_update_callback()
+            self.session.auth = (user, password)
+            return self._http_request(*args, **kwargs)
 
     @staticmethod
     def _chain(functions: List[Callable]) -> Any:

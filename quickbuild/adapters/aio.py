@@ -1,6 +1,6 @@
 import asyncio
 
-from typing import Any, Callable, List, Optional, Union
+from typing import Any, Awaitable, Callable, List, Optional, Tuple, Union
 
 from aiohttp import (
     BasicAuth,
@@ -11,7 +11,7 @@ from aiohttp import (
 )
 
 from quickbuild.core import ContentType, QuickBuild, Response
-from quickbuild.exceptions import QBError
+from quickbuild.exceptions import QBError, QBUnauthorizedError
 
 
 class RetryClientSession:
@@ -60,7 +60,8 @@ class AsyncQBClient(QuickBuild):
                  content_type: ContentType = ContentType._DEFAULT,
                  verify: bool = True,
                  timeout: Optional[float] = None,
-                 retry: Optional[dict] = None
+                 retry: Optional[dict] = None,
+                 auth_update_callback: Optional[Callable[[], Awaitable[Tuple[str, str]]]] = None
                  ) -> None:
         """
         QuickBuild async client class.
@@ -107,6 +108,10 @@ class AsyncQBClient(QuickBuild):
                         statuses=[500]
                     )
 
+            auth_update_callback (Optional[Callable[[], Tuple[str, str]]):
+                Callback coroutine which will be called on QBUnauthorizedError
+                to update user and password and retry request again.
+
         Returns:
             AsyncClient instance
         """
@@ -119,6 +124,8 @@ class AsyncQBClient(QuickBuild):
         if user and password:
             self.auth = BasicAuth(user, password)
 
+        self.auth_update_callback = auth_update_callback
+
         if retry:
             self._validate_retry_argument(retry)
             self.session = RetryClientSession(retry)
@@ -130,14 +137,14 @@ class AsyncQBClient(QuickBuild):
         if timeout:
             self.timeout = ClientTimeout(total=timeout)
 
-    async def _request(self,
-                       method: str,
-                       path: str,
-                       *,
-                       callback: Optional[Callable] = None,
-                       content_type: Optional[ContentType] = None,
-                       **kwargs: Any
-                       ) -> Any:
+    async def _http_request(self,
+                            method: str,
+                            path: str,
+                            *,
+                            callback: Optional[Callable] = None,
+                            content_type: Optional[ContentType] = None,
+                            **kwargs: Any
+                            ) -> Any:
 
         if self.timeout and 'timeout' not in kwargs:
             kwargs['timeout'] = self.timeout
@@ -164,6 +171,17 @@ class AsyncQBClient(QuickBuild):
         )
 
         return result
+
+    async def _request(self, *args: Any, **kwargs: Any) -> Any:
+        try:
+            return await self._http_request(*args, **kwargs)
+        except QBUnauthorizedError:
+            if self.auth_update_callback is None:
+                raise
+
+            user, password = await self.auth_update_callback()
+            self.auth = BasicAuth(user, password)
+            return await self._http_request(*args, **kwargs)
 
     @staticmethod
     async def _chain(functions: List[Callable]) -> Any:

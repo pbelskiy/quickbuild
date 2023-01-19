@@ -10,6 +10,12 @@ class QBProcessingError(QBError):
     """
 
 
+class QBUnauthorizedError(QBError):
+    """
+    Raises when request return HTTP code 401 (unauthorized)
+    """
+
+
 class QBForbiddenError(QBError):
     """
     Raises when request return HTTP code 403 (forbidden)

@@ -34,6 +34,7 @@ from quickbuild.exceptions import (
     QBNotFoundError,
     QBProcessingError,
     QBServerError,
+    QBUnauthorizedError,
 )
 from quickbuild.helpers import ContentType
 
@@ -93,6 +94,9 @@ class QuickBuild:
 
         if response.status == HTTPStatus.NOT_FOUND:
             raise QBNotFoundError(response.body)
+
+        if response.status == HTTPStatus.UNAUTHORIZED:
+            raise QBUnauthorizedError(response.body)
 
         if response.status == HTTPStatus.FORBIDDEN:
             raise QBForbiddenError(response.body)

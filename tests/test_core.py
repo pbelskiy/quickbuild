@@ -208,6 +208,90 @@ def test_retry_argument_validation():
 
 
 @responses.activate
+def test_sync_update_auth_callback():
+
+    def callback():
+        return 'login_new', 'password_new'
+
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/version'),
+        body=GET_VERSION_DATA,
+        status=HTTPStatus.OK
+    )
+
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/version'),
+        body=GET_VERSION_DATA,
+        status=HTTPStatus.UNAUTHORIZED
+    )
+
+    responses.add(
+        responses.GET,
+        re.compile(r'.*/rest/version'),
+        body=GET_VERSION_DATA,
+        status=HTTPStatus.OK
+    )
+
+    client = QBClient('http://server', 'login_old', 'password_old',
+                      auth_update_callback=callback)
+
+    version = client.system.get_version()
+    assert version.major == 6
+    assert client.session.auth == ('login_old', 'password_old')
+
+    version = client.system.get_version()
+    assert version.major == 6
+    assert client.session.auth == ('login_new', 'password_new')
+
+    client.close()
+
+
+@pytest.mark.asyncio
+async def test_async_update_auth_callback(aiohttp_mock):
+
+    async def callback():
+        return 'login_new', 'password_new'
+
+    client = AsyncQBClient('http://server', 'login_old', 'password_old',
+                           auth_update_callback=callback)
+
+    aiohttp_mock.get(
+        'http://server/rest/version',
+        content_type='text/plain',
+        body=GET_VERSION_DATA,
+        status=HTTPStatus.OK
+    )
+
+    aiohttp_mock.get(
+        'http://server/rest/version',
+        content_type='text/plain',
+        body=GET_VERSION_DATA,
+        status=HTTPStatus.UNAUTHORIZED
+    )
+
+    aiohttp_mock.get(
+        'http://server/rest/version',
+        content_type='text/plain',
+        body=GET_VERSION_DATA,
+        status=HTTPStatus.OK
+    )
+
+    version = await client.system.get_version()
+    assert version.major == 6
+    assert client.auth.login == 'login_old'
+    assert client.auth.password == 'password_old'
+
+    version = await client.system.get_version()
+    assert version.major == 6
+    assert client.auth.login == 'login_new'
+    assert client.auth.password == 'password_new'
+
+    await client.close()
+
+
+@responses.activate
 def test_content_type_parse_get():
     responses.add(
         responses.GET,

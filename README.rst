@@ -78,6 +78,38 @@ Stop build:
     client = QBClient('https://server', 'user', 'password')
     client.builds.stop(123)
 
+
+Update credentials handler:
+
+.. code:: python
+
+    import asyncio
+    import aiohttp
+    from quickbuild import AsyncQBClient
+
+    async def get_credentials():
+        async with aiohttp.ClientSession() as session:
+            async with session.get('...') as resp:
+                response = await resp.json()
+                return response['user'], response['password']
+
+    async def main():
+        client = AsyncQBClient('http://server', 'user', 'password',
+                                auth_update_callback=get_credentials)
+
+        # let's suppose credentials are valid now
+        print(await client.builds.get_status(12345))
+
+        # now, after some time, password of user somehow changed, so our callback
+        # will be called, new credentials will be using for retry and future here
+        # we get also correct build info instead of QBUnauthorizedError exception
+        print(await client.builds.get_status(12345))
+
+        await client.close()
+
+    asyncio.run(main())
+
+
 Content type
 ------------
 
