@@ -62,12 +62,13 @@ Get server version in async way (be careful ``AsyncQBClient`` must be called ins
     import asyncio
     from quickbuild import AsyncQBClient
 
-    async def example():
+    async def main():
         client = AsyncQBClient('https://server', 'user', 'password')
-        version = client.system.get_version()
+        version = await client.system.get_version()
         print(version)
+        await client.close()
 
-    asyncio.run(example())
+    asyncio.run(main())
 
 Stop build:
 
